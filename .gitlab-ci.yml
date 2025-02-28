@@ -1,0 +1,66 @@
+stages:
+  - linters
+  - tests
+  - deploy
+
+ruff:
+  image: python:3.11-slim
+  stage: linters
+
+  before_script:
+    - pip install uv
+    - uv pip install .[dev] --system
+  
+  script: python -m ruff check src tests
+
+
+mypy:
+  image: python:3.11-slim
+  stage: linters
+
+  before_script:
+    - pip install uv
+    - uv pip install .[dev] --system
+  
+  script: python -m mypy src tests
+
+
+tests:
+  image: docker:24.0.5-git
+  stage: tests
+  
+  services: 
+    - docker:dind
+  
+  before_script:
+    - docker build -t api .
+  script:
+    - docker compose -f docker-compose.test.yml up --abort-on-container-exit
+  after_script:
+    - docker compose -f docker-compose.test.yml down -v
+
+
+deploy-backend:
+  image: docker:24.0.5-git
+  stage: deploy
+  
+  needs: [ruff, mypy, tests]
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    BUILD_CONTEXT: .
+    BUILD_TAG: latest
+  
+  services:
+    - docker:24.0.5-dind
+  
+  before_script:
+    - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+    - apk add --update curl
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${BUILD_TAG} ${BUILD_CONTEXT}
+    - docker push ${CI_REGISTRY_IMAGE}:${BUILD_TAG}
+    - curl --fail --request POST --form token=${MOBILE_CI_CD_TOKEN} --form ref=master "https://gitlab.com/api/v4//projects/${MOBILE_REPOSITORY_ID}/trigger/pipeline"
