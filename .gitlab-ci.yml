@@ -33,7 +33,7 @@ tests:
     - docker:dind
   
   before_script:
-    - docker build -t api .
+    - dockerd & docker build -t api .
   script:
     - docker compose -f docker-compose.test.yml up --abort-on-container-exit
   after_script:
