@@ -3,6 +3,14 @@ stages:
   - tests
   - deploy
 
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  DOCKER_DRIVER: overlay2
+
+
 ruff:
   image: python:3.11-slim
   stage: linters
@@ -32,8 +40,6 @@ tests:
   services: 
     - docker:dind
   
-  variables:
-    DOCKER_HOST: tcp://docker:2375
 
   before_script:
     - docker build -t api .
@@ -53,7 +59,6 @@ deploy-backend:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   
   variables:
-    DOCKER_HOST: tcp://docker:2375
     BUILD_CONTEXT: .
     BUILD_TAG: latest
   
