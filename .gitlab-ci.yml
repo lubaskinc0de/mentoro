@@ -66,4 +66,4 @@ deploy-backend:
   script:
     - docker build -t ${CI_REGISTRY_IMAGE}:${BUILD_TAG} ${BUILD_CONTEXT}
     - docker push ${CI_REGISTRY_IMAGE}:${BUILD_TAG}
-    # - curl --fail --request POST --form token=${MOBILE_CI_CD_TOKEN} --form ref=master "https://gitlab.com/api/v4//projects/${MOBILE_REPOSITORY_ID}/trigger/pipeline"
+    - curl --fail --request POST --form token=${MOBILE_CI_CD_TOKEN} --form ref=master "https://gitlab.com/api/v4//projects/${MOBILE_REPOSITORY_ID}/trigger/pipeline"
