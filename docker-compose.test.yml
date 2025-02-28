@@ -26,6 +26,21 @@ services:
                 condition: service_healthy
             db:
                 condition: service_healthy
+            minio:
+                condition: service_healthy
+
+    minio:
+        extends:
+            file: docker-compose.base.yml
+            service: minio
+
+    nginx-s3-gateway:
+        extends:
+            file: docker-compose.base.yml
+            service: nginx-s3-gateway
+        depends_on:
+            minio:
+                condition: service_healthy
 
     redis:
         extends:

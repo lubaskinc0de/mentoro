@@ -15,6 +15,7 @@ dependencies = [
     "alembic==1.14.0",
     "redis==5.2.1",
     "aiohttp==3.11.13",
+    "miniopy-async==1.21.1",
 ]
 
 [project.optional-dependencies]

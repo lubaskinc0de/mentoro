@@ -31,10 +31,19 @@ class PostgresqlConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class FilesConfig:
+    minio_access_key: str
+    minio_secret_key: str
+    minio_url: str
+    file_server: str
+
+
+@dataclass(frozen=True, slots=True)
 class Config:
     redis: RedisConfig
     server: ServerConfig
     postgresql: PostgresqlConfig
+    files: FilesConfig
 
     @classmethod
     def load_from_environment(cls) -> Self:
@@ -55,5 +64,11 @@ class Config:
                 host=os.environ["POSTGRES_HOST"],
                 port=int(os.environ["POSTGRES_PORT"]),
                 database=os.environ["POSTGRES_DATABASE"],
+            ),
+            files=FilesConfig(
+                minio_access_key=os.environ["MINIO_ACCESS_KEY"],
+                minio_secret_key=os.environ["MINIO_SECRET_KEY"],
+                minio_url=os.environ["MINIO_URL"],
+                file_server=os.environ["FILE_SERVER_URL"],
             ),
         )

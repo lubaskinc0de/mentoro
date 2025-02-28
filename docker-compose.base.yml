@@ -57,3 +57,24 @@ services:
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U postgres" ]
             interval: 2s
+
+    minio:
+        image: minio/minio:latest
+        container_name: minio
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        env_file:
+            - .env.minio
+        command: server /data --console-address ":9001"
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+            interval: 2s
+
+    nginx-s3-gateway:
+        image: ghcr.io/nginxinc/nginx-s3-gateway/nginx-oss-s3-gateway:latest-njs-oss-20220310
+        container_name: nginx-s3-gateway
+        env_file:
+            - .env.minio
+        ports:
+            - "9331:80"
