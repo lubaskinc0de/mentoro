@@ -26,7 +26,7 @@ mypy:
 
 
 tests:
-  image: docker:latest
+  image: docker:24.0.5-git
   stage: tests
   
   services: 
@@ -41,7 +41,7 @@ tests:
 
 
 deploy-backend:
-  image: docker:latest
+  image: docker:24.0.5-git
   stage: deploy
   
   needs: [ruff, mypy, tests]
@@ -55,7 +55,7 @@ deploy-backend:
     BUILD_TAG: latest
   
   services:
-    - docker:latest
+    - docker:24.0.5-dind
   
   before_script:
     - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
