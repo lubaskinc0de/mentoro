@@ -1,6 +1,7 @@
 from crudik.adapters.file_manager import FileUploadError
 from crudik.adapters.idp import UnauthorizedError
 from crudik.application.common.errors import ApplicationError
+from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
@@ -12,6 +13,7 @@ from crudik.presentation.http_endpoints.student import (
 error_code = {
     ApplicationError: 500,
     StudentDoesNotExistsError: 404,
+    MentorDoesNotExistsError: 404,
     FileUploadError: 422,
     UnauthorizedError: 401,
     FileIsNotImageError: 422,
@@ -22,6 +24,7 @@ error_code = {
 error_unique_code = {
     ApplicationError: "APPLICATION_ERROR",
     StudentDoesNotExistsError: "STUDENT_DOES_NOT_EXISTS_ERROR",
+    MentorDoesNotExistsError: "MENTOR_DOES_NOT_EXISTS_ERROR",
     FileUploadError: "FILE_UPLOAD_ERROR",
     UnauthorizedError: "UNAUTHORIZED_ERROR",
     FileIsNotImageError: "FILE_IS_NOT_IMAGE_ERROR",

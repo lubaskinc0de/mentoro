@@ -7,8 +7,10 @@ from fastapi import APIRouter, Depends, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.common.errors import ApplicationError
+from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
+from crudik.application.student.interactors.read_student import ReadStudent
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
 from crudik.application.student.interactors.update import UpdateStudent, UpdateStudentRequest
@@ -42,7 +44,7 @@ async def sign_up_student(
     schema: SignUpStudentRequest,
     interactor: FromDishka[SignUpStudent],
 ) -> TokenResponse:
-    """Регистрация пользователя."""
+    """Student registration."""
     return await interactor.execute(schema)
 
 
@@ -59,7 +61,7 @@ async def sign_in_student(
     schema: SignInStudentRequest,
     interactor: FromDishka[SignInStudent],
 ) -> TokenResponse:
-    """Логин пользователя."""
+    """Student athorisation."""
     return await interactor.execute(schema)
 
 
@@ -81,6 +83,7 @@ async def attach_avatar(
     file: UploadFile,
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> StudentAvatarData:
+    """Attach avatar for student."""
     if not file.size:
         raise CannotReadFileSizeError
 
@@ -117,3 +120,23 @@ async def update_student(
     interactor: FromDishka[UpdateStudent],
 ) -> None:
     await interactor.execute(request)
+
+
+@router.get(
+    "/me",
+    responses={
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_student(
+    command: FromDishka[ReadStudent],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> StudentData:
+    return await command.execute()

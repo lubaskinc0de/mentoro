@@ -31,7 +31,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('full_name', sa.String(), nullable=False),
     sa.Column('age', sa.Integer(), nullable=True),
-    sa.Column('interests', sa.ARRAY(sa.String(), dimensions=1), nullable=True),
+    sa.Column('interests', sa.ARRAY(sa.String(), dimensions=1), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
