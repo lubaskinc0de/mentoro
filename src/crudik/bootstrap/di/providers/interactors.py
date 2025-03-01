@@ -10,9 +10,4 @@ from crudik.application.student.interactors.sign_up import SignUpStudent
 
 class InteractorsProvider(Provider):
     scope = Scope.REQUEST
-
-<<<<<<< src/crudik/bootstrap/di/providers/interactors.py
-    provides = provide_all(SignUpStudent, SignInStudent, AttachAvatarToStudent, ReadStudent)
-=======
     provides = provide_all(SignUpStudent, SignInStudent, AttachAvatarToStudent, ReadStudent, SignUpMentor, SignInMentor)
->>>>>>> src/crudik/bootstrap/di/providers/interactors.py
