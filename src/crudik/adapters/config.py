@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from datetime import timedelta
 from typing import Self
 
 
@@ -39,11 +40,17 @@ class FilesConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class AccessTokenConfig:
+    expires_in: timedelta
+
+
+@dataclass(frozen=True, slots=True)
 class Config:
     redis: RedisConfig
     server: ServerConfig
     postgresql: PostgresqlConfig
     files: FilesConfig
+    access_token: AccessTokenConfig
 
     @classmethod
     def load_from_environment(cls) -> Self:
@@ -70,5 +77,12 @@ class Config:
                 minio_secret_key=os.environ["MINIO_SECRET_KEY"],
                 minio_url=os.environ["MINIO_URL"],
                 file_server=os.environ["FILE_SERVER_URL"],
+            ),
+            access_token=AccessTokenConfig(
+                expires_in=timedelta(
+                    minutes=int(
+                        os.environ["ACCESS_TOKEN_EXPIRES_IN"],
+                    ),
+                ),
             ),
         )
