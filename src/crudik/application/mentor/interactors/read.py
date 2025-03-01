@@ -12,7 +12,7 @@ class ReadMentor:
     id_provider: TokenMentorIdProvider
 
     async def execute(self) -> MentorData:
-        mentor_id = await self.id_provider.get_student_id()
+        mentor_id = await self.id_provider.get_mentor_id()
         mentor = await self.gateway.get_by_id(mentor_id)
 
         if mentor is None:

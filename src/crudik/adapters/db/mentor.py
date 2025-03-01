@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import any_, delete, desc, exists, func, or_, select
+from sqlalchemy import and_, delete, exists, func, literal, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from crudik.application.mentor.gateway import MentorGateway
@@ -26,24 +26,26 @@ class MentorGatewayImpl(MentorGateway):
         mentor_history_cte = (
             select(MatchHistory.mentor_id).where(MatchHistory.student_id == student_id).cte("mentor_history_cte")
         )
+
+        student_interests = (
+            select(func.unnest(Student.interests).label("interest"))
+            .where(Student.id == student_id)
+            .cte("student_interests")
+        )
+
         query = (
-            select(
-                Mentor,
-            )
+            select(Mentor)
             .join(MentorSkill, Mentor.id == MentorSkill.mentor_id)
-            .join(Student, Student.id == student_id)
+            .join(student_interests, literal(True))  # noqa: FBT003
             .where(
-                or_(
-                    MentorSkill.text == any_(Student.interests),
-                    func.array_to_string(Student.interests, " ") % MentorSkill.text,
+                and_(
+                    func.similarity(MentorSkill.text, student_interests.c.interest) > 0,
+                    not_(exists().where(Mentor.id == mentor_history_cte.c.mentor_id)),
                 ),
-                ~exists().where(Mentor.id == mentor_history_cte.c.mentor_id),
             )
             .group_by(Mentor.id)
-            .having(
-                func.sum(func.similarity(MentorSkill.text, func.array_to_string(Student.interests, " "))) >= threshold,
-            )
-            .order_by(desc(func.sum(func.similarity(MentorSkill.text, func.array_to_string(Student.interests, " ")))))
+            .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
+            .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
             .limit(1)
         )
 

@@ -66,7 +66,7 @@ class TokenMentorIdProvider:
         self._mentor_id = self.parser.authorize_request_by_token()
         return self._mentor_id
 
-    async def get_student_id(self) -> UUID:
+    async def get_mentor_id(self) -> UUID:
         if self._mentor_id:
             return self._mentor_id
         return await self._authorize_request()
