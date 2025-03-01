@@ -23,4 +23,3 @@ class AdapterProvider(Provider):
         )
         yield redis
         await redis.aclose()
-
