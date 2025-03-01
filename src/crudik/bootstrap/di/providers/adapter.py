@@ -15,7 +15,7 @@ class AdapterProvider(Provider):
     redis_storage = provide(RedisStorage, scope=Scope.APP)
     file_manager = provide(MinioFileManager, scope=Scope.APP)
     encoder = provide(TokenEncoder, scope=Scope.APP)
-    request = from_context(Request)
+    request = from_context(Request, scope=Scope.REQUEST)
     token_bearer_parser = provide(TokenBearerParser, scope=Scope.REQUEST)
 
     @provide(scope=Scope.APP)

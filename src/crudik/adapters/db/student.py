@@ -15,3 +15,8 @@ class StudentGatewayImpl(StudentGateway):
         q = select(Student).where(Student.id == unique_id)
         res = await self._session.execute(q)
         return res.scalar()
+
+    async def get_by_name(self, name: str) -> Student | None:
+        q = select(Student).where(Student.full_name == name)
+        res = await self._session.execute(q)
+        return res.scalar()

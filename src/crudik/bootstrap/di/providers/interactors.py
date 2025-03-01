@@ -1,5 +1,6 @@
 from dishka import Provider, Scope, provide_all
 
+from crudik.application.student.interactors.sign_in import SignInStudent
 from crudik.application.student.interactors.sign_up import SignUpStudent
 
 
@@ -8,4 +9,5 @@ class InteractorsProvider(Provider):
 
     provides = provide_all(
         SignUpStudent,
+        SignInStudent,
     )
