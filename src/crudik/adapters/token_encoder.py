@@ -4,7 +4,7 @@ from uuid import UUID
 import jwt
 
 
-class AccessTokenEncoder:
+class TokenEncoder:
     def encrypt(self, unique_id: UUID) -> str:
         exp = datetime.now(tz=timezone.utc)
         return jwt.encode(
