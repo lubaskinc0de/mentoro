@@ -11,4 +11,3 @@ class StudentGateway(Protocol):
 
     @abstractmethod
     async def get_by_name(self, name: str) -> Student | None: ...
-
