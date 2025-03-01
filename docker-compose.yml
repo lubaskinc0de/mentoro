@@ -13,22 +13,17 @@ services:
         extends:
             file: docker-compose.base.yml
             service: nginx
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./nginx/ssl/:/ssl/
         depends_on:
             - api
 
-        healthcheck:
-            test: [ "CMD", "curl", "-f", "http://localhost:80/ping/" ]
-            interval: 4s
     api:
         extends:
             file: docker-compose.base.yml
             service: api
+        
+        volumes:
+            - "./src/crudik/adapters/db/alembic/migrations/versions/:/home/app/src/crudik/adapters/db/alembic/migrations/versions/"
+
         depends_on:
             redis:
                 condition: service_healthy
@@ -36,6 +31,7 @@ services:
                 condition: service_healthy
             minio:
                 condition: service_healthy
+        
 
     redis:
         extends:
