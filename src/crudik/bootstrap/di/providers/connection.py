@@ -4,7 +4,7 @@ from dishka import AnyOf, Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 from crudik.adapters.config import PostgresqlConfig
-from crudik.application.commitable import Commitable
+from crudik.application.uow import UoW
 
 
 class ConnectionProvider(Provider):
@@ -33,6 +33,6 @@ class ConnectionProvider(Provider):
     async def get_async_session(
         self,
         session_factory: async_sessionmaker[AsyncSession],
-    ) -> AsyncIterator[AnyOf[AsyncSession, Commitable]]:
+    ) -> AsyncIterator[AnyOf[AsyncSession, UoW]]:
         async with session_factory() as session:
             yield session
