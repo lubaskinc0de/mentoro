@@ -12,4 +12,6 @@ from crudik.application.student.interactors.update import UpdateStudent
 class InteractorsProvider(Provider):
     scope = Scope.REQUEST
 
-    provides = provide_all(SignUpStudent, SignInStudent, AttachAvatarToStudent, ReadStudent, SignUpMentor, SignInMentor, UpdateStudent)
+    provides = provide_all(
+        SignUpStudent, SignInStudent, AttachAvatarToStudent, ReadStudent, SignUpMentor, SignInMentor, UpdateStudent,
+    )
