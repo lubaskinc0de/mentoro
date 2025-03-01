@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -38,6 +39,7 @@ class TokenBearerParser:
         try:
             return self.encoder.decrypt(token)
         except PyJWTError as err:
+            logging.exception("Unauthorized due to")
             raise UnauthorizedError from err
 
 

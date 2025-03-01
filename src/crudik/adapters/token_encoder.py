@@ -18,4 +18,4 @@ class TokenEncoder:
         )
 
     def decrypt(self, token: str) -> UUID:
-        return UUID((jwt.decode(token, "test", algorithms=["HS256"]))["sub"])
+        return UUID((jwt.decode(token, "test", options={"verify_exp": False}, algorithms=["HS256"]))["sub"])

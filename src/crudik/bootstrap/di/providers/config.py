@@ -13,7 +13,7 @@ class ConfigProvider(Provider):
 
     @provide(scope=Scope.APP)
     async def minio_client(self, config: FilesConfig) -> AsyncIterator[miniopy_async.Minio]:
-        client = miniopy_async(
+        client = miniopy_async.Minio(
             config.minio_url,
             access_key=config.minio_access_key,
             secret_key=config.minio_secret_key,

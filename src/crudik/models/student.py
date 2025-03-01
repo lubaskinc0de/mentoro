@@ -15,3 +15,5 @@ class Student(Base):
     age: Mapped[int | None] = mapped_column(nullable=True)
     interests: Mapped[list[str] | None] = mapped_column(ARRAY(String, dimensions=1), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    avatar_url: Mapped[str | None] = mapped_column()
+
