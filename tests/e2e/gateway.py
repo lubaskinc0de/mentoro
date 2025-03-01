@@ -12,6 +12,7 @@ from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
 from crudik.application.student.interactors.update import UpdateStudentRequest
 
 ModelT = TypeVar("ModelT")
@@ -93,3 +94,11 @@ class TestApiGateway:
     async def find_student(self, token: str) -> Response[MentorData]:
         async with self._session.get("/student/find", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, MentorData)
+
+    async def swipe_mentor(self, student_token: str, schema: SwipeMentorRequest) -> Response[None]:
+        async with self._session.get(
+            "/student/swipe_mentor",
+            json=schema.model_dump(),
+            headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            return Response(status_code=response.status)

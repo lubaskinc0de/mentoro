@@ -15,7 +15,7 @@ from crudik.models.student import Student
 
 class SignUpStudentRequest(BaseModel):
     full_name: str = Field(min_length=2, max_length=120, description="Student full name")
-    age: int | None = Field(ge=0, le=120, description="Student age")
+    age: int | None = Field(ge=0, le=120, default=None, description="Student age")
     interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
         min_length=1,
         max_length=100,

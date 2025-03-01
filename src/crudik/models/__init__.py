@@ -1,12 +1,14 @@
 from .base import Base
 from .mentor import Mentor, MentorSkill
-from .selected_mentor import SelectedMentor
+from .mentoring_request import MentoringRequest
 from .student import Student
+from .swiped_mentor import SwipedMentor
 
 __all__ = [
     "Base",
     "Mentor",
     "MentorSkill",
-    "SelectedMentor",
+    "MentoringRequest",
     "Student",
+    "SwipedMentor",
 ]
