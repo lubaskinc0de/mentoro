@@ -4,15 +4,9 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from crudik.application.common.errors import ApplicationError
+from crudik.presentation.http_endpoints.error_info import error_code, error_unique_code
 from crudik.presentation.http_endpoints.root import router as root_router
 from crudik.presentation.http_endpoints.student import router as student_router
-
-error_code = {
-    ApplicationError: 500,
-}
-error_unique_code = {
-    ApplicationError: "APPLICATION_ERROR",
-}
 
 
 def get_http_error_response(
@@ -23,7 +17,9 @@ def get_http_error_response(
 
     return JSONResponse(
         status_code=err_http_code,
-        content={},
+        content={
+            "code": error_unique_code[err_type],
+        },
     )
 
 

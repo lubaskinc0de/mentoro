@@ -4,9 +4,8 @@ from typing import Annotated
 from uuid import uuid4
 
 from pydantic import BaseModel, Field, StringConstraints
-from typing_extensions import Doc
 
-from crudik.adapters.token_encoder import AccessTokenEncoder
+from crudik.adapters.token_encoder import TokenEncoder
 from crudik.application.access_token.gateway import AccessTokenGateway
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.student.gateway import StudentGateway
@@ -15,16 +14,16 @@ from crudik.models.student import Student
 
 
 class SignUpStudentRequest(BaseModel):
-    full_name: Annotated[str, Doc("Student full name")] = Field(min_length=2, max_length=120)
-    interests: Annotated[
-        list[Annotated[str, StringConstraints(min_length=2, max_length=30)]], Doc("Student interesrs"),
-    ] = Field(min_length=1, max_length=100)
+    full_name: str = Field(min_length=2, max_length=120, description="Student full name")
+    interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
+        min_length=1, max_length=100, description="Student interests",
+    )
 
 
 @dataclass(frozen=True, slots=True)
 class SignUpStudent:
     uow: UoW
-    encryptor: AccessTokenEncoder
+    encryptor: TokenEncoder
     access_token_gateway: AccessTokenGateway
     student_gateway: StudentGateway
 
