@@ -13,5 +13,11 @@ class InteractorsProvider(Provider):
     scope = Scope.REQUEST
 
     provides = provide_all(
-        SignUpStudent, SignInStudent, AttachAvatarToStudent, ReadStudent, SignUpMentor, SignInMentor, UpdateStudent,
+        SignUpStudent,
+        SignInStudent,
+        AttachAvatarToStudent,
+        ReadStudent,
+        SignUpMentor,
+        SignInMentor,
+        UpdateStudent,
     )

@@ -1,6 +1,5 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass(slots=True, frozen=True)
-class TokenResponse:
+class TokenResponse(BaseModel):
     access_token: str
