@@ -26,30 +26,25 @@ INTERESTS = [
     "embed",
 ]
 
+base_names = ["Name"]
+
 
 async def fill_mentors(gateway: TestApiGateway) -> None:
-    mentors = [
-        "Опытный Василий IT",
-        "Илья Любавский",
-        "Илья Горюнов",
-        "Иван Кирпичников",
-        "Максим Светличный",
-        "Владислав Смирнов",
-    ]
     students = [
         SignUpMentorRequest(
             full_name=name,
             age=random.randint(15, 20),  # noqa: S311
             skills=[random.choice(INTERESTS) for _ in range(1, 4)],  # noqa: S311
+            contacts=["nomama"],
         )
         for name in base_names
     ]
 
     for student in students:
-        await gateway.sign_up_student(student)
+        await gateway.sign_up_mentor(student)
 
 
-async def fill_mentors(gateway: TestApiGateway) -> None: ...
+async def fill_students(gateway: TestApiGateway) -> None: ...
 
 
 async def main() -> None:
