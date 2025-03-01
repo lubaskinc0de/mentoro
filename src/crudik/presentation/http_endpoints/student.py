@@ -7,9 +7,11 @@ from fastapi import APIRouter, Depends, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.common.errors import ApplicationError
+from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
+from crudik.application.student.interactors.find_mentor import FindMentor
 from crudik.application.student.interactors.read_student import ReadStudent
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
@@ -139,4 +141,24 @@ async def read_student(
     command: FromDishka[ReadStudent],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> StudentData:
+    return await command.execute()
+
+
+@router.get(
+    "/find",
+    responses={
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def find_mentor_for_student(
+    command: FromDishka[FindMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> MentorData | None:
     return await command.execute()
