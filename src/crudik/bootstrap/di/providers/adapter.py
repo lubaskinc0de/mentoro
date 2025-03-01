@@ -1,6 +1,5 @@
 from collections.abc import AsyncIterable
 
-from argon2 import PasswordHasher
 from dishka import Provider, Scope, provide
 from redis.asyncio import Redis
 
@@ -25,6 +24,3 @@ class AdapterProvider(Provider):
         yield redis
         await redis.aclose()
 
-    @provide(scope=Scope.APP)
-    async def hasher(self) -> PasswordHasher:
-        return PasswordHasher()
