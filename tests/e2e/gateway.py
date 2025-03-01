@@ -103,7 +103,7 @@ class TestApiGateway:
             data={"file": file},
         ) as response:
             return await self._parse_response(response, MentorAvatarData)
-    
+
     async def swipe_mentor(self, student_token: str, schema: SwipeMentorRequest) -> Response[None]:
         async with self._session.get(
             "/student/swipe_mentor",

@@ -56,3 +56,5 @@ class SwipeMentor:
                 created_at=datetime.datetime.now(tz=datetime.UTC),
             )
             self.uow.add(mentoring_request)
+
+        await self.uow.commit()

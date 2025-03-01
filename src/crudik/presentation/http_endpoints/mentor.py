@@ -12,11 +12,8 @@ from crudik.application.mentor.interactors.attach_avatar import AttachAvatarToMe
 from crudik.application.mentor.interactors.read import ReadMentor
 from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
-<<<<<<< HEAD
-from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
-=======
 from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
->>>>>>> 61a94d2cdf99b085cf66dd0d37df07230c839e2c
+from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
@@ -139,7 +136,7 @@ async def swipe_mentor(
     interactor: FromDishka[SwipeMentor],
 ) -> None:
     await interactor.execute(schema)
-git
+
 
 @router.put(
     "/",
