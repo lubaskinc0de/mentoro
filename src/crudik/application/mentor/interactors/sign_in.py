@@ -19,10 +19,10 @@ class SignInMentor:
     uow: UoW
     encryptor: TokenEncoder
     access_token_gateway: AccessTokenGateway
-    student_gateway: MentorGateway
+    mentor_gateway: MentorGateway
 
     async def execute(self, request: SignInMentorRequest) -> TokenResponse:
-        student = await self.student_gateway.get_by_name(request.full_name)
+        student = await self.mentor_gateway.get_by_name(request.full_name)
         if student is None:
             raise MentorDoesNotExistsError
 
