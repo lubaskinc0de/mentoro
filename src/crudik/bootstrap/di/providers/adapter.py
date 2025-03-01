@@ -1,16 +1,19 @@
 from collections.abc import AsyncIterable
 
+from argon2 import PasswordHasher
 from dishka import Provider, Scope, provide
 from redis.asyncio import Redis
 
 from crudik.adapters.config import RedisConfig
 from crudik.adapters.file_manager import MinioFileManager
 from crudik.adapters.redis import RedisStorage
+from crudik.adapters.token_encoder import AccessTokenEncoder
 
 
 class AdapterProvider(Provider):
     redis_storage = provide(RedisStorage, scope=Scope.APP)
     file_manager = provide(MinioFileManager, scope=Scope.APP)
+    encoder = provide(AccessTokenEncoder, scope=Scope.APP)
 
     @provide(scope=Scope.APP)
     async def redis_client(self, config: RedisConfig) -> AsyncIterable[Redis]:
@@ -21,3 +24,7 @@ class AdapterProvider(Provider):
         )
         yield redis
         await redis.aclose()
+
+    @provide(scope=Scope.APP)
+    async def hasher(self) -> PasswordHasher:
+        return PasswordHasher()

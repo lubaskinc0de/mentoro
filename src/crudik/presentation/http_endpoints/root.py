@@ -10,6 +10,6 @@ router = APIRouter(
 )
 
 
-@router.get("/ping/")
+@router.get("/ping")
 async def ping(command: FromDishka[ExampleCommand]) -> str:
     return await command.execute()

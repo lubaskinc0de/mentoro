@@ -8,7 +8,7 @@ from fastapi import FastAPI
 
 from crudik.adapters.config import Config
 from crudik.bootstrap.di.container import get_async_container
-from crudik.presentation.http import include_exception_handlers, include_routers
+from crudik.presentation.http_endpoints.common import include_exception_handlers, include_routers
 
 log_config = {
     "version": 1,

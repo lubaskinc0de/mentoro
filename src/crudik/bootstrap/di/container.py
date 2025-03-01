@@ -6,6 +6,8 @@ from crudik.bootstrap.di.providers.adapter import AdapterProvider
 from crudik.bootstrap.di.providers.command import CommandProvider
 from crudik.bootstrap.di.providers.config import ConfigProvider
 from crudik.bootstrap.di.providers.connection import ConnectionProvider
+from crudik.bootstrap.di.providers.gateways import GatewayProvider
+from crudik.bootstrap.di.providers.interactors import InteractorsProvider
 
 
 def get_async_container(
@@ -16,6 +18,8 @@ def get_async_container(
         FastapiProvider(),
         AdapterProvider(),
         CommandProvider(),
+        GatewayProvider(),
+        InteractorsProvider(),
         ConnectionProvider(),
         context={
             RedisConfig: config.redis,
