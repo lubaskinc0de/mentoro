@@ -43,7 +43,7 @@ async def sign_up_student(
     schema: SignUpStudentRequest,
     interactor: FromDishka[SignUpStudent],
 ) -> TokenResponse:
-    """Регистрация пользователя."""
+    """Student registration."""
     return await interactor.execute(schema)
 
 
@@ -60,7 +60,7 @@ async def sign_in_student(
     schema: SignInStudentRequest,
     interactor: FromDishka[SignInStudent],
 ) -> TokenResponse:
-    """Логин пользователя."""
+    """Student athorisation."""
     return await interactor.execute(schema)
 
 
@@ -82,6 +82,7 @@ async def attach_avatar(
     file: UploadFile,
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> StudentAvatarData:
+    """Attach avatar for student."""
     if not file.size:
         raise CannotReadFileSizeError
 

@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Protocol
+from typing import Any, Protocol
 
 
 class UoW(Protocol):
@@ -8,4 +8,7 @@ class UoW(Protocol):
         raise NotImplementedError
 
     @abstractmethod
-    def add(self, instance: object) -> None: ...
+    def add(self, instance: Any) -> None: ...
+
+    @abstractmethod
+    def add_all(self, instances: list[Any]) -> None: ...
