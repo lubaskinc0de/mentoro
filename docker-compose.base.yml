@@ -16,7 +16,7 @@ services:
         ports:
             - "8000:8000"
         volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         healthcheck:
             test: [ "CMD", "curl", "-f", "http://localhost:8000/ping/" ]
             interval: 4s
