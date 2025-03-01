@@ -28,7 +28,7 @@ class UpdateMentorRequest(BaseModel):
 
 
 @dataclass(frozen=True, slots=True)
-class UpdateStudent:
+class UpdateMentor:
     uow: UoW
     gateway: MentorGateway
     skill_gateway: MentorSkillGateway
