@@ -50,11 +50,11 @@ check_untyped_defs = true
 ignore_missing_imports = false
 warn_no_return = true
 
-files = ["src/"]
+files = ["src/", "tests/"]
 
 [tool.ruff]
 line-length = 120
-include = ["pyproject.toml", "src/**/*.py"]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
 exclude = ["src/crudik/adapters/db/alembic/**/*.py"]
 
 [tool.ruff.lint]
@@ -79,6 +79,8 @@ ignore = [
     'PLR0912',
     'C901',
     'PGH003',
+    'PLR2004',
+    'ASYNC230',
     # Does not work correctly
     'S104',
     'ANN401',

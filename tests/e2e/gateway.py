@@ -7,13 +7,12 @@ from aiohttp import ClientResponse, ClientSession
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
+from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.application.student.interactors.update import UpdateStudentRequest
-
 
 ModelT = TypeVar("ModelT")
 
@@ -78,11 +77,11 @@ class TestApiGateway:
             json=schema.model_dump(),
         ) as response:
             return await self._parse_response(response, None)
-    
+
     async def sign_up_mentor(self, schema: SignUpMentorRequest) -> Response[TokenResponse]:
         async with self._session.post("/mentor/sign_up", json=schema.model_dump()) as response:
             return await self._parse_response(response, TokenResponse)
-        
+
     async def sign_in_mentor(self, schema: SignInMentorRequest) -> Response[TokenResponse]:
         async with self._session.post("/mentor/sign_in", json=schema.model_dump()) as response:
             return await self._parse_response(response, TokenResponse)

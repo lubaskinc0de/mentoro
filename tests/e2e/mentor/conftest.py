@@ -1,5 +1,7 @@
 import pytest
+
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+
 
 @pytest.fixture
 def mentor() -> SignUpMentorRequest:

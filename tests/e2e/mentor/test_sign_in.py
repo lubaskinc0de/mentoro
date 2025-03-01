@@ -21,4 +21,3 @@ async def test_unsuccess_sign_in(api_gateway: TestApiGateway) -> None:
         SignInMentorRequest(full_name="Bababyi"),
     )
     assert response.status_code == 404
-

@@ -98,7 +98,7 @@ class YandexGPT:
                 },
                 json=payload,
             ) as response:
-                if response.status != 200:  # noqa: PLR2004
+                if response.status != 200:
                     raise GPTError(text=await response.text())
                 json = await response.json()
                 text_response: str = json["result"]["alternatives"][0]["message"]["text"]

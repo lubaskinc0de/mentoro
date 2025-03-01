@@ -12,4 +12,3 @@ async def test_success_sign_up(
     response = await api_gateway.sign_in_mentor(
         SignInMentorRequest(full_name="Bababyi"),
     )
-
