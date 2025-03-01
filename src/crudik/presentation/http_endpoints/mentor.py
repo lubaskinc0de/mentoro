@@ -1,8 +1,13 @@
+from typing import Annotated
+
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, security
+from fastapi.security import HTTPAuthorizationCredentials
 
+from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentor.interactors.read import ReadMentor
 from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
@@ -38,3 +43,23 @@ async def sign_in_mentor(
 ) -> TokenResponse:
     """Mentor authorisation."""
     return await interactor.execute(schema)
+
+
+@router.get(
+    "/me",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_student(
+    command: FromDishka[ReadMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> MentorData:
+    return await command.execute()
