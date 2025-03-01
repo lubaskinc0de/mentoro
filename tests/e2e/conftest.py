@@ -1,7 +1,6 @@
 import os
 from collections.abc import AsyncIterable, AsyncIterator
 
-import aiohttp
 import pytest
 from aiohttp import ClientSession
 from dishka import AsyncContainer
@@ -64,7 +63,7 @@ async def gracefully_teardown(
 
 @pytest.fixture
 async def http_session() -> AsyncIterator[ClientSession]:
-    async with aiohttp.ClientSession() as session:
+    async with ClientSession() as session:
         yield session
 
 
