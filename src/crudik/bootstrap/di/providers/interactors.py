@@ -1,5 +1,6 @@
 from dishka import Provider, Scope, provide_all
 
+from crudik.application.mentor.interactors.attach_avatar import AttachAvatarToMentor
 from crudik.application.mentor.interactors.read import ReadMentor
 from crudik.application.mentor.interactors.sign_in import SignInMentor
 from crudik.application.mentor.interactors.sign_up import SignUpMentor
@@ -24,4 +25,5 @@ class InteractorsProvider(Provider):
         UpdateStudent,
         ReadMentor,
         FindMentor,
+        AttachAvatarToMentor,
     )
