@@ -34,11 +34,14 @@ mypy:
 
 
 tests:
-  image: dockerhub.timeweb.cloud/docker:latest
+  image: docker:latest
   stage: tests
   
   services: 
-    - dockerhub.timeweb.cloud/docker:dind
+    - name: docker:dind
+      command:
+        - "--registry-mirror=https://dockerhub.timeweb.cloud"
+
   
 
   before_script:
@@ -50,7 +53,7 @@ tests:
 
 
 deploy-backend:
-  image: dockerhub.timeweb.cloud/docker:latest
+  image: docker:latest
   stage: deploy
   
   needs: [ruff, mypy, tests]
@@ -63,7 +66,9 @@ deploy-backend:
     BUILD_TAG: latest
   
   services:
-    - dockerhub.timeweb.cloud/docker:24.0.5-dind
+    - name: docker:dind
+      command:
+        - "--registry-mirror=https://dockerhub.timeweb.cloud"
   
   before_script:
     - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
