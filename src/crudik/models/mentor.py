@@ -5,6 +5,7 @@ from sqlalchemy import ARRAY, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from crudik.models.base import Base
+from crudik.models.student import Student
 
 
 class Mentor(Base):
@@ -25,3 +26,10 @@ class MentorSkill(Base):
     text: Mapped[str] = mapped_column(nullable=False)
     file_id: Mapped[UUID | None] = mapped_column(nullable=True)
     mentor_id: Mapped[UUID] = mapped_column(ForeignKey(Mentor.id))
+
+
+class MatchHistory(Base):
+    __tablename__ = "mentor_history"
+
+    student_id: Mapped[UUID] = mapped_column(ForeignKey(Student.id), primary_key=True)
+    mentor_id: Mapped[UUID] = mapped_column(ForeignKey(Mentor.id), primary_key=True)

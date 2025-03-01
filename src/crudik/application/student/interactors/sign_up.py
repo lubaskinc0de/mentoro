@@ -36,7 +36,7 @@ class SignUpStudent:
             id=student_id,
             full_name=request.full_name,
             created_at=datetime.now(tz=UTC),
-            interests=request.interests,
+            interests=[word.lower() for word in request.interests],
             age=request.age,
         )
         self.uow.add(student)
