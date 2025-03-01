@@ -1,12 +1,15 @@
 from dataclasses import dataclass
+from io import BufferedReader
 from typing import Generic, TypeVar
 
 from aiohttp import ClientResponse, ClientSession
 
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+from crudik.application.student.interactors.update import UpdateStudentRequest
 
 ModelT = TypeVar("ModelT")
 
@@ -21,8 +24,11 @@ class TestApiGateway:
     def __init__(self, session: ClientSession) -> None:
         self._session = session
 
-    async def _parse_response(self, response: ClientResponse, model: type[ModelT]) -> Response[ModelT]:
+    async def _parse_response(self, response: ClientResponse, model: type[ModelT] | None) -> Response[ModelT]:
         if response.status >= 400:
+            return Response(status_code=response.status)
+
+        if model is None:
             return Response(status_code=response.status)
 
         data = await response.json()
@@ -49,3 +55,20 @@ class TestApiGateway:
     async def student_get_me(self, token: str) -> Response[StudentData]:
         async with self._session.get("/student/me", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, StudentData)
+
+    async def student_update_avatar(self, token: str, file: BufferedReader) -> Response[StudentAvatarData]:
+        async with self._session.put(
+            "/student/attach",
+            headers={"Authorization": f"Bearer {token}"},
+            data={"file": file},
+        ) as response:
+            return await self._parse_response(response, StudentAvatarData)
+
+    async def student_update(self, token: str, schema: UpdateStudentRequest) -> Response[None]:
+        async with self._session.put(
+            "/student/",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(),
+        ) as response:
+            return await self._parse_response(response, None)
+
