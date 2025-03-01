@@ -22,11 +22,11 @@ class SignInMentor:
     mentor_gateway: MentorGateway
 
     async def execute(self, request: SignInMentorRequest) -> TokenResponse:
-        student = await self.mentor_gateway.get_by_name(request.full_name)
-        if student is None:
+        mentor = await self.mentor_gateway.get_by_name(request.full_name)
+        if mentor is None:
             raise MentorDoesNotExistsError
 
-        encoded_access_token = self.encryptor.encrypt(student.id)
+        encoded_access_token = self.encryptor.encrypt(mentor.id)
         await self.uow.commit()
 
         return TokenResponse(access_token=encoded_access_token)

@@ -14,7 +14,7 @@ from crudik.models.mentor import MentorSkill
 
 class UpdateMentorRequest(BaseModel):
     age: int = Field(ge=0, le=120, description="Mentor age")
-    descriptiion: str = Field(min_length=10, max_length=2000, description="Mentor description")
+    description: str = Field(min_length=10, max_length=2000, description="Mentor description")
     contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] = Field(
         min_length=1,
         max_length=10,

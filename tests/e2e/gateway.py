@@ -3,8 +3,11 @@ from typing import Generic, TypeVar
 
 from aiohttp import ClientResponse, ClientSession
 
+from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 
@@ -49,3 +52,16 @@ class TestApiGateway:
     async def student_get_me(self, token: str) -> Response[StudentData]:
         async with self._session.get("/student/me", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, StudentData)
+    
+    async def sign_up_mentor(self, schema: SignUpMentorRequest) -> Response[TokenResponse]:
+        async with self._session.post("/mentor/sign_up", json=schema.model_dump()) as response:
+            return await self._parse_response(response, TokenResponse)
+        
+    async def sign_in_mentor(self, schema: SignInMentorRequest) -> Response[TokenResponse]:
+        async with self._session.post("/mentor/sign_in", json=schema.model_dump()) as response:
+            return await self._parse_response(response, TokenResponse)
+     
+    async def read_mentor(self, token: str) -> Response[MentorData]:
+        async with self._session.post("/mentor/mr", headers={"Authorization": f"Bearer {token}"}) as response:
+            return await self._parse_response(response, MentorData)
+    

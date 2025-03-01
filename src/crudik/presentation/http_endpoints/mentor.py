@@ -2,8 +2,8 @@ from typing import Annotated
 
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Depends, security
-from fastapi.security import HTTPAuthorizationCredentials
+from fastapi import APIRouter, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.token_data import TokenResponse
@@ -18,6 +18,7 @@ router = APIRouter(
     prefix="/mentor",
 )
 
+security = HTTPBearer(auto_error=False)
 
 @router.post("/sign_up")
 async def sign_up_mentor(
@@ -32,7 +33,7 @@ async def sign_up_mentor(
     "/sign_in",
     responses={
         404: {
-            "description": "Student not found",
+            "description": "Mentor not found",
             "model": ErrorModel,
         },
     },

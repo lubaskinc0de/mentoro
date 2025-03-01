@@ -16,7 +16,7 @@ from crudik.models.mentor import Mentor, MentorSkill
 class SignUpMentorRequest(BaseModel):
     full_name: str = Field(min_length=2, max_length=120, description="Mentor full name")
     age: int | None = Field(ge=0, le=120, default=None, description="Mentor age")
-    descriptiion: str | None = Field(min_length=10, max_length=2000, default=None, description="Mentor description")
+    description: str | None = Field(min_length=10, max_length=2000, default=None, description="Mentor description")
 
     contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] = Field(
         min_length=1,
@@ -42,7 +42,8 @@ class SignUpMentor:
         mentor = Mentor(
             id=mentor_id,
             full_name=request.full_name,
-            description=request.descriptiion,
+            age=request.age,
+            description=request.description,
             contacts=request.contacts,
             created_at=datetime.now(tz=UTC),
         )
