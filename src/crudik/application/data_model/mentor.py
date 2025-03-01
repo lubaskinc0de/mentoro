@@ -15,4 +15,3 @@ class MentorData(BaseModel):
 
 
 convert_mentor_to_dto = get_converter(Mentor, MentorData)
-git
