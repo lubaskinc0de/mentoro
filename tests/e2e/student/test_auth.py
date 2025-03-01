@@ -7,7 +7,7 @@ from tests.e2e.student.conftest import CreatedStudent
 async def test_student_signup(api_gateway: TestApiGateway) -> None:
     student = SignUpStudentRequest(full_name="Vasiliy Skilled", age=32, interests=["skills", "freebsd"])
 
-    response = await api_gateway.sign_up_client(student)
+    response = await api_gateway.sign_up_student(student)
 
     assert response.status_code == 200
     assert response.model is not None
@@ -25,7 +25,7 @@ async def test_student_signup(api_gateway: TestApiGateway) -> None:
 
 
 async def test_student_signin(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:
-    response = await api_gateway.sign_in_client(SignInStudentRequest(full_name=created_student.student.full_name))
+    response = await api_gateway.sign_in_student(SignInStudentRequest(full_name=created_student.student.full_name))
     assert response.status_code == 200
     assert response.model is not None
 
@@ -41,5 +41,5 @@ async def test_student_signin(api_gateway: TestApiGateway, created_student: Crea
 
 
 async def test_student_signin_fail(api_gateway: TestApiGateway) -> None:
-    response = await api_gateway.sign_in_client(SignInStudentRequest(full_name="Vasiliy UnSkilled"))
+    response = await api_gateway.sign_in_student(SignInStudentRequest(full_name="Vasiliy UnSkilled"))
     assert response.status_code == 404

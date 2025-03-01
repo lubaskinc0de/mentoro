@@ -37,19 +37,22 @@ class TestApiGateway:
 
         data = await response.json()
 
+        if data is None:
+            return Response(status_code=response.status)
+
         return Response(
             model=model.model_validate(data),  # type: ignore
             status_code=response.status,
         )
 
-    async def sign_up_client(self, schema: SignUpStudentRequest) -> Response[TokenResponse]:
+    async def sign_up_student(self, schema: SignUpStudentRequest) -> Response[TokenResponse]:
         async with self._session.post(
             "/student/sign_up",
             json=schema.model_dump(),
         ) as response:
             return await self._parse_response(response, TokenResponse)
 
-    async def sign_in_client(self, schema: SignInStudentRequest) -> Response[TokenResponse]:
+    async def sign_in_student(self, schema: SignInStudentRequest) -> Response[TokenResponse]:
         async with self._session.post(
             "/student/sign_in",
             json=schema.model_dump(),
@@ -83,7 +86,11 @@ class TestApiGateway:
     async def sign_in_mentor(self, schema: SignInMentorRequest) -> Response[TokenResponse]:
         async with self._session.post("/mentor/sign_in", json=schema.model_dump()) as response:
             return await self._parse_response(response, TokenResponse)
-     
+
     async def read_mentor(self, token: str) -> Response[MentorData]:
         async with self._session.get("/mentor/me", headers={"Authorization": f"Bearer {token}"}) as response:
+            return await self._parse_response(response, MentorData)
+
+    async def find_student(self, token: str) -> Response[MentorData]:
+        async with self._session.get("/student/find", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, MentorData)

@@ -16,7 +16,7 @@ class CreatedStudent:
 @pytest.fixture
 async def created_student(api_gateway: TestApiGateway) -> CreatedStudent:
     student = SignUpStudentRequest(full_name="Vasiliy Skilled", age=32, interests=["skills", "freebsd"])
-    response = await api_gateway.sign_up_client(student)
+    response = await api_gateway.sign_up_student(student)
 
     assert response.status_code == 200
     assert response.model is not None
