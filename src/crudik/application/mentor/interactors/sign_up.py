@@ -47,7 +47,7 @@ class SignUpMentor:
             created_at=datetime.now(tz=UTC),
         )
 
-        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill.lower()) for skill in request.skills]
 
         self.uow.add(mentor)
         self.uow.add_all(skills)
