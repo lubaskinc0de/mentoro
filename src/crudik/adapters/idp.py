@@ -7,7 +7,6 @@ from jwt.exceptions import PyJWTError
 
 from crudik.adapters.token_encoder import TokenEncoder
 from crudik.application.common.errors import ApplicationError
-from crudik.application.student.gateway import StudentGateway
 
 TOKEN_TYPE = "Bearer"  # noqa: S105
 BEARER_SECTIONS = 2
@@ -44,8 +43,7 @@ class TokenBearerParser:
 
 
 class TokenStudentIdProvider:
-    def __init__(self, gateway: StudentGateway, parser: TokenBearerParser) -> None:
-        self.gateway = gateway
+    def __init__(self, parser: TokenBearerParser) -> None:
         self.parser = parser
         self._student_id: UUID | None = None
 
@@ -56,4 +54,19 @@ class TokenStudentIdProvider:
     async def get_student_id(self) -> UUID:
         if self._student_id:
             return self._student_id
+        return await self._authorize_request()
+
+
+class TokenMentorIdProvider:
+    def __init__(self, parser: TokenBearerParser) -> None:
+        self.parser = parser
+        self._mentor_id: UUID | None = None
+
+    async def _authorize_request(self) -> UUID:
+        self._mentor_id = self.parser.authorize_request_by_token()
+        return self._mentor_id
+
+    async def get_student_id(self) -> UUID:
+        if self._mentor_id:
+            return self._mentor_id
         return await self._authorize_request()

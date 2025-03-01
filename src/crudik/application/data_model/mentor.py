@@ -9,9 +9,9 @@ from crudik.models.mentor import Mentor
 class MentorData(BaseModel):
     id: UUID
     full_name: str
+    contacts: list[str]
     description: str | None = None
     photo_url: str | None = None
-    contacts: list[str]
 
 
 convert_mentor_to_dto = get_converter(Mentor, MentorData)
