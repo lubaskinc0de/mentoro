@@ -12,7 +12,7 @@ variables:
 
 
 ruff:
-  image: python:3.11-slim
+  image: dockerhub.timeweb.cloud/python:3.11-slim
   stage: linters
 
   before_script:
@@ -23,7 +23,7 @@ ruff:
 
 
 mypy:
-  image: python:3.11-slim
+  image: dockerhub.timeweb.cloud/python:3.11-slim
   stage: linters
 
   before_script:
@@ -38,7 +38,10 @@ tests:
   stage: tests
   
   services: 
-    - docker:dind
+    - name: docker:dind
+      command:
+        - "--registry-mirror=https://dockerhub.timeweb.cloud"
+
   
 
   before_script:
@@ -63,7 +66,9 @@ deploy-backend:
     BUILD_TAG: latest
   
   services:
-    - docker:24.0.5-dind
+    - name: docker:dind
+      command:
+        - "--registry-mirror=https://dockerhub.timeweb.cloud"
   
   before_script:
     - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
