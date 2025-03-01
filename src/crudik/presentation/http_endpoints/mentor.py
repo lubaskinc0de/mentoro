@@ -20,6 +20,7 @@ router = APIRouter(
 
 security = HTTPBearer(auto_error=False)
 
+
 @router.post("/sign_up")
 async def sign_up_mentor(
     schema: SignUpMentorRequest,

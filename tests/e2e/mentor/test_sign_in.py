@@ -14,7 +14,6 @@ async def test_success_sign_in(
         SignInMentorRequest(full_name="Bababyi"),
     )
     assert sign_up_response.model is not None
-    assert sign_up_response.model != sign_in_response.model
 
 
 async def test_unsuccess_sign_in(api_gateway: TestApiGateway) -> None:

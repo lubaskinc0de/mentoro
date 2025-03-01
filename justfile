@@ -12,6 +12,6 @@ clear:
     sudo docker compose down -v
 
 lint:
-    ruff format
-    ruff check --fix
-    mypy
+    ruff format src tests
+    ruff check src tests --fix
+    mypy src tests

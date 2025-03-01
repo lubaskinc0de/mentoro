@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from crudik.adapters.idp import TokenMentorIdProvider
-from crudik.application.data_model.mentor import MentorData, convert_mentor_model_to_dto
+from crudik.application.data_model.mentor import MentorData, convert_mentor_to_dto
 from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
 
@@ -18,4 +18,4 @@ class ReadMentor:
         if mentor is None:
             raise MentorDoesNotExistsError
 
-        return convert_mentor_model_to_dto(mentor)
+        return convert_mentor_to_dto(mentor)

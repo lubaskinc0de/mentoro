@@ -7,10 +7,13 @@ from aiohttp import ClientResponse, ClientSession
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.update import UpdateStudentRequest
+
 
 ModelT = TypeVar("ModelT")
 
@@ -82,5 +85,5 @@ class TestApiGateway:
             return await self._parse_response(response, TokenResponse)
      
     async def read_mentor(self, token: str) -> Response[MentorData]:
-        async with self._session.post("/mentor/mr", headers={"Authorization": f"Bearer {token}"}) as response:
+        async with self._session.get("/mentor/me", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, MentorData)
