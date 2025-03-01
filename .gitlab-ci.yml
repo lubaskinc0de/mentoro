@@ -12,7 +12,7 @@ variables:
 
 
 ruff:
-  image: python:3.11-slim
+  image: dockerhub.timeweb.cloud/python:3.11-slim
   stage: linters
 
   before_script:
@@ -23,7 +23,7 @@ ruff:
 
 
 mypy:
-  image: python:3.11-slim
+  image: dockerhub.timeweb.cloud/python:3.11-slim
   stage: linters
 
   before_script:
@@ -34,11 +34,11 @@ mypy:
 
 
 tests:
-  image: docker:latest
+  image: dockerhub.timeweb.cloud/docker:latest
   stage: tests
   
   services: 
-    - docker:dind
+    - dockerhub.timeweb.cloud/docker:dind
   
 
   before_script:
@@ -50,7 +50,7 @@ tests:
 
 
 deploy-backend:
-  image: docker:latest
+  image: dockerhub.timeweb.cloud/docker:latest
   stage: deploy
   
   needs: [ruff, mypy, tests]
@@ -63,7 +63,7 @@ deploy-backend:
     BUILD_TAG: latest
   
   services:
-    - docker:24.0.5-dind
+    - dockerhub.timeweb.cloud/docker:24.0.5-dind
   
   before_script:
     - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
