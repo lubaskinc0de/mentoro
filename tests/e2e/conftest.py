@@ -74,5 +74,5 @@ async def http_session(api_url: str) -> AsyncIterator[ClientSession]:
 
 
 @pytest.fixture
-async def api_gateway(http_session: ClientSession) -> AsyncIterator[ClientSession]:
+async def api_gateway(http_session: ClientSession) -> TestApiGateway:
     return TestApiGateway(http_session)
