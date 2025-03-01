@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from crudik.adapters.config import Config
 from crudik.bootstrap.di.container import get_async_container
@@ -44,6 +45,15 @@ def run_api(_args: list[str]) -> None:
         docs_url="/docs",
         redoc_url="/redoc",
         openapi_url="/openapi.json",
+    )
+    origins = ["*"]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     config = Config.load_from_environment()
     container = get_async_container(config)
