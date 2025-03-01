@@ -14,4 +14,5 @@ class MentorData(BaseModel):
     photo_url: str | None = None
 
 
-convert_mentor_model_to_dto = get_converter(Mentor, MentorData)
+convert_mentor_to_dto = get_converter(Mentor, MentorData)
+git
