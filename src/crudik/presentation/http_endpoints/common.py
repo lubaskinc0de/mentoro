@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 from crudik.application.common.errors import ApplicationError
 from crudik.presentation.http_endpoints.root import router as root_router
+from crudik.presentation.http_endpoints.student import router as student_router
 
 error_code = {
     ApplicationError: 500,
@@ -39,6 +40,7 @@ async def validation_exception_handler(_request: Request, exc: RequestValidation
 
 def include_routers(app: FastAPI) -> None:
     app.include_router(root_router)
+    app.include_router(student_router)
 
 
 def include_exception_handlers(app: FastAPI) -> None:

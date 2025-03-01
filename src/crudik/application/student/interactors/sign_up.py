@@ -7,7 +7,6 @@ from argon2 import PasswordHasher
 from pydantic import BaseModel, Field
 from typing_extensions import Doc
 
-from crudik.adapters.config import AccessTokenConfig
 from crudik.adapters.token_encoder import AccessTokenEncoder
 from crudik.application.access_token.gateway import AccessTokenGateway
 from crudik.application.data_model.token_data import TokenResponse
@@ -26,7 +25,6 @@ class SignUpStudentRequest(BaseModel):
 class SignUpStudent:
     uow: UoW
     encryptor: AccessTokenEncoder
-    access_token_config: AccessTokenConfig
     access_token_gateway: AccessTokenGateway
     student_gateway: StudentGateway
     password_hasher: PasswordHasher
