@@ -10,11 +10,13 @@ from crudik.application.common.errors import ApplicationError
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
 from crudik.application.student.interactors.find_mentor import FindMentor
 from crudik.application.student.interactors.read_student import ReadStudent
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
+from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
 from crudik.application.student.interactors.update import UpdateStudent, UpdateStudentRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
@@ -162,3 +164,38 @@ async def find_mentor_for_student(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData | None:
     return await command.execute()
+
+
+@router.post(
+    "/swipe_mentor",
+    responses={
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+        },
+    },
+)
+async def swipe_mentor(
+    schema: SwipeMentorRequest,
+    interactor: FromDishka[SwipeMentor],
+) -> None:
+    await interactor.execute(schema)
+
+
+@router.put(
+    "/",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+    },
+)
+async def update_mentor(
+    request: UpdateMentorRequest,
+    interactor: FromDishka[UpdateMentor],
+) -> None:
+    await interactor.execute(request)

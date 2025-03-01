@@ -5,7 +5,6 @@ import random
 from aiohttp import ClientSession
 
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from tests.e2e.gateway import TestApiGateway
 
 INTERESTS = [

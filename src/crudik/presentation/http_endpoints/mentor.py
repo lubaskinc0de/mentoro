@@ -12,8 +12,6 @@ from crudik.application.mentor.interactors.attach_avatar import AttachAvatarToMe
 from crudik.application.mentor.interactors.read import ReadMentor
 from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
-from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
-from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
@@ -117,38 +115,3 @@ async def attach_avatar(
         ext,
         file.size,
     )
-
-
-@router.post(
-    "/swipe_mentor",
-    responses={
-        404: {
-            "description": "Student not found",
-            "model": ErrorModel,
-        },
-        401: {
-            "description": "Unauthorized",
-        },
-    },
-)
-async def swipe_mentor(
-    schema: SwipeMentorRequest,
-    interactor: FromDishka[SwipeMentor],
-) -> None:
-    await interactor.execute(schema)
-
-
-@router.put(
-    "/",
-    responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
-    },
-)
-async def update_mentor(
-    request: UpdateMentorRequest,
-    interactor: FromDishka[UpdateMentor],
-) -> None:
-    await interactor.execute(request)
