@@ -11,6 +11,7 @@ from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
+from crudik.application.student.interactors.update import UpdateStudent, UpdateStudentRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
@@ -100,3 +101,19 @@ async def attach_avatar(
         ext,
         file.size,
     )
+
+
+@router.put(
+    "/",
+    responses={
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+    },
+)
+async def update_student(
+    request: UpdateStudentRequest,
+    interactor: FromDishka[UpdateStudent],
+) -> None:
+    await interactor.execute(request)
