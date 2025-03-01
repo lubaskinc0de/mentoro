@@ -1,6 +1,6 @@
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from tests.e2e.gateway import TestApiGateway
+from filler.test_gateway import TestApiGateway
 
 
 async def test_success_sign_up(

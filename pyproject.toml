@@ -16,7 +16,6 @@ dependencies = [
     "redis==5.2.1",
     "aiohttp==3.11.13",
     "miniopy-async==1.21.1",
-    "argon2-cffi==23.1.0",
     "pyjwt==2.10.1",
     "filetype==1.2.0",
     "adaptix==3.0.0b9",
@@ -92,3 +91,4 @@ email = 'lubaskincorporation@gmail.com'
 
 [project.scripts]
 crudik = "crudik.bootstrap.cli:main"
+filler = "filler.cli:main"

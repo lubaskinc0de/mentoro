@@ -81,7 +81,7 @@ class TestApiGateway:
             return await self._parse_response(response, None)
 
     async def sign_up_mentor(self, schema: SignUpMentorRequest) -> Response[TokenResponse]:
-        async with self._session.post("/mentor/sign_up", json=schema.model_dump()) as response:
+        async with self._session.post("/mentor/sign_up/", json=schema.model_dump()) as response:
             return await self._parse_response(response, TokenResponse)
 
     async def sign_in_mentor(self, schema: SignInMentorRequest) -> Response[TokenResponse]:

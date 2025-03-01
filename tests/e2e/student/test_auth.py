@@ -1,6 +1,6 @@
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from tests.e2e.gateway import TestApiGateway
+from filler.test_gateway import TestApiGateway
 from tests.e2e.student.conftest import CreatedStudent
 
 

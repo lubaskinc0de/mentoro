@@ -1,12 +1,11 @@
-import asyncio
 import os
 import random
 
+import aiohttp
 from aiohttp import ClientSession
 
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from tests.e2e.gateway import TestApiGateway
+from filler.test_gateway import TestApiGateway
 
 INTERESTS = [
     "математика",
@@ -37,27 +36,29 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
         "Максим Светличный",
         "Владислав Смирнов",
     ]
-    students = [
+    mentors_objs = [
         SignUpMentorRequest(
             full_name=name,
             age=random.randint(15, 20),  # noqa: S311
             skills=[random.choice(INTERESTS) for _ in range(1, 4)],  # noqa: S311
+            contacts=["https://t.me/lubaskinc0de"],
         )
-        for name in base_names
+        for name in mentors
     ]
 
-    for student in students:
-        await gateway.sign_up_student(student)
+    for mentor in mentors_objs:
+        response = await gateway.sign_up_mentor(mentor)
+        assert response.status_code == 200
 
 
-async def fill_mentors(gateway: TestApiGateway) -> None: ...
+async def fill_students(gateway: TestApiGateway) -> None: ...
 
 
-async def main() -> None:
-    async with ClientSession(base_url=os.environ["EXTERNAL_API_URL"]) as session:
+async def fill_data() -> None:
+    async with ClientSession(
+        base_url=os.environ["EXTERNAL_API_URL"],
+        connector=aiohttp.TCPConnector(ssl=False),
+    ) as session:
         gateway = TestApiGateway(session)
+        await fill_mentors(gateway)
         await fill_students(gateway)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
