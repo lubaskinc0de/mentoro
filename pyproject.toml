@@ -19,6 +19,7 @@ dependencies = [
     "argon2-cffi==23.1.0",
     "pyjwt==2.10.1",
     "filetype==1.2.0",
+    "adaptix==3.0.0b9",
 ]
 
 [project.optional-dependencies]
