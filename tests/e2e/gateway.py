@@ -107,7 +107,7 @@ class TestApiGateway:
     async def swipe_mentor(self, student_token: str, schema: SwipeMentorRequest) -> Response[None]:
         async with self._session.get(
             "/student/swipe_mentor",
-            json=schema.model_dump(),
+            json=schema.model_dump(mode="json"),
             headers={"Authorization": f"Bearer {student_token}"},
         ) as response:
             return Response(status_code=response.status)

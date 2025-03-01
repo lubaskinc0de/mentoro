@@ -1,5 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ErrorModel(BaseModel):
-    code: str
+    code: str = Field(description="Unique error code")

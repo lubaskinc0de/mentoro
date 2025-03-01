@@ -1,5 +1,7 @@
+from importlib.resources import files
 from pathlib import Path
 
+import tests.e2e.images
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from tests.e2e.gateway import TestApiGateway
 
@@ -12,7 +14,9 @@ async def test_update_mentor_avatar(
     assert sign_in_response.status_code == 200
     assert sign_in_response.model is not None
 
-    with Path("./tests/e2e/images/vasiliy-mentor.jpg").open("rb") as f:
+    image_dir = files(tests.e2e.images)
+
+    with Path(str(image_dir / "vasiliy-mentor.jpg")).open("rb") as f:
         response = await api_gateway.mentor_update_avatar(
             sign_in_response.model.access_token,
             f,
@@ -37,7 +41,9 @@ async def test_update_mentor_avatar_fail(
     assert sign_in_response.status_code == 200
     assert sign_in_response.model is not None
 
-    with Path("./tests/e2e/images/invalid.jpeg").open("rb") as f:
+    image_dir = files(tests.e2e.images)
+
+    with Path(str(image_dir / "invalid.jpeg")).open("rb") as f:
         response = await api_gateway.mentor_update_avatar(
             sign_in_response.model.access_token,
             f,
