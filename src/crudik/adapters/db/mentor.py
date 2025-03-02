@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import and_, delete, exists, func, literal, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.models.mentor import MatchHistory, Mentor, MentorSkill
@@ -13,12 +14,12 @@ class MentorGatewayImpl(MentorGateway):
         self._session = session
 
     async def get_by_id(self, unique_id: UUID) -> Mentor | None:
-        q = select(Mentor).where(Mentor.id == unique_id)
+        q = select(Mentor).where(Mentor.id == unique_id).options(joinedload(Mentor.skills))
         res = await self._session.execute(q)
         return res.scalar()
 
     async def get_by_name(self, name: str) -> Mentor | None:
-        q = select(Mentor).where(Mentor.full_name == name)
+        q = select(Mentor).where(Mentor.full_name == name).options(joinedload(Mentor.skills))
         res = await self._session.execute(q)
         return res.scalar()
 
@@ -47,6 +48,7 @@ class MentorGatewayImpl(MentorGateway):
             .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
             .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
             .limit(1)
+            .options(joinedload(Mentor.skills))
         )
 
         result = await self._session.execute(query)
