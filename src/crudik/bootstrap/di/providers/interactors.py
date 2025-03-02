@@ -8,6 +8,7 @@ from crudik.application.mentor.interactors.sign_up import SignUpMentor
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent
 from crudik.application.student.interactors.find_mentor import FindMentor
 from crudik.application.student.interactors.read_student import ReadStudent
+from crudik.application.student.interactors.read_student_by_id import ReadStudentById
 from crudik.application.student.interactors.sign_in import SignInStudent
 from crudik.application.student.interactors.sign_up import SignUpStudent
 from crudik.application.student.interactors.swipe_mentor import SwipeMentor
@@ -30,4 +31,5 @@ class InteractorsProvider(Provider):
         AttachAvatarToMentor,
         SwipeMentor,
         ReadMentorById,
+        ReadStudentById,
     )
