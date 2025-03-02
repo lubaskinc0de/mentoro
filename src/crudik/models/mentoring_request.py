@@ -3,9 +3,10 @@ from enum import Enum
 from uuid import UUID, uuid4
 
 from sqlalchemy import DateTime, ForeignKey, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from crudik.models.base import Base
+from crudik.models.mentor import Mentor
 
 
 class MentoringRequestType(Enum):
@@ -22,3 +23,5 @@ class MentoringRequest(Base):
     student_id: Mapped[UUID] = mapped_column(ForeignKey("student.id"), nullable=False)
     type: Mapped[MentoringRequestType] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, server_default=func.now())
+
+    mentor: Mapped[Mentor] = relationship(Mentor, uselist=False)
