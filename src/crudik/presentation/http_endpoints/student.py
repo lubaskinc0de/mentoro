@@ -86,8 +86,19 @@ async def sign_in_student(
     "/attach",
     description="Обновление фотографии ментора",
     responses={
+        200: {
+            "description": "Фотография успешно обновлена",
+        },
+        400: {
+            "description": "Файл имеет неверный тип",
+            "model": ErrorModel,
+        },
         401: {
             "description": "Студент не авторизован",
+            "model": ErrorModel,
+        },
+        413: {
+            "description": "Файл слишком большой",
             "model": ErrorModel,
         },
     },
