@@ -7,6 +7,7 @@ from aiohttp import ClientResponse, ClientSession
 
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.mentoring_request import MentoringRequestData
+from crudik.application.data_model.review import ReviewData, ReviewFullData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.attach_avatar import MentorAvatarData
@@ -14,6 +15,8 @@ from crudik.application.mentor.sign_in import SignInMentorRequest
 from crudik.application.mentor.sign_up import SignUpMentorRequest
 from crudik.application.mentor.update import UpdateMentorRequest
 from crudik.application.mentoring_request.send import SendMentoringByUserRequest
+from crudik.application.mentoring_request.verdict import VerdictMentoringRequestQuery
+from crudik.application.review.add_review import ReviewCreateData
 from crudik.application.student.attach_avatar import StudentAvatarData
 from crudik.application.student.sign_in import SignInStudentRequest
 from crudik.application.student.sign_up import SignUpStudentRequest
@@ -181,3 +184,40 @@ class TestApiGateway:
                 status_code=response.status,
                 model=[MentoringRequestData.model_validate(_) for _ in data],
             )
+
+    async def add_review(self, token: str, schema: ReviewCreateData) -> Response[ReviewData]:
+        async with self._session.post(
+            "/review/",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(mode="json"),
+        ) as response:
+            return await self._parse_response(response, ReviewData)
+
+    async def delete_review(self, token: str, review_id: UUID) -> Response[None]:
+        async with self._session.delete(
+            f"/review/{review_id}",
+            headers={"Authorization": f"Bearer {token}"},
+        ) as response:
+            return await self._parse_response(response, None)
+
+    async def read_reviews(self, token: str, mentor_id: UUID) -> Response[list[ReviewFullData]]:
+        async with self._session.get(
+            f"/review/{mentor_id}",
+            headers={"Authorization": f"Bearer {token}"},
+        ) as response:
+            if response.status >= 400:
+                return Response(status_code=response.status)
+
+            data = await response.json()
+            return Response(
+                status_code=response.status,
+                model=[ReviewFullData.model_validate(_) for _ in data],
+            )
+
+    async def verdict_mentor(self, token: str, schema: VerdictMentoringRequestQuery) -> Response[None]:
+        async with self._session.post(
+            "/mentor/request/verdict",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(mode="json"),
+        ) as response:
+            return await self._parse_response(response, None)

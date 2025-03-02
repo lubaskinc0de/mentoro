@@ -48,8 +48,8 @@ show_error_context = true
 check_untyped_defs = true
 ignore_missing_imports = false
 warn_no_return = true
-
 files = ["src/", "tests/"]
+exclude = ["crudik.adapters.db.alembic"]
 
 [tool.coverage.run]
 branch = true
