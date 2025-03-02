@@ -11,7 +11,6 @@ from crudik.application.mentoring_request.send import SendMentoringByStudent
 from crudik.application.mentoring_request.verdict import VerdictMentoringRequestByMentor
 from crudik.application.review.add_review import AddReview
 from crudik.application.review.delete_review import DeleteReview
-from crudik.application.review.read_by_id import ReadReview
 from crudik.application.review.read_reviews import ReadMentorReviews
 from crudik.application.student.attach_avatar import AttachAvatarToStudent
 from crudik.application.student.delete_favorites_mentor import DeleteFavoritesMentor
@@ -50,6 +49,5 @@ class InteractorsProvider(Provider):
         AddReview,
         DeleteReview,
         ReadMentorReviews,
-        ReadReview,
         VerdictMentoringRequestByMentor,
     )
