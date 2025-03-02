@@ -12,7 +12,7 @@ class StudentData(BaseModel):
     age: int | None = Field(description="Age", default=None)
     interests: list[str] = Field(description="Student interests")
     avatar_url: str | None = Field(description="Student avatar url", default=None)
-    description: str = Field(description="Student description")
+    description: str | None = Field(description="Student description", default=None)
 
 
 convert_student_model_to_dto = get_converter(Student, StudentData)
