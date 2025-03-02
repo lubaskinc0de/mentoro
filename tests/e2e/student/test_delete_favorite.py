@@ -12,6 +12,18 @@ mentors = [
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["expierence", "freebsd", "english"],
     ),
+    SignUpMentorRequest(
+        full_name="Vasiliy Skilled 2",
+        description="I'm very expierenced mentor",
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
+        skills=["expierence", "freebsd", "english"],
+    ),
+    SignUpMentorRequest(
+        full_name="Vasiliy Skilled 3",
+        description="I'm very expierenced mentor",
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
+        skills=["expierence", "freebsd", "english"],
+    ),
 ]
 
 
@@ -40,15 +52,16 @@ async def test_success_read_favorite(
             ),
         )
 
+    deleting = finded_mentors[-1]
     await api_gateway.delete_favorites_mentors(
         student_token=student_token,
-        mentor_id=finded_mentors[-1].id,
+        mentor_id=deleting.id,
     )
 
     favorite_response = await api_gateway.read_favorites_mentors(created_student.token.access_token)
 
     assert favorite_response.status_code == 200
     assert favorite_response.model is not None
-    assert len(favorite_response.model) == 3
-    for finded_mentor in finded_mentors:
-        assert finded_mentor != finded_mentors[-1]
+    assert len(favorite_response.model) == len(mentors) - 1
+    for finded_mentor in favorite_response.model:
+        assert finded_mentor != deleting

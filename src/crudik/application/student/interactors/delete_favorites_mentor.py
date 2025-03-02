@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -5,6 +6,7 @@ from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.student.gateway import StudentGateway
+from crudik.application.swiped_mentor.errors import SwipedMentorNotFoundError
 from crudik.application.swiped_mentor.gateway import SwipedMentorGateway
 from crudik.application.uow import UoW
 
@@ -32,8 +34,8 @@ class DeleteFavoritesMentor:
             mentor_id=mentor.id,
         )
         if swiped_mentor is None:
-            return
+            raise SwipedMentorNotFoundError
 
+        logging.info("Deleting favorite %s", mentor.full_name)
         await self.swiped_mentors_gateway.delete(swiped_mentor)
-
         await self.uow.commit()

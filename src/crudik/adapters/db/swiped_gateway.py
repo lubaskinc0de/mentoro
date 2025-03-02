@@ -21,8 +21,8 @@ class SwipedMentorGatewayImpl(SwipedMentorGateway):
     ) -> list[SwipedMentor]:
         stmt = (
             select(SwipedMentor)
-            .outerjoin(Mentor, SwipedMentor.mentor_id == Mentor.id)
-            .outerjoin(Student, SwipedMentor.id == SwipedMentor.student_id)
+            .join(Mentor, SwipedMentor.mentor_id == Mentor.id)
+            .join(Student, SwipedMentor.student_id == Student.id)
             .where(Student.id == student_id, SwipedMentor.type == swiped_mentor_type)
             .options(
                 selectinload(SwipedMentor.mentor).selectinload(Mentor.skills),
