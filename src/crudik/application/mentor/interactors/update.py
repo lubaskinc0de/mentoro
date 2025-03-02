@@ -5,16 +5,18 @@ from uuid import uuid4
 from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
+from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.mentor.gateway import MentorGateway
+from crudik.application.mentor_contact.gateway import MentorContactGateway
 from crudik.application.mentor_skill.gateway import MentorSkillGateway
 from crudik.application.uow import UoW
-from crudik.models.mentor import MentorSkill
+from crudik.models.mentor import MentorContact, MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
     age: int | None = Field(ge=0, le=120, default=None, description="Mentor age")
     description: str | None = Field(min_length=10, max_length=2000, description="Mentor description")
-    contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] | None = Field(
+    contacts: list[MentorContactModel] | None = Field(
         min_length=1,
         max_length=10,
         default=None,
@@ -33,6 +35,7 @@ class UpdateMentor:
     uow: UoW
     gateway: MentorGateway
     skill_gateway: MentorSkillGateway
+    contact_gateway: MentorContactGateway
     id_provider: TokenMentorIdProvider
 
     async def execute(self, request: UpdateMentorRequest) -> None:
@@ -45,8 +48,6 @@ class UpdateMentor:
             mentor.age = request.age
         if request.description:
             mentor.description = request.description
-        if request.contacts:
-            mentor.contacts = request.contacts
 
         if request.skills:
             await self.skill_gateway.delete_by_mentor_id(mentor.id)
@@ -54,4 +55,12 @@ class UpdateMentor:
 
             self.uow.add_all(skills)
 
+        if request.contacts:
+            await self.contact_gateway.delete_by_mentor_id(mentor.id)
+            contacts = [
+                MentorContact(id=uuid4(), mentor_id=mentor_id, url=contact.url, social_network=contact.social_network)
+                for contact in request.contacts
+            ]
+
+            self.uow.add_all(contacts)
         await self.uow.commit()

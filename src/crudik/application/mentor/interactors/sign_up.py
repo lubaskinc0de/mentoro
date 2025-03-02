@@ -7,17 +7,11 @@ from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.token_encoder import TokenEncoder
 from crudik.application.access_token.gateway import AccessTokenGateway
+from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.uow import UoW
 from crudik.models.mentor import Mentor, MentorContact, MentorSkill
-
-
-class MentorContactModel(BaseModel):
-    url: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(description="Contact url")
-    social_network: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(
-        description="Contact social network name",
-    )
 
 
 class SignUpMentorRequest(BaseModel):

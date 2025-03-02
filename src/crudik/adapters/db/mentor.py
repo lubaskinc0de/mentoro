@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
 from crudik.application.mentor.gateway import MentorGateway
-from crudik.models.mentor import MatchHistory, Mentor, MentorSkill
+from crudik.application.mentor_contact.gateway import MentorContactGateway
+from crudik.application.mentor_skill.gateway import MentorSkillGateway
+from crudik.models.mentor import MatchHistory, Mentor, MentorContact, MentorSkill
 from crudik.models.student import Student
 
 
@@ -65,3 +67,21 @@ class MentorGatewayImpl(MentorGateway):
         )
         res = await self._session.execute(q)
         return bool(res.scalar())
+
+
+class MentorSkillGatewayImpl(MentorSkillGateway):
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def delete_by_mentor_id(self, mentod_id: UUID) -> None:
+        q = delete(MentorSkill).where(MentorSkill.mentor_id == mentod_id)
+        await self._session.execute(q)
+
+
+class MentorContactGatewayImpl(MentorContactGateway):
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def delete_by_mentor_id(self, mentod_id: UUID) -> None:
+        q = delete(MentorContact).where(MentorContact.mentor_id == mentod_id)
+        await self._session.execute(q)
