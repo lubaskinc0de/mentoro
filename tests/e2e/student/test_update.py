@@ -2,7 +2,7 @@ from pathlib import Path
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.student.interactors.update import UpdateStudentRequest
-from tests.e2e.student.conftest import CreatedStudent
+from tests.e2e.conftest import CreatedStudent
 
 
 async def test_update_student_avatar(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:

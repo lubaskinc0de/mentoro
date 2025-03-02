@@ -11,6 +11,7 @@ from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.interactors.attach_avatar import MentorAvatarData
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.interactors.update import UpdateMentorRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
@@ -100,6 +101,13 @@ class TestApiGateway:
         async with self._session.get("/mentor/me", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, MentorData)
 
+    async def read_mentor_by_id(self, student_token: str, mentor_id: UUID) -> Response[MentorData]:
+        async with self._session.get(
+            f"/mentor/{mentor_id}",
+            headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            return await self._parse_response(response, MentorData)
+
     async def find_student(self, token: str) -> Response[MentorData]:
         async with self._session.get("/student/find", headers={"Authorization": f"Bearer {token}"}) as response:
             return await self._parse_response(response, MentorData)
@@ -137,5 +145,13 @@ class TestApiGateway:
         async with self._session.delete(
             f"/student/favorite/{mentor_id}",
             headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            return await self._parse_response(response, None)
+
+    async def update_mentor(self, token: str, schema: UpdateMentorRequest) -> Response[None]:
+        async with self._session.put(
+            "/mentor/",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(),
         ) as response:
             return await self._parse_response(response, None)

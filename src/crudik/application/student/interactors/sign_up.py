@@ -21,6 +21,7 @@ class SignUpStudentRequest(BaseModel):
         max_length=100,
         description="Student interests",
     )
+    description: str | None = Field(max_length=150, min_length=10, description="Student description", default=None)
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,6 +39,7 @@ class SignUpStudent:
             created_at=datetime.now(tz=UTC),
             interests=[word.lower() for word in request.interests],
             age=request.age,
+            description=request.description,
         )
         self.uow.add(student)
 

@@ -47,7 +47,7 @@ async def test_success_read_favorite(
     )
 
     favorite_response = await api_gateway.read_favorites_mentors(created_student.token.access_token)
-    
+
     assert favorite_response.status_code == 200
     assert favorite_response.model is not None
     assert len(favorite_response.model) == 3

@@ -31,7 +31,6 @@ class Mentor(Base):
 
     id: Mapped[UUID] = mapped_column(primary_key=True, nullable=False)
     full_name: Mapped[str] = mapped_column(unique=True, nullable=False)
-    age: Mapped[int | None] = mapped_column(nullable=True)
     description: Mapped[str | None] = mapped_column(nullable=True)
     photo_url: Mapped[str | None] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, server_default=func.now())
