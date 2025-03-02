@@ -85,8 +85,19 @@ async def read_mentor(
     "/attach",
     description="Загрузка фотографии ментора",
     responses={
+        200: {
+            "description": "Фотография успешно обновлена",
+        },
+        400: {
+            "description": "Файл имеет неверный тип",
+            "model": ErrorModel,
+        },
         401: {
             "description": "Ментор не авторизован",
+            "model": ErrorModel,
+        },
+        413: {
+            "description": "Файл слишком большой",
             "model": ErrorModel,
         },
     },
