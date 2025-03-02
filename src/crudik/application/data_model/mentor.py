@@ -3,7 +3,7 @@ from uuid import UUID
 from adaptix.conversion import coercer, get_converter
 from pydantic import BaseModel, Field
 
-from crudik.models.mentor import Mentor, MentorSkill
+from crudik.models.mentor import Mentor, MentorContact, MentorSkill
 
 
 class MentorData(BaseModel):
@@ -15,4 +15,11 @@ class MentorData(BaseModel):
     photo_url: str | None = Field(description="Mentor photo url", default=None)
 
 
-convert_mentor_to_dto = get_converter(Mentor, MentorData, recipe=[coercer(MentorSkill, str, lambda x: x.text)])
+convert_mentor_to_dto = get_converter(
+    Mentor,
+    MentorData,
+    recipe=[
+        coercer(MentorSkill, str, lambda x: x.text),
+        coercer(MentorContact, str, lambda x: x.url),
+    ],
+)

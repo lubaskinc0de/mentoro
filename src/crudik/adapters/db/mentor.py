@@ -14,12 +14,12 @@ class MentorGatewayImpl(MentorGateway):
         self._session = session
 
     async def get_by_id(self, unique_id: UUID) -> Mentor | None:
-        q = select(Mentor).where(Mentor.id == unique_id).options(joinedload(Mentor.skills))
+        q = select(Mentor).where(Mentor.id == unique_id).options(joinedload(Mentor.skills, Mentor.contacts))
         res = await self._session.execute(q)
         return res.scalar()
 
     async def get_by_name(self, name: str) -> Mentor | None:
-        q = select(Mentor).where(Mentor.full_name == name).options(joinedload(Mentor.skills))
+        q = select(Mentor).where(Mentor.full_name == name).options(joinedload(Mentor.skills, Mentor.contacts))
         res = await self._session.execute(q)
         return res.scalar()
 
@@ -48,7 +48,7 @@ class MentorGatewayImpl(MentorGateway):
             .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
             .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
             .limit(1)
-            .options(selectinload(Mentor.skills))
+            .options(selectinload(Mentor.skills, Mentor.contacts))
         )
 
         result = await self._session.execute(query)
