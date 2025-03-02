@@ -1,4 +1,5 @@
 ## Crudik - Yet another шаблон для крудов
+![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=80&min_acceptable=70&min_medium=50)
 
 1. Бизнес логику пишете в application (взаимодействие с моделями, удаление, обновление, создание). Желательно под каждую бизнес-операцию отдельный файлик с классом команды.
 
