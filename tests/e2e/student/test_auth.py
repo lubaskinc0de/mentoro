@@ -42,4 +42,4 @@ async def test_student_signin(api_gateway: TestApiGateway, created_student: Crea
 
 async def test_student_signin_fail(api_gateway: TestApiGateway) -> None:
     response = await api_gateway.sign_in_student(SignInStudentRequest(full_name="Vasiliy UnSkilled"))
-    assert response.status_code == 404
+    assert response.status_code == 401
