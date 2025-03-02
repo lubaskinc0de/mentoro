@@ -1,5 +1,7 @@
 from crudik.application.common.errors import ApplicationError
 
 
-class SwipedMentorNotFoundError(ApplicationError):
-    pass
+class SwipedMentorNotFoundError(ApplicationError): ...
+
+
+class MentorAlreadySwipedError(ApplicationError): ...

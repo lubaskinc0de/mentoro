@@ -41,19 +41,20 @@ class MentorGatewayImpl(MentorGateway):
             .cte("student_interests")
         )
 
+        similarity_q = func.similarity(func.lower(MentorSkill.text), func.lower(student_interests.c.interest))
         query = (
             select(Mentor)
             .join(MentorSkill, Mentor.id == MentorSkill.mentor_id)
             .join(student_interests, literal(True))  # noqa: FBT003
             .where(
                 and_(
-                    func.similarity(MentorSkill.text, student_interests.c.interest) > 0,
+                    similarity_q > 0,
                     not_(exists().where(Mentor.id == mentor_history_cte.c.mentor_id)),
                 ),
             )
             .group_by(Mentor.id)
-            .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
-            .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
+            .having(func.sum(similarity_q) >= threshold)
+            .order_by(func.sum(similarity_q).desc())
             .limit(3)
             .options(selectinload(Mentor.skills), selectinload(Mentor.contacts))
         )
