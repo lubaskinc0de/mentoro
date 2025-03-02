@@ -2,10 +2,12 @@ from uuid import UUID
 
 from sqlalchemy import and_, delete, exists, func, literal, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 from crudik.application.mentor.gateway import MentorGateway
-from crudik.models.mentor import MatchHistory, Mentor, MentorSkill
+from crudik.application.mentor_contact.gateway import MentorContactGateway
+from crudik.application.mentor_skill.gateway import MentorSkillGateway
+from crudik.models.mentor import MatchHistory, Mentor, MentorContact, MentorSkill
 from crudik.models.student import Student
 
 
@@ -14,12 +16,12 @@ class MentorGatewayImpl(MentorGateway):
         self._session = session
 
     async def get_by_id(self, unique_id: UUID) -> Mentor | None:
-        q = select(Mentor).where(Mentor.id == unique_id).options(joinedload(Mentor.skills))
+        q = select(Mentor).where(Mentor.id == unique_id).options(joinedload(Mentor.skills, Mentor.contacts))
         res = await self._session.execute(q)
         return res.scalar()
 
     async def get_by_name(self, name: str) -> Mentor | None:
-        q = select(Mentor).where(Mentor.full_name == name).options(joinedload(Mentor.skills))
+        q = select(Mentor).where(Mentor.full_name == name).options(joinedload(Mentor.skills, Mentor.contacts))
         res = await self._session.execute(q)
         return res.scalar()
 
@@ -48,7 +50,7 @@ class MentorGatewayImpl(MentorGateway):
             .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
             .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
             .limit(1)
-            .options(joinedload(Mentor.skills))
+            .options(selectinload(Mentor.skills, Mentor.contacts))
         )
 
         result = await self._session.execute(query)
@@ -65,3 +67,21 @@ class MentorGatewayImpl(MentorGateway):
         )
         res = await self._session.execute(q)
         return bool(res.scalar())
+
+
+class MentorSkillGatewayImpl(MentorSkillGateway):
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def delete_by_mentor_id(self, mentod_id: UUID) -> None:
+        q = delete(MentorSkill).where(MentorSkill.mentor_id == mentod_id)
+        await self._session.execute(q)
+
+
+class MentorContactGatewayImpl(MentorContactGateway):
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def delete_by_mentor_id(self, mentod_id: UUID) -> None:
+        q = delete(MentorContact).where(MentorContact.mentor_id == mentod_id)
+        await self._session.execute(q)

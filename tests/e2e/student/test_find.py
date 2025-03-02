@@ -1,7 +1,7 @@
 import pytest
 
 from crudik.adapters.test_api_gateway import TestApiGateway
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.interactors.sign_up import MentorContactModel, SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 
 mentors = [
@@ -9,28 +9,28 @@ mentors = [
         full_name="Vasiliy Skilled 1",
         age=32,
         description="I'm very expierenced mentor",
-        contacts=["telegram: @skilled_1", "vk: vk.com/skilled_1"],
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["expierence", "freebsd", "english"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 2",
         age=32,
         description="I'm very expierenced mentor",
-        contacts=["telegram: @skilled_2", "vk: vk.com/skilled_2"],
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["maths", "freebsd", "russian"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 3",
         age=32,
         description="I'm very expierenced mentor",
-        contacts=["telegram: @skilled_3", "vk: vk.com/skilled_3"],
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["english", "maths"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 4",
         age=32,
         description="I'm very expierenced mentor",
-        contacts=["telegram: @skilled_4", "vk: vk.com/skilled_4"],
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["english", "russian"],
     ),
 ]

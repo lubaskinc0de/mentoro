@@ -30,7 +30,7 @@ router = APIRouter(
 )
 
 security = HTTPBearer(auto_error=False)
-MAX_FILE_SIZE = 20 * 1024 * 1024
+MAX_FILE_SIZE = 8 * 1024 * 1024
 
 
 @router.post("/sign_up")
@@ -45,8 +45,8 @@ async def sign_up_mentor(
 @router.post(
     "/sign_in",
     responses={
-        404: {
-            "description": "Mentor not found",
+        401: {
+            "description": "Unauthorized",
             "model": ErrorModel,
         },
     },
@@ -55,17 +55,13 @@ async def sign_in_mentor(
     schema: SignInMentorRequest,
     interactor: FromDishka[SignInMentor],
 ) -> TokenResponse:
-    """Mentor authorisation."""
+    """Mentor login."""
     return await interactor.execute(schema)
 
 
 @router.get(
     "/me",
     responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
         401: {
             "description": "Unauthorized",
             "model": ErrorModel,
@@ -76,6 +72,7 @@ async def read_mentor(
     command: FromDishka[ReadMentor],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData:
+    """Read authorized mentor."""
     return await command.execute()
 
 
@@ -97,16 +94,13 @@ async def read_mentor_by_id(
     mentor_id: UUID,
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData:
+    """Read mentor by id (need student auth)."""
     return await command.execute(mentor_id)
 
 
 @router.put(
     "/attach",
     responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
         401: {
             "description": "Unauthorized",
             "model": ErrorModel,
@@ -144,8 +138,8 @@ async def attach_avatar(
 @router.put(
     "/",
     responses={
-        404: {
-            "description": "Mentor not found",
+        401: {
+            "description": "Unauthorized",
             "model": ErrorModel,
         },
     },
@@ -154,4 +148,5 @@ async def update_mentor(
     request: UpdateMentorRequest,
     interactor: FromDishka[UpdateMentor],
 ) -> None:
+    """Update authorized mentor."""
     await interactor.execute(request)

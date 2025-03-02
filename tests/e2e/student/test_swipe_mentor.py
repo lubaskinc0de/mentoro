@@ -39,6 +39,8 @@ async def data_for_swipe(api_gateway: TestApiGateway) -> DataForSwipe:
         ),
     )
     assert sign_up_student_response.model is not None
+    assert sign_up_student_response.status_code == 200
+
     student_token = sign_up_student_response.model.access_token
 
     return DataForSwipe(

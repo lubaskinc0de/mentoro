@@ -10,6 +10,7 @@ from crudik.application.common.errors import ApplicationError
 
 TOKEN_TYPE = "Bearer"  # noqa: S105
 BEARER_SECTIONS = 2
+AUTH_HEADER = "Authorization"
 
 
 class UnauthorizedError(ApplicationError): ...
@@ -21,7 +22,7 @@ class TokenBearerParser:
     encoder: TokenEncoder
 
     def authorize_request_by_token(self) -> UUID:
-        authorization_header = self.request.headers.get("Authorization")
+        authorization_header = self.request.headers.get(AUTH_HEADER)
 
         if authorization_header is None:
             raise UnauthorizedError

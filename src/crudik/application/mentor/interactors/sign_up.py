@@ -7,10 +7,11 @@ from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.token_encoder import TokenEncoder
 from crudik.application.access_token.gateway import AccessTokenGateway
+from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.uow import UoW
-from crudik.models.mentor import Mentor, MentorSkill
+from crudik.models.mentor import Mentor, MentorContact, MentorSkill
 
 
 class SignUpMentorRequest(BaseModel):
@@ -18,7 +19,7 @@ class SignUpMentorRequest(BaseModel):
     age: int | None = Field(ge=0, le=120, default=None, description="Mentor age")
     description: str | None = Field(min_length=10, max_length=2000, default=None, description="Mentor description")
 
-    contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] = Field(
+    contacts: list[MentorContactModel] = Field(
         min_length=1,
         max_length=10,
         description="Mentor contacts",
@@ -44,14 +45,18 @@ class SignUpMentor:
             full_name=request.full_name,
             age=request.age,
             description=request.description,
-            contacts=request.contacts,
             created_at=datetime.now(tz=UTC),
         )
 
         skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill.lower()) for skill in request.skills]
+        contacts = [
+            MentorContact(id=uuid4(), url=contact.url, mentor_id=mentor_id, social_network=contact.social_network)
+            for contact in request.contacts
+        ]
 
         self.uow.add(mentor)
         self.uow.add_all(skills)
+        self.uow.add_all(contacts)
 
         encoded_access_token = self.encryptor.encrypt(mentor_id)
         await self.uow.commit()
