@@ -36,6 +36,12 @@ MAX_FILE_SIZE = 8 * 1024 * 1024
 @router.post(
     "/sign_up",
     description="Авторизация ментора",
+    responses={
+        200: {
+            "model": TokenResponse,
+            "description": "Успешная регистрация",
+        },
+    },
 )
 async def sign_up_mentor(
     schema: SignUpMentorRequest,
@@ -49,6 +55,10 @@ async def sign_up_mentor(
     "/sign_in",
     description="Регистрация ментора",
     responses={
+        200: {
+            "model": TokenResponse,
+            "description": "Успешная регистрация",
+        },
         401: {
             "description": "Ментор не авторизован",
             "model": ErrorModel,
@@ -67,6 +77,10 @@ async def sign_in_mentor(
     "/me",
     description="Получение данных ментора по токену",
     responses={
+        200: {
+            "model": MentorData,
+            "description": "Успешное получение данных",
+        },
         401: {
             "description": "Ментор не авторизован",
             "model": ErrorModel,
@@ -123,6 +137,9 @@ async def attach_avatar(
     "/",
     description="Обновление данных ментора",
     responses={
+        200: {
+            "description": "Успешное обновление данных",
+        },
         401: {
             "description": "Ментор не авторизован",
             "model": ErrorModel,
@@ -142,6 +159,10 @@ async def update_mentor(
     "/{mentor_id}",
     description="Получение данных ментора по идентификатору ментора",
     responses={
+        200: {
+            "model": MentorData,
+            "description": "Успешное получение данных",
+        },
         404: {
             "description": "Не найден ментор",
             "model": ErrorModel,

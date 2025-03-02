@@ -22,6 +22,9 @@ security = HTTPBearer(auto_error=False)
     "",
     description="Создание заявки на ментерство студентом",
     responses={
+        200: {
+            "description": "Успешное получение данных",
+        },
         404: {
             "description": "Ментор не найден",
             "model": ErrorModel,
@@ -45,6 +48,10 @@ async def send_mentoring(
     "",
     description="Получение всех отправленных запросов на ментерство студента",
     responses={
+        200: {
+            "model": list[MentoringRequestData],
+            "description": "Успешное получение данных",
+        },
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,

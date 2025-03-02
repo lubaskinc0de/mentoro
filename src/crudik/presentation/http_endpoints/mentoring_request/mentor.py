@@ -23,6 +23,9 @@ security = HTTPBearer(auto_error=False)
     "/verdict",
     description="Принятие или отклонение заявки на ментерство",
     responses={
+        200: {
+            "description": "Заявка успешно обработана",
+        },
         404: {
             "description": "Ментор не найден",
             "model": ErrorModel,

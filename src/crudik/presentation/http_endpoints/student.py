@@ -49,6 +49,12 @@ security = HTTPBearer(auto_error=False)
 @router.post(
     "/sign_up",
     description="Авторизация студента",
+    responses={
+        200: {
+            "model": TokenResponse,
+            "description": "Успешная авторизация студента",
+        },
+    },
 )
 async def sign_up_student(
     schema: SignUpStudentRequest,
@@ -62,9 +68,9 @@ async def sign_up_student(
     "/sign_in",
     description="Регистрация студента",
     responses={
-        401: {
-            "description": "Студент не авторизован",
-            "model": ErrorModel,
+        200: {
+            "model": TokenResponse,
+            "description": "Успешная регистрация студента",
         },
     },
 )
@@ -118,6 +124,7 @@ async def attach_avatar(
     "/",
     description="Обновление данных студента",
     responses={
+        200: {"description": "Успешное обновление данных"},
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,
@@ -137,6 +144,7 @@ async def update_student(
     "/me",
     description="Получение данных о себе",
     responses={
+        200: {"model": StudentData, "description": "Успешное получение данных"},
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,
@@ -155,6 +163,7 @@ async def read_student(
     "/find",
     description="Поиск менторов для студента",
     responses={
+        200: {"model": list[MentorData], "description": "Успешный поиск"},
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,
@@ -173,6 +182,7 @@ async def find_mentor_for_student(
     "/swipe_mentor",
     description="Пролистывание ментора",
     responses={
+        200: {"description": "Успешное пролистывание"},
         404: {
             "description": "Ментор не найден",
             "model": ErrorModel,
@@ -196,6 +206,7 @@ async def swipe_mentor(
     "/favorite",
     description="Получение всех избранных менторов студента",
     responses={
+        200: {"model": list[MentorData], "description": "Успешное получение данных"},
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,
@@ -211,6 +222,7 @@ async def read_favorite_mentors(
 
 @router.delete(
     "/favorite/{mentor_id}",
+    status_code=204,
     description="Удаление избранного ментора студента",
     responses={
         204: {
@@ -232,8 +244,9 @@ async def delete_favorite_mentor(
 
 @router.get(
     "/{student_id}",
-    description="Получение ментером данных о конкретном студенте",
+    description="Получение данных о конкретном студенте ментером",
     responses={
+        200: {"model": StudentData, "description": "Успешное получение данных"},
         401: {
             "description": "Студент не авторизован",
             "model": ErrorModel,
