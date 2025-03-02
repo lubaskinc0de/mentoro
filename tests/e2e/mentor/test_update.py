@@ -77,3 +77,12 @@ async def test_update_mentor(api_gateway: TestApiGateway, mentor: SignUpMentorRe
 
     assert me.model is not None
     assert me.model == MentorData(**mentor.model_dump(), id=me.model.id)
+
+
+async def test_update_mentor_unauthorized(api_gateway: TestApiGateway, mentor: SignUpMentorRequest) -> None:
+    response = await api_gateway.update_mentor(
+        "adjaldjoa",
+        UpdateMentorRequest(description=mentor.description, contacts=mentor.contacts, skills=mentor.skills),
+    )
+
+    assert response.status_code == 401

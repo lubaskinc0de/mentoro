@@ -46,7 +46,7 @@ async def test_read_by_id_not_exists(
     assert read_response.status_code == 404
 
 
-async def test_unsuccess_unauthorized(api_gateway: TestApiGateway) -> None:
+async def test_unauthorized(api_gateway: TestApiGateway) -> None:
     response = await api_gateway.read_mentor("")
     assert response.status_code == 401
     assert response.model is None
