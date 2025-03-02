@@ -1,4 +1,5 @@
 from typing import Annotated
+from uuid import UUID
 
 import filetype  # type: ignore[import-untyped]
 from dishka import FromDishka
@@ -10,10 +11,10 @@ from crudik.application.common.errors import ApplicationError
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
 from crudik.application.student.interactors.find_mentor import FindMentor
 from crudik.application.student.interactors.read_student import ReadStudent
+from crudik.application.student.interactors.read_student_by_id import ReadStudentById
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
 from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
@@ -25,7 +26,7 @@ router = APIRouter(
     tags=["Student"],
     prefix="/student",
 )
-MAX_FILE_SIZE = 20 * 1024 * 1024
+MAX_FILE_SIZE = 8 * 1024 * 1024
 
 
 class FileIsNotImageError(ApplicationError): ...
@@ -55,8 +56,8 @@ async def sign_up_student(
 @router.post(
     "/sign_in",
     responses={
-        404: {
-            "description": "Student not found",
+        401: {
+            "description": "Unauthorized",
             "model": ErrorModel,
         },
     },
@@ -65,17 +66,13 @@ async def sign_in_student(
     schema: SignInStudentRequest,
     interactor: FromDishka[SignInStudent],
 ) -> TokenResponse:
-    """Student athorisation."""
+    """Student login."""
     return await interactor.execute(schema)
 
 
 @router.put(
     "/attach",
     responses={
-        404: {
-            "description": "Student not found",
-            "model": ErrorModel,
-        },
         401: {
             "description": "Unauthorized",
             "model": ErrorModel,
@@ -113,8 +110,8 @@ async def attach_avatar(
 @router.patch(
     "/",
     responses={
-        404: {
-            "description": "Student not found",
+        401: {
+            "description": "Unauthorized",
             "model": ErrorModel,
         },
     },
@@ -123,16 +120,13 @@ async def update_student(
     request: UpdateStudentRequest,
     interactor: FromDishka[UpdateStudent],
 ) -> None:
+    """Update authorized student."""
     await interactor.execute(request)
 
 
 @router.get(
     "/me",
     responses={
-        404: {
-            "description": "Student not found",
-            "model": ErrorModel,
-        },
         401: {
             "description": "Unauthorized",
             "model": ErrorModel,
@@ -143,16 +137,35 @@ async def read_student(
     command: FromDishka[ReadStudent],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> StudentData:
+    """Read authorized student."""
     return await command.execute()
+
+
+@router.get(
+    "/{student_id}",
+    responses={
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_student_by_id(
+    command: FromDishka[ReadStudentById],
+    student_id: UUID,
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> StudentData:
+    """Read student by id (need mentor auth)."""
+    return await command.execute(student_id)
 
 
 @router.get(
     "/find",
     responses={
-        404: {
-            "description": "Student not found",
-            "model": ErrorModel,
-        },
         401: {
             "description": "Unauthorized",
             "model": ErrorModel,
@@ -163,6 +176,7 @@ async def find_mentor_for_student(
     command: FromDishka[FindMentor],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData | None:
+    """Mentor feed."""
     return await command.execute()
 
 
@@ -170,7 +184,7 @@ async def find_mentor_for_student(
     "/swipe_mentor",
     responses={
         404: {
-            "description": "Student not found",
+            "description": "Mentor not found",
             "model": ErrorModel,
         },
         401: {
@@ -182,20 +196,5 @@ async def swipe_mentor(
     schema: SwipeMentorRequest,
     interactor: FromDishka[SwipeMentor],
 ) -> None:
+    """Swipe mentor (like/dislike etc)."""
     await interactor.execute(schema)
-
-
-@router.patch(
-    "/",
-    responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
-    },
-)
-async def update_mentor(
-    request: UpdateMentorRequest,
-    interactor: FromDishka[UpdateMentor],
-) -> None:
-    await interactor.execute(request)
