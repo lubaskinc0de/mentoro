@@ -3,7 +3,7 @@ from uuid import uuid4
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.mentoring_request import MentoringRequestData
-from crudik.application.mentoring_request.interactors.send import SendMentoringByUserRequest
+from crudik.application.mentoring_request.send import SendMentoringByUserRequest
 from crudik.models.mentoring_request import MentoringRequestType
 from tests.e2e.conftest import CreatedMentor, CreatedStudent
 

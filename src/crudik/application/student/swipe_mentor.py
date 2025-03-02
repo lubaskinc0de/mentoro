@@ -6,10 +6,10 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
-from crudik.application.mentor.errors import MentorDoesNotExistsError
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.uow import UoW
+from crudik.application.common.uow import UoW
+from crudik.application.errors.mentor_errors import MentorDoesNotExistsError
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 from crudik.models.mentor import MatchHistory
 from crudik.models.mentoring_request import MentoringRequest, MentoringRequestType
 from crudik.models.swiped_mentor import SwipedMentor, SwipedMentorType

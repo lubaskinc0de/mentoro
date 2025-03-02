@@ -2,12 +2,12 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
-from crudik.application.common.errors import AccessDeniedError
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.review.common import ReviewGateway
-from crudik.application.review.errors import ReviewDoesNotExistsError
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.uow import UoW
+from crudik.application.common.uow import UoW
+from crudik.application.errors.common import AccessDeniedError
+from crudik.application.errors.review_errors import ReviewDoesNotExistsError
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.review_gateway import ReviewGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(slots=True, frozen=True)

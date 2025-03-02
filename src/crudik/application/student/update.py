@@ -4,8 +4,8 @@ from typing import Annotated
 from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.uow import UoW
+from crudik.application.common.uow import UoW
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 class UpdateStudentRequest(BaseModel):

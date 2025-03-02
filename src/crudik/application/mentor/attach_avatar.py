@@ -5,8 +5,8 @@ from pydantic import BaseModel, Field, HttpUrl
 
 from crudik.adapters.file_manager import MinioFileManager
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.uow import UoW
+from crudik.application.common.uow import UoW
+from crudik.application.gateway.mentor_gateway import MentorGateway
 
 
 class MentorAvatarData(BaseModel):

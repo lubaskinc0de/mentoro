@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.mentor import MentorData, convert_mentor_to_dto
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.swiped_mentor.gateway import SwipedMentorGateway
+from crudik.application.gateway.student_gateway import StudentGateway
+from crudik.application.gateway.swiped_gateway import SwipedMentorGateway
 from crudik.models.swiped_mentor import SwipedMentorType
 
 

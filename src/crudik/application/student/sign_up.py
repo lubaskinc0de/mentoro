@@ -6,10 +6,10 @@ from uuid import uuid4
 from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.token_encoder import TokenEncoder
-from crudik.application.access_token.gateway import AccessTokenGateway
+from crudik.application.common.uow import UoW
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.uow import UoW
+from crudik.application.gateway.student_gateway import StudentGateway
+from crudik.application.gateway.token_gateway import AccessTokenGateway
 from crudik.models.student import Student
 
 

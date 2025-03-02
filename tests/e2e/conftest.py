@@ -13,8 +13,8 @@ from crudik.adapters.config import Config
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
+from crudik.application.student.sign_up import SignUpStudentRequest
 from crudik.bootstrap.di.container import get_async_container
 
 

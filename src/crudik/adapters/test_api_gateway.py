@@ -9,16 +9,16 @@ from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.interactors.attach_avatar import MentorAvatarData
-from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.mentor.interactors.update import UpdateMentorRequest
-from crudik.application.mentoring_request.interactors.send import SendMentoringByUserRequest
-from crudik.application.student.interactors.attach_avatar import StudentAvatarData
-from crudik.application.student.interactors.sign_in import SignInStudentRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
-from crudik.application.student.interactors.update import UpdateStudentRequest
+from crudik.application.mentor.attach_avatar import MentorAvatarData
+from crudik.application.mentor.sign_in import SignInMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
+from crudik.application.mentor.update import UpdateMentorRequest
+from crudik.application.mentoring_request.send import SendMentoringByUserRequest
+from crudik.application.student.attach_avatar import StudentAvatarData
+from crudik.application.student.sign_in import SignInStudentRequest
+from crudik.application.student.sign_up import SignUpStudentRequest
+from crudik.application.student.swipe_mentor import SwipeMentorRequest
+from crudik.application.student.update import UpdateStudentRequest
 
 ModelT = TypeVar("ModelT")
 

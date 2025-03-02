@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
+from crudik.application.common.uow import UoW
 from crudik.application.data_model.mentor import MentorData, convert_mentors_to_dto
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.student.gateway import StudentGateway
-from crudik.application.uow import UoW
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(slots=True, frozen=True)

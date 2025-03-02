@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.student import StudentData, convert_student_model_to_dto
-from crudik.application.student.gateway import StudentGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(slots=True, frozen=True)

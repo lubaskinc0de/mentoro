@@ -1,9 +1,9 @@
 from crudik.adapters.file_manager import FileUploadError
 from crudik.adapters.idp import UnauthorizedError
-from crudik.application.common.errors import AccessDeniedError, ApplicationError
-from crudik.application.mentor.errors import MentorDoesNotExistsError
-from crudik.application.review.errors import ReviewDoesNotExistsError
-from crudik.application.student.errors import StudentDoesNotExistsError
+from crudik.application.errors.common import AccessDeniedError, ApplicationError
+from crudik.application.errors.mentor_errors import MentorDoesNotExistsError
+from crudik.application.errors.review_errors import ReviewDoesNotExistsError
+from crudik.application.errors.student_errors import StudentDoesNotExistsError
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
     CannotReadFileSizeError,

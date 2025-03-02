@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from crudik.application.review.common import ReviewGateway
+from crudik.application.gateway.review_gateway import ReviewGateway
 from crudik.models.mentor import Mentor, MentorReview
 
 

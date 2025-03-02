@@ -4,8 +4,8 @@ from pathlib import Path
 import tests.e2e.images
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel, MentorData
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.mentor.interactors.update import UpdateMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
+from crudik.application.mentor.update import UpdateMentorRequest
 
 
 async def test_update_mentor_avatar(

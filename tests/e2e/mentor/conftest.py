@@ -1,7 +1,7 @@
 import pytest
 
 from crudik.application.data_model.mentor import MentorContactModel
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
 
 
 @pytest.fixture

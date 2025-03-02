@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from crudik.application.access_token.gateway import AccessTokenGateway
+from crudik.application.gateway.token_gateway import AccessTokenGateway
 
 
 class AccessTokenGatewayImpl(AccessTokenGateway):

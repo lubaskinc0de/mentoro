@@ -3,10 +3,10 @@ from uuid import UUID
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.review import ReviewFullData, convert_full_review_to_dto
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.review.common import ReviewGateway
-from crudik.application.review.errors import ReviewDoesNotExistsError
-from crudik.application.student.gateway import StudentGateway
+from crudik.application.errors.review_errors import ReviewDoesNotExistsError
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.review_gateway import ReviewGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(slots=True, frozen=True)

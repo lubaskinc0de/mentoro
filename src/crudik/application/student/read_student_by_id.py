@@ -3,9 +3,9 @@ from uuid import UUID
 
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.data_model.student import StudentData, convert_student_model_to_dto
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.student.errors import StudentDoesNotExistsError
-from crudik.application.student.gateway import StudentGateway
+from crudik.application.errors.student_errors import StudentDoesNotExistsError
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(slots=True, frozen=True)

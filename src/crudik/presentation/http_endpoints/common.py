@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 
-from crudik.application.common.errors import ApplicationError
+from crudik.application.errors.common import ApplicationError
 from crudik.presentation.http_endpoints.error_info import error_code, error_unique_code
 from crudik.presentation.http_endpoints.mentor import router as mentor_router
 from crudik.presentation.http_endpoints.mentoring_request import (

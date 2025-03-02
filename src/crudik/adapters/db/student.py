@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from crudik.application.student.gateway import StudentGateway
+from crudik.application.gateway.student_gateway import StudentGateway
 from crudik.models.student import Student
 
 

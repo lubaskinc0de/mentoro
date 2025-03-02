@@ -5,9 +5,9 @@ from sqlalchemy import and_, delete, exists, func, literal, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.mentor_contact.gateway import MentorContactGateway
-from crudik.application.mentor_skill.gateway import MentorSkillGateway
+from crudik.application.gateway.mentor_contact import MentorContactGateway
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.mentor_skill import MentorSkillGateway
 from crudik.models.mentor import MatchHistory, Mentor, MentorContact, MentorSkill
 from crudik.models.student import Student
 

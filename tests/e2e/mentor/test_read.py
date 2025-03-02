@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorData
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
 from tests.e2e.conftest import CreatedStudent
 
 

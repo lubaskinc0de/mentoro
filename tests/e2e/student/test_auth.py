@@ -1,7 +1,7 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.student import StudentData
-from crudik.application.student.interactors.sign_in import SignInStudentRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+from crudik.application.student.sign_in import SignInStudentRequest
+from crudik.application.student.sign_up import SignUpStudentRequest
 from tests.e2e.conftest import CreatedStudent
 
 

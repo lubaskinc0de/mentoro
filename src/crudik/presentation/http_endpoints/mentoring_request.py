@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentoring_request import MentoringRequestData
-from crudik.application.mentoring_request.interactors.read_all import ReadStudentMentoringRequest
-from crudik.application.mentoring_request.interactors.send import SendMentoringByStudent, SendMentoringByUserRequest
-from crudik.application.mentoring_request.interactors.verdict import (
+from crudik.application.mentoring_request.read_all import ReadStudentMentoringRequest
+from crudik.application.mentoring_request.send import SendMentoringByStudent, SendMentoringByUserRequest
+from crudik.application.mentoring_request.verdict import (
     VerdictMentoringRequestByMentor,
     VerdictMentoringRequestQuery,
 )

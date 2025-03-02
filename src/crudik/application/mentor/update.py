@@ -5,11 +5,11 @@ from uuid import uuid4
 from pydantic import BaseModel, Field, StringConstraints
 
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
+from crudik.application.common.uow import UoW
 from crudik.application.data_model.mentor import MentorContactModel
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.mentor_contact.gateway import MentorContactGateway
-from crudik.application.mentor_skill.gateway import MentorSkillGateway
-from crudik.application.uow import UoW
+from crudik.application.gateway.mentor_contact import MentorContactGateway
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.mentor_skill import MentorSkillGateway
 from crudik.models.mentor import MentorContact, MentorSkill
 
 

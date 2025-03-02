@@ -3,13 +3,13 @@ from enum import Enum
 from uuid import UUID
 
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
-from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.mentoring_request.errors import (
+from crudik.application.common.uow import UoW
+from crudik.application.errors.mentoring_request import (
     MentoringRequestCannotBeUpdatedError,
     MentoringRequestNotFoundError,
 )
-from crudik.application.mentoring_request.gateway import MentoringRequestGateway
-from crudik.application.uow import UoW
+from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.models.mentoring_request import MentoringRequestType
 
 

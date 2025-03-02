@@ -8,8 +8,8 @@ from faker import Faker
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
+from crudik.application.student.sign_up import SignUpStudentRequest
 
 fake = Faker("ru_RU")
 

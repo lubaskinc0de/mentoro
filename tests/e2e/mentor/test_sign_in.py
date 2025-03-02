@@ -1,6 +1,6 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
-from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.sign_in import SignInMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
 
 
 async def test_success_sign_in(

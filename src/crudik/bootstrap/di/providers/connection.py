@@ -4,7 +4,7 @@ from dishka import AnyOf, Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 from crudik.adapters.config import PostgresqlConfig
-from crudik.application.uow import UoW
+from crudik.application.common.uow import UoW
 
 
 class ConnectionProvider(Provider):

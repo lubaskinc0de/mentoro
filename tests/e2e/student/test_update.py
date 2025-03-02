@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from crudik.adapters.test_api_gateway import TestApiGateway
-from crudik.application.student.interactors.update import UpdateStudentRequest
+from crudik.application.student.update import UpdateStudentRequest
 from tests.e2e.conftest import CreatedStudent
 
 

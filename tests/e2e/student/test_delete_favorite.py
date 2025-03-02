@@ -1,7 +1,7 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel, MentorData
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentorRequest
+from crudik.application.student.swipe_mentor import SwipeMentorRequest
 from crudik.models.swiped_mentor import SwipedMentorType
 from tests.e2e.conftest import CreatedStudent
 

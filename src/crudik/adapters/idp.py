@@ -6,7 +6,7 @@ from fastapi import Request
 from jwt.exceptions import PyJWTError
 
 from crudik.adapters.token_encoder import TokenEncoder
-from crudik.application.common.errors import ApplicationError
+from crudik.application.errors.common import ApplicationError
 
 TOKEN_TYPE = "Bearer"  # noqa: S105
 BEARER_SECTIONS = 2

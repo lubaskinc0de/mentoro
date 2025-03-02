@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from crudik.application.mentoring_request.gateway import MentoringRequestGateway
+from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.models.mentor import Mentor
 from crudik.models.mentoring_request import MentoringRequest
 from crudik.models.student import Student

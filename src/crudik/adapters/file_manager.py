@@ -8,7 +8,7 @@ from miniopy_async import Minio  # type:ignore[import-untyped]
 from miniopy_async.error import MinioException  # type:ignore[import-untyped]
 
 from crudik.adapters.config import FilesConfig
-from crudik.application.common.errors import ApplicationError
+from crudik.application.errors.common import ApplicationError
 
 MINIO_BUCKET_NAME = "images"
 

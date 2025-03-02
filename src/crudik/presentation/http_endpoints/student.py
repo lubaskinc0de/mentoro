@@ -7,20 +7,20 @@ from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, Depends, Path, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from crudik.application.common.errors import ApplicationError
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
-from crudik.application.student.interactors.delete_favorites_mentor import DeleteFavoritesMentor
-from crudik.application.student.interactors.find_mentor import FindMentor
-from crudik.application.student.interactors.read_favorites_mentors import ReadFavoritesMentors
-from crudik.application.student.interactors.read_student import ReadStudent
-from crudik.application.student.interactors.read_student_by_id import ReadStudentById
-from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
-from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
-from crudik.application.student.interactors.swipe_mentor import SwipeMentor, SwipeMentorRequest
-from crudik.application.student.interactors.update import UpdateStudent, UpdateStudentRequest
+from crudik.application.errors.common import ApplicationError
+from crudik.application.student.attach_avatar import AttachAvatarToStudent, StudentAvatarData
+from crudik.application.student.delete_favorites_mentor import DeleteFavoritesMentor
+from crudik.application.student.find_mentor import FindMentor
+from crudik.application.student.read_favorites_mentors import ReadFavoritesMentors
+from crudik.application.student.read_student import ReadStudent
+from crudik.application.student.read_student_by_id import ReadStudentById
+from crudik.application.student.sign_in import SignInStudent, SignInStudentRequest
+from crudik.application.student.sign_up import SignUpStudent, SignUpStudentRequest
+from crudik.application.student.swipe_mentor import SwipeMentor, SwipeMentorRequest
+from crudik.application.student.update import UpdateStudent, UpdateStudentRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(

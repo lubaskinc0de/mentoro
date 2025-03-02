@@ -9,12 +9,12 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.interactors.attach_avatar import AttachAvatarToMentor, MentorAvatarData
-from crudik.application.mentor.interactors.read import ReadMentor
-from crudik.application.mentor.interactors.read_by_id import ReadMentorById
-from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
-from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
-from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
+from crudik.application.mentor.attach_avatar import AttachAvatarToMentor, MentorAvatarData
+from crudik.application.mentor.read import ReadMentor
+from crudik.application.mentor.read_by_id import ReadMentorById
+from crudik.application.mentor.sign_in import SignInMentor, SignInMentorRequest
+from crudik.application.mentor.sign_up import SignUpMentor, SignUpMentorRequest
+from crudik.application.mentor.update import UpdateMentor, UpdateMentorRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
