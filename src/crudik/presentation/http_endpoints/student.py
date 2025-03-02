@@ -25,7 +25,7 @@ from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
     route_class=DishkaRoute,
-    tags=["Student"],
+    tags=["Студенты"],
     prefix="/student",
 )
 MAX_FILE_SIZE = 8 * 1024 * 1024
@@ -46,7 +46,10 @@ class CannotReadFileInfoError(ApplicationError): ...
 security = HTTPBearer(auto_error=False)
 
 
-@router.post("/sign_up")
+@router.post(
+    "/sign_up",
+    description="Авторизация студента",
+)
 async def sign_up_student(
     schema: SignUpStudentRequest,
     interactor: FromDishka[SignUpStudent],
@@ -57,9 +60,10 @@ async def sign_up_student(
 
 @router.post(
     "/sign_in",
+    description="Регистрация студента",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -74,9 +78,10 @@ async def sign_in_student(
 
 @router.put(
     "/attach",
+    description="Обновление фотографии ментора",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -111,9 +116,10 @@ async def attach_avatar(
 
 @router.patch(
     "/",
+    description="Обновление данных студента",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -129,9 +135,10 @@ async def update_student(
 
 @router.get(
     "/me",
+    description="Получение данных о себе",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -146,9 +153,10 @@ async def read_student(
 
 @router.get(
     "/find",
+    description="Поиск менторов для студента",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -163,13 +171,14 @@ async def find_mentor_for_student(
 
 @router.post(
     "/swipe_mentor",
+    description="Пролистывание ментора",
     responses={
         404: {
-            "description": "Mentor not found",
+            "description": "Ментор не найден",
             "model": ErrorModel,
         },
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -185,9 +194,10 @@ async def swipe_mentor(
 
 @router.get(
     "/favorite",
+    description="Получение всех избранных менторов студента",
     responses={
-        404: {
-            "description": "Mentor not found",
+        401: {
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -201,18 +211,19 @@ async def read_favorite_mentors(
 
 @router.delete(
     "/favorite/{mentor_id}",
+    description="Удаление избранного ментора студента",
     responses={
         204: {
-            "description": "Delete favorite mentor",
+            "description": "Избранный ментор успешно удален",
         },
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
 )
 async def delete_favorite_mentor(
-    mentor_id: Annotated[UUID, Path()],
+    mentor_id: Annotated[UUID, Path(description="Идентификатор ментора")],
     interactor: FromDishka[DeleteFavoritesMentor],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
@@ -221,20 +232,21 @@ async def delete_favorite_mentor(
 
 @router.get(
     "/{student_id}",
+    description="Получение ментером данных о конкретном студенте",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
         404: {
-            "description": "Student not found",
+            "description": "Студент не найден",
             "model": ErrorModel,
         },
     },
 )
 async def read_student_by_id(
     command: FromDishka[ReadStudentById],
-    student_id: UUID,
+    student_id: Annotated[UUID, Path(description="Идентификатор студента")],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> StudentData:
     """Read student by id (need mentor auth)."""

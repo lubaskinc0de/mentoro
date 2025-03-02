@@ -3,7 +3,7 @@ import logging
 from dataclasses import dataclass
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.common.uow import UoW
@@ -16,8 +16,8 @@ from crudik.models.swiped_mentor import SwipedMentor, SwipedMentorType
 
 
 class SwipeMentorRequest(BaseModel):
-    mentor_id: UUID
-    type: SwipedMentorType
+    mentor_id: UUID = Field(description="Идентификатор ментора")
+    type: SwipedMentorType = Field(description="Тип свайпа")
 
 
 @dataclass(frozen=True, slots=True)

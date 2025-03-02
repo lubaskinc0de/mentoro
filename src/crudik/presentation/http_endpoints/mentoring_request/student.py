@@ -12,7 +12,7 @@ from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
     prefix="/student/request",
-    tags=["Mentoring Requests"],
+    tags=["Заявки студента на ментерство"],
     route_class=DishkaRoute,
 )
 security = HTTPBearer(auto_error=False)
@@ -20,13 +20,14 @@ security = HTTPBearer(auto_error=False)
 
 @router.post(
     "",
+    description="Создание заявки на ментерство студентом",
     responses={
         404: {
-            "description": "Mentor not found",
+            "description": "Ментор не найден",
             "model": ErrorModel,
         },
         401: {
-            "description": "Unauthorized",
+            "description": "Студент не авторизован",
             "model": ErrorModel,
         },
     },
@@ -40,7 +41,16 @@ async def send_mentoring(
     await interactor.execute(schema)
 
 
-@router.get("")
+@router.get(
+    "",
+    description="Получение всех отправленных запросов на ментерство студента",
+    responses={
+        401: {
+            "description": "Студент не авторизован",
+            "model": ErrorModel,
+        },
+    },
+)
 async def get_all_requests(
     interactor: FromDishka[ReadStudentMentoringRequests],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],

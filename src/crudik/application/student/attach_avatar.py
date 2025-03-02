@@ -10,7 +10,7 @@ from crudik.application.gateway.student_gateway import StudentGateway
 
 
 class StudentAvatarData(BaseModel):
-    avatar_url: HttpUrl = Field(description="Student avatar url")
+    avatar_url: HttpUrl = Field(description="Ссылка на аватарку студента")
 
 
 @dataclass(slots=True, frozen=True)

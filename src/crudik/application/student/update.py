@@ -9,12 +9,12 @@ from crudik.application.gateway.student_gateway import StudentGateway
 
 
 class UpdateStudentRequest(BaseModel):
-    age: int | None = Field(ge=0, le=120, default=None, description="Student age")
+    age: int | None = Field(ge=0, le=120, default=None, description="Новый возраст студента")
     interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] | None = Field(
         min_length=1,
         max_length=100,
         default=None,
-        description="Student interests",
+        description="Новые интересы студента",
     )
 
 

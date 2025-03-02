@@ -13,7 +13,7 @@ from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
     prefix="/mentor/request",
-    tags=["Mentoring Requests"],
+    tags=["Заявки ментора на ментерство"],
     route_class=DishkaRoute,
 )
 security = HTTPBearer(auto_error=False)
@@ -21,13 +21,14 @@ security = HTTPBearer(auto_error=False)
 
 @router.post(
     "/verdict",
+    description="Принятие или отклонение заявки на ментерство",
     responses={
         404: {
-            "description": "Mentor not found",
+            "description": "Ментор не найден",
             "model": ErrorModel,
         },
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },

@@ -2,7 +2,7 @@ import datetime
 from dataclasses import dataclass
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.common.uow import UoW
@@ -13,7 +13,7 @@ from crudik.models.mentoring_request import MentoringRequest, MentoringRequestTy
 
 
 class SendMentoringByUserRequest(BaseModel):
-    mentor_id: UUID
+    mentor_id: UUID = Field(description="Идентификатор ментора")
 
 
 @dataclass(frozen=True, slots=True)

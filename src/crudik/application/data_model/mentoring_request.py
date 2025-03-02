@@ -8,7 +8,7 @@ from crudik.models.mentoring_request import MentoringRequestType
 
 
 class MentoringRequestData(BaseModel):
-    id: UUID = Field(description="Mentorign request id")
-    type: MentoringRequestType = Field(description="Mentorign type status")
-    created_at: datetime = Field(description="Mentoring request create at")
-    mentor: MentorData = Field(description="Mentorign request mentor data")
+    id: UUID = Field(description="Идентификатор заявки на ментерство")
+    type: MentoringRequestType = Field(description="Тип заявки на ментерство")
+    created_at: datetime = Field(description="Дата создания заявки на ментерство")
+    mentor: MentorData = Field(description="Данные ментора")

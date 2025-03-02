@@ -9,19 +9,19 @@ from crudik.models.mentor import Mentor, MentorContact, MentorSkill
 
 
 class MentorContactModel(BaseModel):
-    url: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(description="Contact url")
+    url: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(description="Ссылка для связи")
     social_network: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(
-        description="Contact social network name",
+        description="Социальная сеть",
     )
 
 
 class MentorData(BaseModel):
-    id: UUID = Field(description="Id mentor")
-    full_name: str = Field(description="Mentor full name")
-    contacts: list[MentorContactModel] = Field(description="Mentor contatcs")
-    skills: list[str] = Field(description="Mentor skills")
-    description: str | None = Field(description="Mentor description", default=None)
-    photo_url: str | None = Field(description="Mentor photo url", default=None)
+    id: UUID = Field(description="Идентификатор ментор")
+    full_name: str = Field(description="Полное имя ментора")
+    contacts: list[MentorContactModel] = Field(description="Контакты ментора")
+    skills: list[str] = Field(description="Скиллы ментора")
+    description: str | None = Field(default=None, description="Описание ментора")
+    photo_url: str | None = Field(default=None, description="Ссылка на аватарку ментора")
 
 
 convert_mentors_to_dto = get_converter(

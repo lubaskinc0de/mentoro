@@ -10,7 +10,7 @@ from crudik.application.gateway.mentor_gateway import MentorGateway
 
 
 class MentorAvatarData(BaseModel):
-    photo_url: HttpUrl = Field(description="Mentor avatar url")
+    photo_url: HttpUrl = Field(description="Сылка на аватарку ментора")
 
 
 @dataclass(slots=True, frozen=True)

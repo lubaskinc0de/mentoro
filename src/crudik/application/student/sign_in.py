@@ -11,7 +11,7 @@ from crudik.application.gateway.token_gateway import AccessTokenGateway
 
 
 class SignInStudentRequest(BaseModel):
-    full_name: str = Field(min_length=2, max_length=120, description="Student full name")
+    full_name: str = Field(min_length=2, max_length=120, description="Полное имя студента")
 
 
 @dataclass(frozen=True, slots=True)

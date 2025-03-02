@@ -14,14 +14,14 @@ from crudik.models.student import Student
 
 
 class SignUpStudentRequest(BaseModel):
-    full_name: str = Field(min_length=2, max_length=120, description="Student full name")
-    age: int | None = Field(ge=0, le=120, default=None, description="Student age")
+    full_name: str = Field(min_length=2, max_length=120, description="Полное имя студента")
+    age: int | None = Field(ge=0, le=120, default=None, description="Возраст студента")
     interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
         min_length=1,
         max_length=100,
-        description="Student interests",
+        description="Интересы студента",
     )
-    description: str | None = Field(max_length=150, min_length=10, description="Student description", default=None)
+    description: str | None = Field(max_length=150, min_length=10, description="Описание студента", default=None)
 
 
 @dataclass(frozen=True, slots=True)

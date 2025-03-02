@@ -14,16 +14,16 @@ from crudik.models.mentor import MentorContact, MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
-    description: str | None = Field(min_length=10, max_length=2000, description="Mentor description")
+    description: str | None = Field(min_length=10, max_length=2000, description="Новое описание ментора")
     contacts: list[MentorContactModel] = Field(
         min_length=1,
         max_length=10,
-        description="Mentor contacts",
+        description="Новые контакты ментора",
     )
     skills: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
         min_length=1,
         max_length=100,
-        description="Mentor skills",
+        description="Новые скиллы ментора",
     )
 
 

@@ -4,7 +4,7 @@ from uuid import UUID
 import filetype  # type: ignore
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, Path, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentor import MentorData
@@ -25,7 +25,7 @@ from crudik.presentation.http_endpoints.student import (
 
 router = APIRouter(
     route_class=DishkaRoute,
-    tags=["Mentor"],
+    tags=["Ментор"],
     prefix="/mentor",
 )
 
@@ -33,7 +33,10 @@ security = HTTPBearer(auto_error=False)
 MAX_FILE_SIZE = 8 * 1024 * 1024
 
 
-@router.post("/sign_up")
+@router.post(
+    "/sign_up",
+    description="Авторизация ментора",
+)
 async def sign_up_mentor(
     schema: SignUpMentorRequest,
     interactor: FromDishka[SignUpMentor],
@@ -44,9 +47,10 @@ async def sign_up_mentor(
 
 @router.post(
     "/sign_in",
+    description="Регистрация ментора",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },
@@ -61,9 +65,10 @@ async def sign_in_mentor(
 
 @router.get(
     "/me",
+    description="Получение данных ментора по токену",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },
@@ -78,9 +83,10 @@ async def read_mentor(
 
 @router.put(
     "/attach",
+    description="Загрузка фотографии ментора",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },
@@ -115,9 +121,10 @@ async def attach_avatar(
 
 @router.put(
     "/",
+    description="Обновление данных ментора",
     responses={
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },
@@ -133,20 +140,21 @@ async def update_mentor(
 
 @router.get(
     "/{mentor_id}",
+    description="Получение данных ментора по идентификатору ментора",
     responses={
         404: {
-            "description": "Mentor not found",
+            "description": "Не найден ментор",
             "model": ErrorModel,
         },
         401: {
-            "description": "Unauthorized",
+            "description": "Ментор не авторизован",
             "model": ErrorModel,
         },
     },
 )
 async def read_mentor_by_id(
     command: FromDishka[ReadMentorById],
-    mentor_id: UUID,
+    mentor_id: Annotated[UUID, Path(description="Идентификатор ментора")],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData:
     """Read mentor by id (need student auth)."""

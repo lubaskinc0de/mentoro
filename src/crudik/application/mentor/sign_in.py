@@ -11,7 +11,7 @@ from crudik.application.gateway.token_gateway import AccessTokenGateway
 
 
 class SignInMentorRequest(BaseModel):
-    full_name: str = Field(min_length=2, max_length=120, description="Mentor full name")
+    full_name: str = Field(min_length=2, max_length=120, description="Полное имя ментора")
 
 
 @dataclass(frozen=True, slots=True)
