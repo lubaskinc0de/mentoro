@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
@@ -38,9 +40,35 @@ async def test_read_by_id(api_gateway: TestApiGateway) -> None:
         mentor_token,
         student_id,
     )
+    assert get_student_response.status_code == 200
     student = get_student_response.model
     assert student is not None
 
     assert student.full_name == student_data.full_name
     assert student.id == student_id
     assert student.interests == student_data.interests
+
+
+async def test_read_by_id_not_exists(api_gateway: TestApiGateway) -> None:
+    mentor_data = SignUpMentorRequest(
+        full_name="Vasiliy Skilled 1",
+        age=32,
+        description="I'm very expierenced mentor",
+        contacts=[
+            MentorContactModel(
+                social_network="tg",
+                url="https://t.me/lubaskinc0de",
+            ),
+        ],
+        skills=["expierence", "freebsd", "english"],
+    )
+    sign_up_mentor_response = await api_gateway.sign_up_mentor(mentor_data)
+    assert sign_up_mentor_response.status_code == 200
+    assert sign_up_mentor_response.model is not None
+
+    mentor_token = sign_up_mentor_response.model.access_token
+    get_student_response = await api_gateway.student_get_by_id(
+        mentor_token,
+        uuid4(),
+    )
+    assert get_student_response.status_code == 404

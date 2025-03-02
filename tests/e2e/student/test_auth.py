@@ -1,7 +1,7 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from tests.e2e.student.conftest import CreatedStudent
+from tests.e2e.conftest import CreatedStudent
 
 
 async def test_student_signup(api_gateway: TestApiGateway) -> None:
