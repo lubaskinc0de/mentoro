@@ -4,10 +4,9 @@ from uuid import UUID, uuid4
 
 from pydantic import BaseModel
 
-from crudik.adapters.idp import TokenStudentIdProvider
+from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
 from crudik.models.mentoring_request import MentoringRequest, MentoringRequestType
@@ -31,7 +30,7 @@ class SwipeMentor:
         student = await self.student_gateway.get_by_id(student_id)
 
         if student is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         mentor = await self.mentor_gateway.get_by_id(request.mentor_id)
 

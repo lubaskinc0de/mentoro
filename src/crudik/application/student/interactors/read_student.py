@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-from crudik.adapters.idp import TokenStudentIdProvider
+from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.student import StudentData, convert_student_model_to_dto
-from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.application.student.gateway import StudentGateway
 
 
@@ -14,6 +13,6 @@ class ReadStudent:
     async def execute(self) -> StudentData:
         student = await self.student_gateway.get_by_id(await self.idp.get_student_id())
         if student is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         return convert_student_model_to_dto(student)

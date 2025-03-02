@@ -1,4 +1,5 @@
 from typing import Annotated
+from uuid import UUID
 
 import filetype  # type: ignore
 from dishka import FromDishka
@@ -10,6 +11,7 @@ from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.interactors.attach_avatar import AttachAvatarToMentor, MentorAvatarData
 from crudik.application.mentor.interactors.read import ReadMentor
+from crudik.application.mentor.interactors.read_by_id import ReadMentorById
 from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
 from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
@@ -75,6 +77,27 @@ async def read_mentor(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> MentorData:
     return await command.execute()
+
+
+@router.get(
+    "/{mentor_id}",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_mentor_by_id(
+    command: FromDishka[ReadMentorById],
+    mentor_id: UUID,
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> MentorData:
+    return await command.execute(mentor_id)
 
 
 @router.put(

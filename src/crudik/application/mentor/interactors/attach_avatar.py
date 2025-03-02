@@ -4,8 +4,7 @@ from typing import BinaryIO
 from pydantic import BaseModel, Field, HttpUrl
 
 from crudik.adapters.file_manager import MinioFileManager
-from crudik.adapters.idp import TokenMentorIdProvider
-from crudik.application.mentor.errors import MentorDoesNotExistsError
+from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.uow import UoW
 
@@ -29,7 +28,7 @@ class AttachAvatarToMentor:
     ) -> MentorAvatarData:
         mentor = await self.mentor_gateway.get_by_id(await self.idp.get_mentor_id())
         if mentor is None:
-            raise MentorDoesNotExistsError
+            raise UnauthorizedError
 
         file_path = await self.file_manager.upload(file, ext, size)
         mentor.photo_url = file_path

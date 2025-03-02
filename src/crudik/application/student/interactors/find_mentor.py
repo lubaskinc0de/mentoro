@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
-from crudik.adapters.idp import TokenStudentIdProvider
+from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.mentor import MentorData, convert_mentor_to_dto
 from crudik.application.mentor.gateway import MentorGateway
-from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
 from crudik.models.mentor import MatchHistory
@@ -19,7 +18,7 @@ class FindMentor:
     async def execute(self) -> MentorData | None:
         student = await self.student_gateway.get_by_id(await self.idp.get_student_id())
         if student is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         match = await self.mentor_gateway.get_match(student.id)
         if match is None:

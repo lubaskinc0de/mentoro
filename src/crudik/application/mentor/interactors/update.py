@@ -4,10 +4,9 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field, StringConstraints
 
-from crudik.adapters.idp import TokenMentorIdProvider
+from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.mentor_skill.gateway import MentorSkillGateway
-from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.application.uow import UoW
 from crudik.models.mentor import MentorSkill
 
@@ -38,7 +37,7 @@ class UpdateMentor:
         mentor_id = await self.id_provider.get_mentor_id()
         mentor = await self.gateway.get_by_id(mentor_id)
         if mentor is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         mentor.age = request.age
         mentor.description = request.description

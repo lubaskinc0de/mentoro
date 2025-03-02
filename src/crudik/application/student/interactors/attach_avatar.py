@@ -4,8 +4,7 @@ from typing import BinaryIO
 from pydantic import BaseModel, Field, HttpUrl
 
 from crudik.adapters.file_manager import MinioFileManager
-from crudik.adapters.idp import TokenStudentIdProvider
-from crudik.application.student.errors import StudentDoesNotExistsError
+from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
 
@@ -29,7 +28,7 @@ class AttachAvatarToStudent:
     ) -> StudentAvatarData:
         student = await self.student_gateway.get_by_id(await self.idp.get_student_id())
         if student is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         file_path = await self.file_manager.upload(file, ext, size)
         student.avatar_url = file_path

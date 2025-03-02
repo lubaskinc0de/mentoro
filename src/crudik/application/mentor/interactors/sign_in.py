@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, Field
 
+from crudik.adapters.idp import UnauthorizedError
 from crudik.adapters.token_encoder import TokenEncoder
 from crudik.application.access_token.gateway import AccessTokenGateway
 from crudik.application.data_model.token_data import TokenResponse
-from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.uow import UoW
 
@@ -24,7 +24,7 @@ class SignInMentor:
     async def execute(self, request: SignInMentorRequest) -> TokenResponse:
         mentor = await self.mentor_gateway.get_by_name(request.full_name)
         if mentor is None:
-            raise MentorDoesNotExistsError
+            raise UnauthorizedError
 
         encoded_access_token = self.encryptor.encrypt(mentor.id)
         await self.uow.commit()

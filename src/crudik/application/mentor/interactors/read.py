@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-from crudik.adapters.idp import TokenMentorIdProvider
+from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.data_model.mentor import MentorData, convert_mentor_to_dto
-from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
 
 
@@ -16,6 +15,6 @@ class ReadMentor:
         mentor = await self.gateway.get_by_id(mentor_id)
 
         if mentor is None:
-            raise MentorDoesNotExistsError
+            raise UnauthorizedError
 
         return convert_mentor_to_dto(mentor)

@@ -3,8 +3,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field, StringConstraints
 
-from crudik.adapters.idp import TokenStudentIdProvider
-from crudik.application.student.errors import StudentDoesNotExistsError
+from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
 
@@ -28,7 +27,7 @@ class UpdateStudent:
         student_id = await self.student_id_provider.get_student_id()
         student = await self.student_gateway.get_by_id(student_id)
         if student is None:
-            raise StudentDoesNotExistsError
+            raise UnauthorizedError
 
         student.age = request.age
         student.interests = request.interests
