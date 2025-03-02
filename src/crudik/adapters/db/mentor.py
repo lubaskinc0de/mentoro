@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import and_, delete, exists, func, literal, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.models.mentor import MatchHistory, Mentor, MentorSkill
@@ -48,7 +48,7 @@ class MentorGatewayImpl(MentorGateway):
             .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
             .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
             .limit(1)
-            .options(joinedload(Mentor.skills))
+            .options(selectinload(Mentor.skills))
         )
 
         result = await self._session.execute(query)
