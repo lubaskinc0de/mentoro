@@ -162,7 +162,7 @@ class TestApiGateway:
 
     async def send_mentoring(self, schema: SendMentoringRequest, token: str) -> Response[None]:
         async with self._session.post(
-            "/student/request",
+            "/mentor/request",
             headers={"Authorization": f"Bearer {token}"},
             json=schema.model_dump(mode="json"),
         ) as response:
@@ -170,7 +170,7 @@ class TestApiGateway:
 
     async def read_student_requests(self, token: str) -> Response[list[MentoringRequestData]]:
         async with self._session.get(
-            "/student/my_requests",
+            "/mentor/request",
             headers={"Authorization": f"Bearer {token}"},
         ) as response:
             if response.status >= 400:

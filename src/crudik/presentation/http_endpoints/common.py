@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from crudik.application.common.errors import ApplicationError
 from crudik.presentation.http_endpoints.error_info import error_code, error_unique_code
 from crudik.presentation.http_endpoints.mentor import router as mentor_router
+from crudik.presentation.http_endpoints.mentoring_request import router as mentoring_request_router
 from crudik.presentation.http_endpoints.root import router as root_router
 from crudik.presentation.http_endpoints.student import router as student_router
 
@@ -46,6 +47,7 @@ async def validation_exception_handler(_request: Request, exc: RequestValidation
 def include_routers(app: FastAPI) -> None:
     app.include_router(root_router)
     app.include_router(student_router)
+    app.include_router(mentoring_request_router)
     app.include_router(mentor_router)
 
 
