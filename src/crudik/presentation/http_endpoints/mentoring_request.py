@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentoring_request import MentoringRequestData
-from crudik.application.mentoring_request.interactors.read_all import ReadAllMentoringRequest
+from crudik.application.mentoring_request.interactors.read_all import ReadStudentMentoringRequest
 from crudik.application.mentoring_request.interactors.send import SendMentoring, SendMentoringRequest
 from crudik.application.mentoring_request.interactors.verdict import (
     VerdictMentoringRequest,
@@ -51,7 +51,7 @@ async def send_mentoring(
 
 @student_router.get("")
 async def get_all_requests(
-    interactor: FromDishka[ReadAllMentoringRequest],
+    interactor: FromDishka[ReadStudentMentoringRequest],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> list[MentoringRequestData]:
     return await interactor.execute()
