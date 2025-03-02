@@ -9,6 +9,7 @@ from crudik.application.student.interactors.find_mentor import FindMentor
 from crudik.application.student.interactors.read_student import ReadStudent
 from crudik.application.student.interactors.sign_in import SignInStudent
 from crudik.application.student.interactors.sign_up import SignUpStudent
+from crudik.application.student.interactors.swipe_mentor import SwipeMentor
 from crudik.application.student.interactors.update import UpdateStudent
 
 
@@ -26,4 +27,5 @@ class InteractorsProvider(Provider):
         ReadMentor,
         FindMentor,
         AttachAvatarToMentor,
+        SwipeMentor,
     )

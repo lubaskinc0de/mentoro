@@ -41,6 +41,7 @@ class UpdateMentor:
             raise StudentDoesNotExistsError
 
         mentor.age = request.age
+        mentor.description = request.description
         mentor.contacts = request.contacts
 
         await self.skill_gateway.delete_by_mentor_id(mentor.id)
