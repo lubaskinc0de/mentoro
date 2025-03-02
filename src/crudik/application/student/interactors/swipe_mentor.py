@@ -1,4 +1,5 @@
 import datetime
+import logging
 from dataclasses import dataclass
 from uuid import UUID, uuid4
 
@@ -9,6 +10,7 @@ from crudik.application.mentor.errors import MentorDoesNotExistsError
 from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
+from crudik.models.mentor import MatchHistory
 from crudik.models.mentoring_request import MentoringRequest, MentoringRequestType
 from crudik.models.swiped_mentor import SwipedMentor, SwipedMentorType
 
@@ -37,6 +39,10 @@ class SwipeMentor:
         if mentor is None:
             raise MentorDoesNotExistsError
 
+        if await self.mentor_gateway.exists_in_history(student.id, mentor.id):
+            logging.info("Swipe already exists")
+            return
+
         swiped_mentor = SwipedMentor(
             id=uuid4(),
             mentor_id=mentor.id,
@@ -56,4 +62,10 @@ class SwipeMentor:
             )
             self.uow.add(mentoring_request)
 
+        logging.info("Adding %s to history", mentor.id)
+        history_record = MatchHistory(
+            student_id=student.id,
+            mentor_id=mentor.id,
+        )
+        self.uow.add(history_record)
         await self.uow.commit()

@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Annotated
 from uuid import UUID
 
@@ -22,6 +23,15 @@ class MentorData(BaseModel):
     description: str | None = Field(description="Mentor description", default=None)
     photo_url: str | None = Field(description="Mentor photo url", default=None)
 
+
+convert_mentors_to_dto = get_converter(
+    Sequence[Mentor],
+    list[MentorData],
+    recipe=[
+        coercer(MentorSkill, str, lambda x: x.text),
+        coercer(MentorContact, str, lambda x: x.url),
+    ],
+)
 
 convert_mentor_to_dto = get_converter(
     Mentor,

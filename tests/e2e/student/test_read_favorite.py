@@ -22,13 +22,7 @@ mentors = [
         full_name="Vasiliy Skilled 3",
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
-        skills=["english", "maths"],
-    ),
-    SignUpMentorRequest(
-        full_name="Vasiliy Skilled 4",
-        description="I'm very expierenced mentor",
-        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
-        skills=["english", "russian"],
+        skills=["english", "maths", "skills"],
     ),
 ]
 
@@ -38,19 +32,20 @@ async def test_success_read_favorite(
     api_gateway: TestApiGateway,
 ) -> None:
     for mentor in mentors:
-        await api_gateway.sign_up_mentor(mentor)
+        resp = await api_gateway.sign_up_mentor(mentor)
+        assert resp.status_code == 200
 
-    for _ in mentors:
-        response_find_mentor = await api_gateway.find_student(created_student.token.access_token)
+    response_find_mentor = await api_gateway.find_student(created_student.token.access_token)
+    assert response_find_mentor.status_code == 200
+    assert response_find_mentor.model is not None
+    assert len(response_find_mentor.model) == len(mentors)
 
-        assert response_find_mentor.status_code == 200
-        assert response_find_mentor.model is not None
-
+    for m in response_find_mentor.model:
         await api_gateway.swipe_mentor(
             student_token=created_student.token.access_token,
             schema=SwipeMentorRequest(
                 type=SwipedMentorType.FAVORITES,
-                mentor_id=response_find_mentor.model.id,
+                mentor_id=m.id,
             ),
         )
 
