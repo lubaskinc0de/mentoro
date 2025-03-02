@@ -30,4 +30,3 @@ class SignInMentor:
         await self.uow.commit()
 
         return TokenResponse(access_token=encoded_access_token, id=mentor.id)
-

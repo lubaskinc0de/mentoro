@@ -1,8 +1,8 @@
 import pytest
 
+from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from crudik.adapters.test_api_gateway import TestApiGateway
 
 mentors = [
     SignUpMentorRequest(

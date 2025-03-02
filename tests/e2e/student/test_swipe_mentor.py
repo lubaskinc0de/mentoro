@@ -3,11 +3,11 @@ from uuid import UUID
 
 import pytest
 
+from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
 from crudik.models.swiped_mentor import SwipedMentorType
-from crudik.adapters.test_api_gateway import TestApiGateway
 
 
 @dataclass

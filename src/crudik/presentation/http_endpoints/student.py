@@ -1,9 +1,10 @@
 from typing import Annotated
+from uuid import UUID
 
 import filetype  # type: ignore[import-untyped]
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, Query, UploadFile
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.common.errors import ApplicationError
@@ -12,7 +13,9 @@ from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
+from crudik.application.student.interactors.delete_favorites_mentor import DeleteFavoritesMentor
 from crudik.application.student.interactors.find_mentor import FindMentor
+from crudik.application.student.interactors.read_favorites_mentors import ReadFavoritesMentors
 from crudik.application.student.interactors.read_student import ReadStudent
 from crudik.application.student.interactors.sign_in import SignInStudent, SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudent, SignUpStudentRequest
@@ -122,6 +125,7 @@ async def attach_avatar(
 async def update_student(
     request: UpdateStudentRequest,
     interactor: FromDishka[UpdateStudent],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     await interactor.execute(request)
 
@@ -175,12 +179,14 @@ async def find_mentor_for_student(
         },
         401: {
             "description": "Unauthorized",
+            "model": ErrorModel,
         },
     },
 )
 async def swipe_mentor(
     schema: SwipeMentorRequest,
     interactor: FromDishka[SwipeMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     await interactor.execute(schema)
 
@@ -197,5 +203,41 @@ async def swipe_mentor(
 async def update_mentor(
     request: UpdateMentorRequest,
     interactor: FromDishka[UpdateMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     await interactor.execute(request)
+
+
+@router.get(
+    "/favorite",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_favorite_mentors(
+    interactor: FromDishka[ReadFavoritesMentors],
+) -> list[MentorData]:
+    return await interactor.execute()
+
+
+@router.delete(
+    "/favorite/{mentor_id}",
+    responses={
+        204: {
+            "description": "Delete favorite mentor",
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def delete_favorite_mentor(
+    mentor_id: Annotated[UUID, Query()],
+    interactor: FromDishka[DeleteFavoritesMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> None:
+    await interactor.execute(mentor_id)
