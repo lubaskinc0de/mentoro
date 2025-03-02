@@ -47,11 +47,3 @@ async def mentor_reviews(
 ) -> list[ReviewFullData]:
     return await interactor.execute(mentor_id)
 
-
-@router.get("/{review_id}")
-async def read_review(
-    interactor: FromDishka[ReadReview],
-    review_id: UUID,
-    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> ReviewFullData:
-    return await interactor.execute(review_id)
