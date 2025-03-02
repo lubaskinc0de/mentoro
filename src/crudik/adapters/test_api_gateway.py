@@ -162,7 +162,7 @@ class TestApiGateway:
 
     async def send_mentoring(self, schema: SendMentoringByUserRequest, token: str) -> Response[None]:
         async with self._session.post(
-            "/mentor/request",
+            "/student/request",
             headers={"Authorization": f"Bearer {token}"},
             json=schema.model_dump(mode="json"),
         ) as response:
