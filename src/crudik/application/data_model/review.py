@@ -10,6 +10,7 @@ from crudik.models.mentor import MentorContact, MentorReview, MentorSkill
 
 
 class ReviewData(BaseModel):
+    review_id: UUID
     mentor_id: UUID
     student_id: UUID
     text: str

@@ -22,6 +22,7 @@ error_code = {
     CannotReadFileSizeError: 400,
     CannotReadFileInfoError: 400,
     AccessDeniedError: 403,
+    ReviewDoesNotExistsError: 404,
 }
 error_unique_code = {
     ApplicationError: "APPLICATION_ERROR",
