@@ -96,7 +96,7 @@ async def fill_students(gateway: TestApiGateway) -> None:
 async def fill_data() -> None:
     async with ClientSession(
         base_url=os.environ["EXTERNAL_API_URL"],
-        connector=aiohttp.TCPConnector(ssl=False),
+        connector=aiohttp.TCPConnector(ssl=bool(int(os.environ.get("USE_SSL", False)))),
     ) as session:
         gateway = TestApiGateway(session)
         await fill_mentors(gateway)
