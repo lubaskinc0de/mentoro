@@ -22,4 +22,3 @@ class FindMentor:
         match = await self.mentor_gateway.get_match(student.id)
         mentors: list[MentorData] = convert_mentors_to_dto(match)
         return mentors
-

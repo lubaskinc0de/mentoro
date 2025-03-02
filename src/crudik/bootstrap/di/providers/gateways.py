@@ -2,9 +2,9 @@ from dishka import Provider, Scope, WithParents, provide_all
 
 from crudik.adapters.db.access_token import AccessTokenGatewayImpl
 from crudik.adapters.db.mentor import MentorContactGatewayImpl, MentorGatewayImpl, MentorSkillGatewayImpl
+from crudik.adapters.db.mentoring_request import MentorignRequestGatewayImpl
 from crudik.adapters.db.student import StudentGatewayImpl
 from crudik.adapters.db.swiped_gateway import SwipedMentorGatewayImpl
-from crudik.adapters.db.mentoring_request import MentorignRequestGatewayImpl
 
 
 class GatewayProvider(Provider):

@@ -111,8 +111,7 @@ class TestApiGateway:
     async def find_student(self, token: str) -> Response[list[MentorData]]:
         async with self._session.get("/student/find", headers={"Authorization": f"Bearer {token}"}) as response:
             return Response(
-                status_code=response.status,
-                model=[MentorData.model_validate(x) for x in await response.json()]
+                status_code=response.status, model=[MentorData.model_validate(x) for x in await response.json()]
             )
 
     async def mentor_update_avatar(self, token: str, file: BufferedReader) -> Response[MentorAvatarData]:
