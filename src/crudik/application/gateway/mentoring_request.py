@@ -11,5 +11,9 @@ class MentoringRequestGateway(Protocol):
         raise NotImplementedError
 
     @abstractmethod
+    async def read_all_by_mentor(self, mentor_id: UUID) -> list[MentoringRequest]:
+        raise NotImplementedError
+
+    @abstractmethod
     async def get_by_id(self, unique_id: UUID) -> MentoringRequest | None:
         raise NotImplementedError

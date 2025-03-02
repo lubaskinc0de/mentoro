@@ -8,7 +8,7 @@ from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(frozen=True, slots=True)
-class ReadStudentMentoringRequest:
+class ReadStudentMentoringRequests:
     student_gateway: StudentGateway
     gateway: MentoringRequestGateway
     id_provider: TokenStudentIdProvider

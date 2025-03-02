@@ -6,7 +6,7 @@ from crudik.application.mentor.read_by_id import ReadMentorById
 from crudik.application.mentor.sign_in import SignInMentor
 from crudik.application.mentor.sign_up import SignUpMentor
 from crudik.application.mentor.update import UpdateMentor
-from crudik.application.mentoring_request.read_all import ReadStudentMentoringRequest
+from crudik.application.mentoring_request.read_all import ReadStudentMentoringRequests
 from crudik.application.mentoring_request.send import SendMentoringByStudent
 from crudik.application.review.add_review import AddReview
 from crudik.application.review.delete_review import DeleteReview
@@ -45,7 +45,7 @@ class InteractorsProvider(Provider):
         ReadFavoritesMentors,
         DeleteFavoritesMentor,
         SendMentoringByStudent,
-        ReadStudentMentoringRequest,
+        ReadStudentMentoringRequests,
         AddReview,
         DeleteReview,
         ReadMentorReviews,

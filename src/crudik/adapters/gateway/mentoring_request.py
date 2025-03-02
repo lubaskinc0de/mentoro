@@ -29,6 +29,21 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
 
+    async def read_all_by_mentor(self, mentor_id: UUID) -> list[MentoringRequest]:
+        stmt = (
+            select(MentoringRequest)
+            .join(Student, Student.id == MentoringRequest.student_id)
+            .join(Mentor, Mentor.id == MentoringRequest.mentor_id)
+            .where(MentoringRequest.mentor_id == mentor_id)
+            .options(
+                selectinload(MentoringRequest.mentor).selectinload(Mentor.contacts),
+                selectinload(MentoringRequest.mentor).selectinload(Mentor.skills),
+            )
+            .order_by(MentoringRequest.created_at)
+        )
+        result = await self._session.execute(stmt)
+        return list(result.scalars().all())
+
     async def get_by_id(self, unique_id: UUID) -> MentoringRequest | None:
         stmt = select(MentoringRequest).where(MentoringRequest.id == unique_id)
         result = await self._session.execute(stmt)
