@@ -8,26 +8,17 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.mentoring_request.read_all import ReadStudentMentoringRequest
 from crudik.application.mentoring_request.send import SendMentoringByStudent, SendMentoringByUserRequest
-from crudik.application.mentoring_request.verdict import (
-    VerdictMentoringRequestByMentor,
-    VerdictMentoringRequestQuery,
-)
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
-mentor_router = APIRouter(
-    prefix="/mentor/request",
-    tags=["Mentoring Requests"],
-    route_class=DishkaRoute,
-)
-student_router = APIRouter(
+router = APIRouter(
     prefix="/student/request",
-    tags=["Student Requests"],
+    tags=["Mentoring Requests"],
     route_class=DishkaRoute,
 )
 security = HTTPBearer(auto_error=False)
 
 
-@mentor_router.post(
+@router.post(
     "",
     responses={
         404: {
@@ -49,30 +40,9 @@ async def send_mentoring(
     await interactor.execute(schema)
 
 
-@student_router.get("")
+@router.get("")
 async def get_all_requests(
     interactor: FromDishka[ReadStudentMentoringRequest],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> list[MentoringRequestData]:
     return await interactor.execute()
-
-
-@mentor_router.post(
-    "/verdict",
-    responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
-        401: {
-            "description": "Unauthorized",
-            "model": ErrorModel,
-        },
-    },
-)
-async def verdict_mentoring_request(
-    schema: VerdictMentoringRequestQuery,
-    interactor: FromDishka[VerdictMentoringRequestByMentor],
-    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> None:
-    await interactor.execute(schema)

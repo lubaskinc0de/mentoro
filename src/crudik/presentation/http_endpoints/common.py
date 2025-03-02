@@ -7,11 +7,11 @@ from sqlalchemy.exc import IntegrityError
 from crudik.application.errors.common import ApplicationError
 from crudik.presentation.http_endpoints.error_info import error_code, error_unique_code
 from crudik.presentation.http_endpoints.mentor import router as mentor_router
-from crudik.presentation.http_endpoints.mentoring_request import (
-    mentor_router as mentoring_request_mentor_router,
+from crudik.presentation.http_endpoints.mentoring_request.mentor import (
+    router as mentoring_request_mentor_router,
 )
-from crudik.presentation.http_endpoints.mentoring_request import (
-    student_router as mentoring_request_student_router,
+from crudik.presentation.http_endpoints.mentoring_request.student import (
+    router as mentoring_request_student_router,
 )
 from crudik.presentation.http_endpoints.reviews import router as review_router
 from crudik.presentation.http_endpoints.root import router as root_router
