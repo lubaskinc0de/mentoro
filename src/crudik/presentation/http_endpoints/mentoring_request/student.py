@@ -1,11 +1,13 @@
 from typing import Annotated
+from uuid import UUID
 
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentoring_request import MentoringRequestData
+from crudik.application.mentoring_request.delete import DeleteMentoringRequestById
 from crudik.application.mentoring_request.read_all_student import ReadStudentMentoringRequests
 from crudik.application.mentoring_request.send import SendMentoringByStudent, SendMentoringByUserRequest
 from crudik.presentation.http_endpoints.error_model import ErrorModel
@@ -63,3 +65,29 @@ async def get_all_requests(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> list[MentoringRequestData]:
     return await interactor.execute()
+
+
+@router.delete(
+    "/{mentoring_request_id}",
+    description="Получение всех отправленных запросов на ментерство студента",
+    status_code=200,
+    responses={
+        200: {
+            "description": "Запрос на ментерство удален",
+        },
+        401: {
+            "description": "Студент не авторизован",
+            "model": ErrorModel,
+        },
+        403: {
+            "description": "Студент не может удалить запрос на ментерство",
+            "model": ErrorModel,
+        },
+    },
+)
+async def delete_request(
+    interactor: FromDishka[DeleteMentoringRequestById],
+    mentoring_request_id: Annotated[UUID, Path(description="Идентификатор запроса на менторинг")],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> None:
+    return await interactor.execute(mentoring_request_id)

@@ -45,10 +45,9 @@ async def add_review(
 
 @router.delete(
     "/{review_id}",
-    status_code=204,
     description="Удаление отзыва",
     responses={
-        204: {
+        200: {
             "description": "Успешное удаление отзыва",
         },
         401: {

@@ -7,3 +7,7 @@ class MentoringRequestNotFoundError(ApplicationError):
 
 class MentoringRequestCannotBeUpdatedError(ApplicationError):
     pass
+
+
+class MentoringRequestCannotBeDeletedError(ApplicationError):
+    pass

@@ -233,10 +233,9 @@ async def read_favorite_mentors(
 
 @router.delete(
     "/favorite/{mentor_id}",
-    status_code=204,
     description="Удаление избранного ментора студента",
     responses={
-        204: {
+        200: {
             "description": "Избранный ментор успешно удален",
         },
         401: {
