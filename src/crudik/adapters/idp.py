@@ -39,7 +39,7 @@ class TokenBearerParser:
         try:
             return self.encoder.decrypt(token)
         except PyJWTError as err:
-            logging.exception("Unauthorized due to")
+            logging.warning("Unauthorized due to %s", err.__class__.__qualname__)
             raise UnauthorizedError from err
 
 
