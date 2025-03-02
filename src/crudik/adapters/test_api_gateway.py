@@ -13,7 +13,7 @@ from crudik.application.mentor.interactors.attach_avatar import MentorAvatarData
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.mentor.interactors.update import UpdateMentorRequest
-from crudik.application.mentoring_request.interactors.send import SendMentoringRequest
+from crudik.application.mentoring_request.interactors.send import SendMentoringByUserRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
@@ -160,7 +160,7 @@ class TestApiGateway:
         ) as response:
             return await self._parse_response(response, None)
 
-    async def send_mentoring(self, schema: SendMentoringRequest, token: str) -> Response[None]:
+    async def send_mentoring(self, schema: SendMentoringByUserRequest, token: str) -> Response[None]:
         async with self._session.post(
             "/mentor/request",
             headers={"Authorization": f"Bearer {token}"},

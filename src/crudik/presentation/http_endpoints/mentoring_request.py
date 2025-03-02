@@ -7,7 +7,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.mentoring_request.interactors.read_all import ReadStudentMentoringRequest
-from crudik.application.mentoring_request.interactors.send import SendMentoringByStudent, SendMentoringRequest
+from crudik.application.mentoring_request.interactors.send import SendMentoringByStudent, SendMentoringByUserRequest
 from crudik.application.mentoring_request.interactors.verdict import (
     VerdictMentoringRequest,
     VerdictMentoringRequestQuery,
@@ -41,7 +41,7 @@ security = HTTPBearer(auto_error=False)
     },
 )
 async def send_mentoring(
-    schema: SendMentoringRequest,
+    schema: SendMentoringByUserRequest,
     interactor: FromDishka[SendMentoringByStudent],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:

@@ -12,7 +12,7 @@ from crudik.application.uow import UoW
 from crudik.models.mentoring_request import MentoringRequest, MentoringRequestType
 
 
-class SendMentoringRequest(BaseModel):
+class SendMentoringByUserRequest(BaseModel):
     mentor_id: UUID
 
 
@@ -23,7 +23,7 @@ class SendMentoringByStudent:
     student_gateway: StudentGateway
     id_provider: TokenStudentIdProvider
 
-    async def execute(self, request: SendMentoringRequest) -> None:
+    async def execute(self, request: SendMentoringByUserRequest) -> None:
         student_id = await self.id_provider.get_student_id()
         student = await self.student_gateway.get_by_id(student_id)
 

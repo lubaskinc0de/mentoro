@@ -3,7 +3,7 @@ from uuid import uuid4
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.mentoring_request import MentoringRequestData
-from crudik.application.mentoring_request.interactors.send import SendMentoringRequest
+from crudik.application.mentoring_request.interactors.send import SendMentoringByUserRequest
 from crudik.models.mentoring_request import MentoringRequestType
 from tests.e2e.conftest import CreatedMentor, CreatedStudent
 
@@ -23,7 +23,7 @@ async def test_send_request_student(
     mentor = await get_mentor(api_gateway, created_mentor)
 
     reponse = await api_gateway.send_mentoring(
-        SendMentoringRequest(
+        SendMentoringByUserRequest(
             mentor_id=mentor.id,
         ),
         created_student.token.access_token,
@@ -49,7 +49,7 @@ async def test_send_request_student(
 
 async def test_send_request_student_fail(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:
     reponse = await api_gateway.send_mentoring(
-        SendMentoringRequest(
+        SendMentoringByUserRequest(
             mentor_id=uuid4(),
         ),
         created_student.token.access_token,
@@ -65,7 +65,7 @@ async def test_send_request_student_fail_unauthorized(
     assert mentor.model is not None
 
     reponse = await api_gateway.send_mentoring(
-        SendMentoringRequest(
+        SendMentoringByUserRequest(
             mentor_id=mentor.model.id,
         ),
         created_student.token.access_token[:-1],
