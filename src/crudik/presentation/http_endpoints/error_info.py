@@ -1,7 +1,8 @@
 from crudik.adapters.file_manager import FileUploadError
 from crudik.adapters.idp import UnauthorizedError
-from crudik.application.common.errors import ApplicationError
+from crudik.application.common.errors import AccessDeniedError, ApplicationError
 from crudik.application.mentor.errors import MentorDoesNotExistsError
+from crudik.application.review.errors import ReviewDoesNotExistsError
 from crudik.application.student.errors import StudentDoesNotExistsError
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
@@ -20,6 +21,7 @@ error_code = {
     FileTooBigError: 413,
     CannotReadFileSizeError: 400,
     CannotReadFileInfoError: 400,
+    AccessDeniedError: 403,
 }
 error_unique_code = {
     ApplicationError: "APPLICATION_ERROR",
@@ -31,4 +33,6 @@ error_unique_code = {
     FileTooBigError: "FILE_TOO_BIG_ERROR",
     CannotReadFileSizeError: "CANNOT_READ_FILE_SIZE_ERROR",
     CannotReadFileInfoError: "CANNOT_READ_FILE_INFO_ERROR",
+    ReviewDoesNotExistsError: "REVIEW_DOES_NOT_EXISTS_ERROR",
+    AccessDeniedError: "ACCESS_DENIED_ERROR",
 }

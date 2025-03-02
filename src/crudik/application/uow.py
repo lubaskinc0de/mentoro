@@ -12,3 +12,6 @@ class UoW(Protocol):
 
     @abstractmethod
     def add_all(self, instances: list[Any]) -> None: ...
+
+    @abstractmethod
+    def delete(self, instance: Any) -> None: ...

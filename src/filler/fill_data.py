@@ -14,22 +14,21 @@ from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 fake = Faker("ru_RU")
 
 INTERESTS = [
-    "математика",
-    "русский язык",
-    "английский язык",
-    "немецкий язык",
-    "обществознание",
-    "программирование",
-    "python",
-    "java",
-    "sql",
-    "devops",
-    "mobile",
-    "ci/cd",
-    "матанализ",
-    "теорвер",
-    "чистая архитектура",
-    "embed",
+    "Математика",
+    "Английский язык",
+    "Программирование",
+    "Python",
+    "Java",
+    "Sql",
+    "Devops",
+    "Mobile",
+    "Ci/cd",
+    "Высшая Математика",
+    "ML",
+    "Data Science",
+    "Embedded",
+    "ML/Ops",
+    "System Design",
 ]
 
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import DateTime, ForeignKey, func
+from sqlalchemy import DateTime, ForeignKey, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from crudik.models.base import Base
@@ -43,3 +43,15 @@ class MatchHistory(Base):
 
     student_id: Mapped[UUID] = mapped_column(ForeignKey(Student.id), primary_key=True)
     mentor_id: Mapped[UUID] = mapped_column(ForeignKey(Mentor.id), primary_key=True)
+
+
+class MentorReview(Base):
+    __tablename__ = "mentor_review"
+
+    review_id: Mapped[UUID] = mapped_column(primary_key=True)
+    student_id: Mapped[UUID] = mapped_column(ForeignKey(Student.id))
+    mentor_id: Mapped[UUID] = mapped_column(ForeignKey(Mentor.id))
+    text: Mapped[str] = mapped_column()
+    rate: Mapped[int] = mapped_column()
+
+    __table_args__ = (UniqueConstraint("student_id", "mentor_id"),)
