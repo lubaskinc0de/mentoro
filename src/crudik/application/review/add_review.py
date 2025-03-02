@@ -15,7 +15,6 @@ from crudik.models.mentor import MentorReview
 
 class ReviewCreateData(BaseModel):
     mentor_id: UUID
-    student_id: UUID
     text: Annotated[str, StringConstraints(min_length=10, max_length=150)] = Field(description="Review text")
     rate: int = Field(description="Mentor review rate", ge=1, le=5)
 
