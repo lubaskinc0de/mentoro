@@ -25,7 +25,7 @@ class VerdictMentoringRequestQuery:
 
 
 @dataclass(frozen=True, slots=True)
-class VerdictMentoringRequest:
+class VerdictMentoringRequestByMentor:
     uow: UoW
     mentor_gateway: MentorGateway
     gateway: MentoringRequestGateway

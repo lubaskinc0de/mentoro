@@ -9,7 +9,7 @@ from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.mentoring_request.interactors.read_all import ReadStudentMentoringRequest
 from crudik.application.mentoring_request.interactors.send import SendMentoringByStudent, SendMentoringByUserRequest
 from crudik.application.mentoring_request.interactors.verdict import (
-    VerdictMentoringRequest,
+    VerdictMentoringRequestByMentor,
     VerdictMentoringRequestQuery,
 )
 from crudik.presentation.http_endpoints.error_model import ErrorModel
@@ -72,7 +72,7 @@ async def get_all_requests(
 )
 async def verdict_mentoring_request(
     schema: VerdictMentoringRequestQuery,
-    interactor: FromDishka[VerdictMentoringRequest],
+    interactor: FromDishka[VerdictMentoringRequestByMentor],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     await interactor.execute(schema)
