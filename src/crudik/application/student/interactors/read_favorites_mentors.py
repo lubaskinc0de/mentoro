@@ -23,6 +23,6 @@ class ReadFavoritesMentors:
             student_id=student.id,
             swiped_mentor_type=SwipedMentorType.FAVORITES,
         )
-
+        print("werevfsda", swiped_mentors)
         data = [convert_mentor_to_dto(swiped_mentor.mentor) for swiped_mentor in swiped_mentors]
         return data

@@ -118,4 +118,24 @@ class TestApiGateway:
             json=schema.model_dump(mode="json"),
             headers={"Authorization": f"Bearer {student_token}"},
         ) as response:
-            return Response(status_code=response.status)
+            return await self._parse_response(response, None)
+
+    async def read_favorites_mentors(self, student_token: str) -> Response[list[MentorData]]:
+        async with self._session.get(
+            "/student/favorite",
+            headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            if response.status >= 400:
+                return Response(status_code=response.status)
+            data = await response.json()
+            return Response(
+                status_code=response.status,
+                model=[MentorData.model_validate(_) for _ in data],
+            )
+
+    async def delete_favorites_mentors(self, student_token: str, mentor_id: UUID) -> Response[None]:
+        async with self._session.delete(
+            f"/student/favorite/{mentor_id}",
+            headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            return await self._parse_response(response, None)

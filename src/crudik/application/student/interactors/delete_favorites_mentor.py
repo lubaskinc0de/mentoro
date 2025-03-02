@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from uuid import UUID
 
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
@@ -8,6 +9,7 @@ from crudik.application.swiped_mentor.gateway import SwipedMentorGateway
 from crudik.application.uow import UoW
 
 
+@dataclass(frozen=True, slots=True)
 class DeleteFavoritesMentor:
     uow: UoW
     swiped_mentors_gateway: SwipedMentorGateway

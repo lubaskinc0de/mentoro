@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import selectinload
 
 from crudik.application.swiped_mentor.gateway import SwipedMentorGateway
 from crudik.models.mentor import Mentor
@@ -21,14 +21,14 @@ class SwipedMentorGatewayImpl(SwipedMentorGateway):
     ) -> list[SwipedMentor]:
         stmt = (
             select(SwipedMentor)
-            .join(Mentor, SwipedMentor.mentor_id == Mentor.id)
-            .join(Student, SwipedMentor.id == SwipedMentor.student_id)
+            .outerjoin(Mentor, SwipedMentor.mentor_id == Mentor.id)
+            .outerjoin(Student, SwipedMentor.id == SwipedMentor.student_id)
             .where(Student.id == student_id, SwipedMentor.type == swiped_mentor_type)
-            .order_by(SwipedMentor.created_at)
             .options(
-                joinedload(SwipedMentor.mentor),
-                joinedload(Mentor.skills),
+                selectinload(SwipedMentor.mentor).selectinload(Mentor.skills),
+                selectinload(SwipedMentor.mentor).selectinload(Mentor.contacts),
             )
+            .order_by(SwipedMentor.created_at)
         )
         result = await self._session.execute(stmt)
         data = result.scalars().all()

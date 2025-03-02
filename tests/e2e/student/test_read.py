@@ -1,5 +1,6 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
-from crudik.application.mentor.interactors.sign_up import MentorContactModel, SignUpMentorRequest
+from crudik.application.data_model.mentor import MentorContactModel
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 
 

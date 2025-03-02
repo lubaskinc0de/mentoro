@@ -7,7 +7,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from crudik.models.base import Base
 from crudik.models.mentor import Mentor
-from crudik.models.student import Student
 
 
 class SwipedMentorType(Enum):
@@ -25,4 +24,4 @@ class SwipedMentor(Base):
     type: Mapped[SwipedMentorType] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, server_default=func.now())
 
-    mentor: Mapped[Mentor] = relationship(Student, uselist=False)
+    mentor: Mapped[Mentor] = relationship(Mentor, uselist=False)
