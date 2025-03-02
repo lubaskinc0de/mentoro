@@ -14,7 +14,7 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def read_all(self, student_id: UUID) -> list[MentoringRequest]:
+    async def read_all_by_student(self, student_id: UUID) -> list[MentoringRequest]:
         stmt = (
             select(MentoringRequest)
             .join(Student, Student.id == MentoringRequest.student_id)

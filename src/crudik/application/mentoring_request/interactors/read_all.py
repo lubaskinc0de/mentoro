@@ -19,7 +19,7 @@ class ReadStudentMentoringRequest:
         if student is None:
             raise UnauthorizedError
 
-        data = await self.gateway.read_all(student.id)
+        data = await self.gateway.read_all_by_student(student.id)
         return [
             MentoringRequestData(
                 id=_.id,

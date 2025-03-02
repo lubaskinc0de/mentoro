@@ -7,7 +7,7 @@ from crudik.models.mentoring_request import MentoringRequest
 
 class MentoringRequestGateway(Protocol):
     @abstractmethod
-    async def read_all(self, student_id: UUID) -> list[MentoringRequest]:
+    async def read_all_by_student(self, student_id: UUID) -> list[MentoringRequest]:
         raise NotImplementedError
 
     @abstractmethod
