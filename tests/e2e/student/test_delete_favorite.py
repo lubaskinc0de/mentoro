@@ -42,13 +42,13 @@ async def test_success_read_favorite(
         assert response_find_mentor.status_code == 200
         assert response_find_mentor.model is not None
 
-        finded_mentors.append(response_find_mentor.model)
+        finded_mentors.append(response_find_mentor.model[0])
 
         await api_gateway.swipe_mentor(
             student_token=student_token,
             schema=SwipeMentorRequest(
                 type=SwipedMentorType.FAVORITES,
-                mentor_id=response_find_mentor.model.id,
+                mentor_id=response_find_mentor.model[0].id,
             ),
         )
 

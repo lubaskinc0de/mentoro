@@ -63,4 +63,4 @@ async def test_student_find(
     assert feed.status_code == 200
 
     assert feed.model is not None
-    assert feed.model.full_name == mentor_full_name
+    assert feed.model[0].full_name == mentor_full_name

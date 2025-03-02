@@ -159,7 +159,7 @@ async def read_student(
 async def find_mentor_for_student(
     command: FromDishka[FindMentor],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> MentorData | None:
+) -> list[MentorData]:
     """Mentor feed."""
     return await command.execute()
 

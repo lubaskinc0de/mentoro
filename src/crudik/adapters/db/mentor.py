@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from uuid import UUID
 
 from sqlalchemy import and_, delete, exists, func, literal, not_, select
@@ -29,7 +30,7 @@ class MentorGatewayImpl(MentorGateway):
         res = await self._session.execute(q)
         return res.scalar()
 
-    async def get_match(self, student_id: UUID, threshold: float = 0.45) -> Mentor | None:
+    async def get_match(self, student_id: UUID, threshold: float = 0.45) -> Sequence[Mentor]:
         mentor_history_cte = (
             select(MatchHistory.mentor_id).where(MatchHistory.student_id == student_id).cte("mentor_history_cte")
         )
@@ -53,12 +54,12 @@ class MentorGatewayImpl(MentorGateway):
             .group_by(Mentor.id)
             .having(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)) >= threshold)
             .order_by(func.sum(func.similarity(MentorSkill.text, student_interests.c.interest)).desc())
-            .limit(1)
+            .limit(3)
             .options(selectinload(Mentor.skills), selectinload(Mentor.contacts))
         )
 
         result = await self._session.execute(query)
-        return result.scalar_one_or_none()
+        return result.scalars().all()
 
     async def clear_history(self, student_id: UUID) -> None:
         q = delete(MatchHistory).where(MatchHistory.student_id == student_id)
