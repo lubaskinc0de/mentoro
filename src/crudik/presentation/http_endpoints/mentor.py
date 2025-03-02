@@ -15,6 +15,10 @@ from crudik.application.mentor.interactors.read_by_id import ReadMentorById
 from crudik.application.mentor.interactors.sign_in import SignInMentor, SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentor, SignUpMentorRequest
 from crudik.application.mentor.interactors.update import UpdateMentor, UpdateMentorRequest
+from crudik.application.mentoring_request.interactors.verdict import (
+    VerdictMentoringRequest,
+    VerdictMentoringRequestQuery,
+)
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
@@ -129,6 +133,27 @@ async def update_mentor(
 ) -> None:
     """Update authorized mentor."""
     await interactor.execute(request)
+
+
+@router.post(
+    "/verdict_request",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def verdict_mentoring_request(
+    schema: VerdictMentoringRequestQuery,
+    interactor: FromDishka[VerdictMentoringRequest],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> None:
+    await interactor.execute(schema)
 
 
 @router.get(

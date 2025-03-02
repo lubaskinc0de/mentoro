@@ -3,14 +3,14 @@ from dataclasses import dataclass
 from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.data_model.mentor import convert_mentor_to_dto
 from crudik.application.data_model.mentoring_request import MentoringRequestData
-from crudik.application.mentoring_request.gateway import MentorignRequestGateway
+from crudik.application.mentoring_request.gateway import MentoringRequestGateway
 from crudik.application.student.gateway import StudentGateway
 
 
 @dataclass(frozen=True, slots=True)
 class ReadAllMentoringRequest:
     student_gateway: StudentGateway
-    gateway: MentorignRequestGateway
+    gateway: MentoringRequestGateway
     id_provider: TokenStudentIdProvider
 
     async def execute(self) -> list[MentoringRequestData]:

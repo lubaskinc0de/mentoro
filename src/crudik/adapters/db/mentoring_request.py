@@ -4,13 +4,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from crudik.application.mentoring_request.gateway import MentorignRequestGateway
+from crudik.application.mentoring_request.gateway import MentoringRequestGateway
 from crudik.models.mentor import Mentor
 from crudik.models.mentoring_request import MentoringRequest
 from crudik.models.student import Student
 
 
-class MentorignRequestGatewayImpl(MentorignRequestGateway):
+class MentoringRequestGatewayImpl(MentoringRequestGateway):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
@@ -28,3 +28,8 @@ class MentorignRequestGatewayImpl(MentorignRequestGateway):
         )
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
+
+    async def get_by_id(self, unique_id: UUID) -> MentoringRequest | None:
+        stmt = select(MentoringRequest).where(MentoringRequest.id == unique_id)
+        result = await self._session.execute(stmt)
+        return result.scalar()

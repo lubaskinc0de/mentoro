@@ -5,7 +5,11 @@ from uuid import UUID
 from crudik.models.mentoring_request import MentoringRequest
 
 
-class MentorignRequestGateway(Protocol):
+class MentoringRequestGateway(Protocol):
     @abstractmethod
     async def read_all(self, student_id: UUID) -> list[MentoringRequest]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_by_id(self, unique_id: UUID) -> MentoringRequest | None:
         raise NotImplementedError
