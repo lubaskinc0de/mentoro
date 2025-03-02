@@ -3,10 +3,14 @@ import random
 
 import aiohttp
 from aiohttp import ClientSession
+from faker import Faker
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.student.interactors.sign_up import SignUpStudentRequest
+
+fake = Faker("ru_RU")
 
 INTERESTS = [
     "математика",
@@ -74,7 +78,19 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             raise ValueError("Cannot create mentor")
 
 
-async def fill_students(gateway: TestApiGateway) -> None: ...
+async def fill_students(gateway: TestApiGateway) -> None:
+    for _ in range(10):
+        name = fake.name()
+        request = SignUpStudentRequest(
+            full_name=name,
+            age=random.randint(15, 25),  # noqa: S311
+            interests=[random.choice(INTERESTS) for _ in range(random.randint(1, 6))],  # noqa: S311
+        )
+        resp = await gateway.sign_up_student(request)
+        if resp.status_code == 409:
+            print("Student already created")  # noqa: T201
+        elif resp.status_code != 200:
+            raise ValueError("Cannot create student")
 
 
 async def fill_data() -> None:
@@ -85,3 +101,4 @@ async def fill_data() -> None:
         gateway = TestApiGateway(session)
         await fill_mentors(gateway)
         await fill_students(gateway)
+        print("Done.")  # noqa: T201

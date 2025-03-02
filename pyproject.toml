@@ -23,7 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 lint = ['ruff==0.9.3', 'mypy==1.14.1']
-test = ['pytest==8.3.4', 'pytest-asyncio==0.25.3', 'coverage==7.6.12']
+test = ['pytest==8.3.4', 'pytest-asyncio==0.25.3', 'coverage==7.6.12', 'faker==36.1.1']
 dev = ['crudik[lint, test]']
 
 [tool.pytest.ini_options]
