@@ -13,16 +13,18 @@ from crudik.models.mentor import MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
-    age: int = Field(ge=0, le=120, description="Mentor age")
-    description: str = Field(min_length=10, max_length=2000, description="Mentor description")
-    contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] = Field(
+    age: int | None = Field(ge=0, le=120, default=None, description="Mentor age")
+    description: str | None = Field(min_length=10, max_length=2000, description="Mentor description")
+    contacts: list[Annotated[str, StringConstraints(min_length=2, max_length=40)]] | None = Field(
         min_length=1,
         max_length=10,
+        default=None,
         description="Mentor contacts",
     )
-    skills: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
+    skills: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] | None = Field(
         min_length=1,
         max_length=100,
+        default=None,
         description="Mentor skills",
     )
 
@@ -40,13 +42,17 @@ class UpdateMentor:
         if mentor is None:
             raise StudentDoesNotExistsError
 
-        mentor.age = request.age
-        mentor.description = request.description
-        mentor.contacts = request.contacts
+        if request.age:
+            mentor.age = request.age
+        if request.description:
+            mentor.description = request.description
+        if request.contacts:
+            mentor.contacts = request.contacts
 
-        await self.skill_gateway.delete_by_mentor_id(mentor.id)
-        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        if request.skills:
+            await self.skill_gateway.delete_by_mentor_id(mentor.id)
+            skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
 
-        self.uow.add_all(skills)
+            self.uow.add_all(skills)
 
         await self.uow.commit()

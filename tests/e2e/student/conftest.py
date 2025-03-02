@@ -4,7 +4,7 @@ import pytest
 
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
-from filler.test_gateway import TestApiGateway
+from crudik.adapters.test_api_gateway import TestApiGateway
 
 
 @dataclass

@@ -117,6 +117,7 @@ async def attach_avatar(
         file.size,
     )
 
+
 @router.put(
     "/",
     responses={

@@ -1,4 +1,4 @@
-from filler.test_gateway import TestApiGateway
+from crudik.adapters.test_api_gateway import TestApiGateway
 
 
 async def test_student_getme_fail(api_gateway: TestApiGateway) -> None:
