@@ -11,6 +11,7 @@ from crudik.application.common.errors import ApplicationError
 from crudik.application.data_model.mentor import MentorData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentoring_request.send import SendMentoring, SendMentoringRequest
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent, StudentAvatarData
 from crudik.application.student.interactors.delete_favorites_mentor import DeleteFavoritesMentor
 from crudik.application.student.interactors.find_mentor import FindMentor
@@ -180,6 +181,28 @@ async def swipe_mentor(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     """Swipe mentor (like/dislike etc)."""
+    await interactor.execute(schema)
+
+
+@router.post(
+    "/request",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def send_mentoring(
+    schema: SendMentoringRequest,
+    interactor: FromDishka[SendMentoring],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> None:
+    """Send mentoring request from favourites."""
     await interactor.execute(schema)
 
 
