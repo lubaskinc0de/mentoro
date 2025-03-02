@@ -54,4 +54,7 @@ class MentorReview(Base):
     text: Mapped[str] = mapped_column()
     rate: Mapped[int] = mapped_column()
 
+    student: Mapped[Student] = relationship(Student)
+    mentor: Mapped[Mentor] = relationship(Mentor)
+
     __table_args__ = (UniqueConstraint("student_id", "mentor_id"),)
