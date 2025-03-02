@@ -33,7 +33,7 @@ async def test_update_student_avatar_fail(api_gateway: TestApiGateway, created_s
     assert response.status_code == 400
 
 
-async def test_update_student_fail(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:
+async def test_update_student(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:
     response = await api_gateway.student_update(
         created_student.token.access_token,
         UpdateStudentRequest(age=33, interests=["skills", "freebsd", "experience"]),
