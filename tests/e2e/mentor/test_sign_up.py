@@ -1,6 +1,6 @@
+from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from crudik.adapters.test_api_gateway import TestApiGateway
 
 
 async def test_success_sign_up(
@@ -12,3 +12,4 @@ async def test_success_sign_up(
     response = await api_gateway.sign_in_mentor(
         SignInMentorRequest(full_name="Bababyi"),
     )
+    assert response.status_code == 200

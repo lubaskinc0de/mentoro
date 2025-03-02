@@ -56,4 +56,4 @@ class SignUpMentor:
         encoded_access_token = self.encryptor.encrypt(mentor_id)
         await self.uow.commit()
 
-        return TokenResponse(access_token=encoded_access_token)
+        return TokenResponse(access_token=encoded_access_token, id=mentor_id)

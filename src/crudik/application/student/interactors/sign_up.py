@@ -44,4 +44,4 @@ class SignUpStudent:
         encoded_access_token = self.encryptor.encrypt(student_id)
         await self.uow.commit()
 
-        return TokenResponse(access_token=encoded_access_token)
+        return TokenResponse(access_token=encoded_access_token, id=student_id)
