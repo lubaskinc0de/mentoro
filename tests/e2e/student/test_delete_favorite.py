@@ -3,12 +3,11 @@ from crudik.application.data_model.mentor import MentorContactModel, MentorData
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
 from crudik.models.swiped_mentor import SwipedMentorType
-from tests.e2e.student.conftest import CreatedStudent
+from tests.e2e.conftest import CreatedStudent
 
 mentors = [
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 1",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["expierence", "freebsd", "english"],
