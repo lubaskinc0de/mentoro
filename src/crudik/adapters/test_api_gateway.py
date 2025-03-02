@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from io import BufferedReader
 from typing import Generic, TypeVar
+from uuid import UUID
 
 from aiohttp import ClientResponse, ClientSession
 
@@ -62,6 +63,12 @@ class TestApiGateway:
 
     async def student_get_me(self, token: str) -> Response[StudentData]:
         async with self._session.get("/student/me", headers={"Authorization": f"Bearer {token}"}) as response:
+            return await self._parse_response(response, StudentData)
+
+    async def student_get_by_id(self, mentor_token: str, student_id: UUID) -> Response[StudentData]:
+        async with self._session.get(
+            f"/student/{student_id}", headers={"Authorization": f"Bearer {mentor_token}"},
+        ) as response:
             return await self._parse_response(response, StudentData)
 
     async def student_update_avatar(self, token: str, file: BufferedReader) -> Response[StudentAvatarData]:
