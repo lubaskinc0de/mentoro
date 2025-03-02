@@ -15,7 +15,7 @@ from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
     prefix="/mentor/request",
-    tags=["Заявки ментора на ментерство"],
+    tags=["Заявки которые отправили ментору"],
     route_class=DishkaRoute,
 )
 security = HTTPBearer(auto_error=False)
