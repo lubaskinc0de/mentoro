@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -22,6 +22,7 @@ class SwipedMentorGatewayImpl(SwipedMentorGateway):
         stmt = (
             select(SwipedMentor)
             .where(Student.id == student_id, SwipedMentor.type == swiped_mentor_type)
+            .join(Student, SwipedMentor.student_id == Student.id)
             .options(
                 selectinload(SwipedMentor.mentor).selectinload(Mentor.skills),
                 selectinload(SwipedMentor.mentor).selectinload(Mentor.contacts),
@@ -31,10 +32,6 @@ class SwipedMentorGatewayImpl(SwipedMentorGateway):
         result = await self._session.execute(stmt)
         data = result.scalars().all()
         return list(data)
-
-    async def delete(self, entity: SwipedMentor) -> None:
-        stmt = delete(SwipedMentor).where(SwipedMentor.id == entity.id)
-        await self._session.execute(stmt)
 
     async def read(self, student_id: UUID, mentor_id: UUID) -> SwipedMentor | None:
         stmt = select(SwipedMentor).where(SwipedMentor.student_id == student_id, SwipedMentor.mentor_id == mentor_id)

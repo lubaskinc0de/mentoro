@@ -37,7 +37,7 @@ class SignUpStudent:
             id=student_id,
             full_name=request.full_name,
             created_at=datetime.now(tz=UTC),
-            interests=[word.lower() for word in request.interests],
+            interests=request.interests,
             age=request.age,
             description=request.description,
         )

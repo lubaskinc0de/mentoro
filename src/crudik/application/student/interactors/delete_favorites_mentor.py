@@ -37,5 +37,5 @@ class DeleteFavoritesMentor:
             raise SwipedMentorNotFoundError
 
         logging.info("Deleting favorite %s", mentor.full_name)
-        await self.swiped_mentors_gateway.delete(swiped_mentor)
+        await self.uow.delete(swiped_mentor)
         await self.uow.commit()

@@ -42,7 +42,13 @@ tests:
       command:
         - "--registry-mirror=https://dockerhub.timeweb.cloud"
 
+  artifacts:
+      reports:
+        coverage_report:
+          coverage_format: cobertura
+          path: cov/coverage.xml
   
+  coverage: '/TOTAL.*\s+(\d+%)$/'
 
   before_script:
     - docker build -t api .

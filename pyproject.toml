@@ -51,6 +51,10 @@ warn_no_return = true
 
 files = ["src/", "tests/"]
 
+[tool.coverage.run]
+branch = true
+omit = ["src/crudik/adapters/db/alembic/**/*.py", "src/filler/**/*.py"]
+
 [tool.ruff]
 line-length = 120
 include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]

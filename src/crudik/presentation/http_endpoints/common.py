@@ -13,6 +13,7 @@ from crudik.presentation.http_endpoints.mentoring_request import (
 from crudik.presentation.http_endpoints.mentoring_request import (
     student_router as mentoring_request_student_router,
 )
+from crudik.presentation.http_endpoints.reviews import router as review_router
 from crudik.presentation.http_endpoints.root import router as root_router
 from crudik.presentation.http_endpoints.student import router as student_router
 
@@ -55,6 +56,7 @@ def include_routers(app: FastAPI) -> None:
     app.include_router(student_router)
     app.include_router(mentoring_request_mentor_router)
     app.include_router(mentor_router)
+    app.include_router(review_router)
 
 
 def include_exception_handlers(app: FastAPI) -> None:

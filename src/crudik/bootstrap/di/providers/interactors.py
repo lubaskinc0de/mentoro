@@ -8,6 +8,8 @@ from crudik.application.mentor.interactors.sign_up import SignUpMentor
 from crudik.application.mentor.interactors.update import UpdateMentor
 from crudik.application.mentoring_request.interactors.read_all import ReadAllMentoringRequest
 from crudik.application.mentoring_request.interactors.send import SendMentoring
+from crudik.application.review.add_review import AddReview
+from crudik.application.review.delete_review import DeleteReview
 from crudik.application.student.interactors.attach_avatar import AttachAvatarToStudent
 from crudik.application.student.interactors.delete_favorites_mentor import DeleteFavoritesMentor
 from crudik.application.student.interactors.find_mentor import FindMentor
@@ -42,4 +44,6 @@ class InteractorsProvider(Provider):
         DeleteFavoritesMentor,
         SendMentoring,
         ReadAllMentoringRequest,
+        AddReview,
+        DeleteReview,
     )

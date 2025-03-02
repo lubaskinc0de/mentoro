@@ -15,9 +15,5 @@ class SwipedMentorGateway(Protocol):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete(self, entity: SwipedMentor) -> None:
-        raise NotImplementedError
-
-    @abstractmethod
     async def read(self, student_id: UUID, mentor_id: UUID) -> SwipedMentor | None:
         raise NotImplementedError
