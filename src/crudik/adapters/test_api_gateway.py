@@ -118,4 +118,4 @@ class TestApiGateway:
             json=schema.model_dump(mode="json"),
             headers={"Authorization": f"Bearer {student_token}"},
         ) as response:
-            return Response(status_code=response.status)
+            return await self._parse_response(response, None)

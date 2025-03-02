@@ -4,6 +4,7 @@ from uuid import UUID
 import pytest
 
 from crudik.adapters.test_api_gateway import TestApiGateway
+from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.application.student.interactors.swipe_mentor import SwipeMentorRequest
@@ -21,7 +22,7 @@ async def data_for_swipe(api_gateway: TestApiGateway) -> DataForSwipe:
     sign_up_mentor_response = await api_gateway.sign_up_mentor(
         SignUpMentorRequest(
             full_name="Bybyba",
-            contacts=["bybyba"],
+            contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
             skills=["bybyba"],
         ),
     )
