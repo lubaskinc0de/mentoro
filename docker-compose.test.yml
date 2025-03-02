@@ -13,7 +13,7 @@ services:
             service: code
         container_name: tests
         command: 
-            sh -c "coverage run --source src -m pytest && coverage xml -o ./cov/coverage.xml"
+            sh -c "coverage run --source src -m pytest && coverage report && coverage xml -o ./cov/coverage.xml"
         environment:
             - API_URL=http://nginx:80/api/
         volumes:
