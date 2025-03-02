@@ -29,4 +29,5 @@ class DeleteReview:
         if review.student_id != student.id:
             raise AccessDeniedError
 
-        self.uow.delete(review)
+        await self.uow.delete(review)
+        await self.uow.commit()

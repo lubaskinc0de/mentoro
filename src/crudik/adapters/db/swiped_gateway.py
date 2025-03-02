@@ -22,6 +22,7 @@ class SwipedMentorGatewayImpl(SwipedMentorGateway):
         stmt = (
             select(SwipedMentor)
             .where(Student.id == student_id, SwipedMentor.type == swiped_mentor_type)
+            .join(Student, SwipedMentor.student_id == Student.id)
             .options(
                 selectinload(SwipedMentor.mentor).selectinload(Mentor.skills),
                 selectinload(SwipedMentor.mentor).selectinload(Mentor.contacts),
