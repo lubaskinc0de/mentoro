@@ -11,7 +11,7 @@ down:
 clear:
     sudo docker compose down -v
 
-lint:
+fmt:
     ruff format
     ruff check --fix
     mypy

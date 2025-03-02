@@ -15,16 +15,14 @@ from crudik.models.mentor import MentorContact, MentorSkill
 
 class UpdateMentorRequest(BaseModel):
     description: str | None = Field(min_length=10, max_length=2000, description="Mentor description")
-    contacts: list[MentorContactModel] | None = Field(
+    contacts: list[MentorContactModel] = Field(
         min_length=1,
         max_length=10,
-        default=None,
         description="Mentor contacts",
     )
-    skills: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] | None = Field(
+    skills: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
         min_length=1,
         max_length=100,
-        default=None,
         description="Mentor skills",
     )
 
@@ -43,21 +41,18 @@ class UpdateMentor:
         if mentor is None:
             raise UnauthorizedError
 
-        if request.description:
-            mentor.description = request.description
+        mentor.description = request.description
 
-        if request.skills:
-            await self.skill_gateway.delete_by_mentor_id(mentor.id)
-            skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        await self.skill_gateway.delete_by_mentor_id(mentor.id)
+        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        self.uow.add_all(skills)
 
-            self.uow.add_all(skills)
+        await self.contact_gateway.delete_by_mentor_id(mentor.id)
+        contacts = [
+            MentorContact(id=uuid4(), mentor_id=mentor_id, url=contact.url, social_network=contact.social_network)
+            for contact in request.contacts
+        ]
 
-        if request.contacts:
-            await self.contact_gateway.delete_by_mentor_id(mentor.id)
-            contacts = [
-                MentorContact(id=uuid4(), mentor_id=mentor_id, url=contact.url, social_network=contact.social_network)
-                for contact in request.contacts
-            ]
+        self.uow.add_all(contacts)
 
-            self.uow.add_all(contacts)
         await self.uow.commit()

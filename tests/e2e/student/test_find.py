@@ -8,28 +8,24 @@ from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 mentors = [
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 1",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["expierence", "freebsd", "english"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 2",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["maths", "freebsd", "russian"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 3",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["english", "maths"],
     ),
     SignUpMentorRequest(
         full_name="Vasiliy Skilled 4",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
         skills=["english", "russian"],

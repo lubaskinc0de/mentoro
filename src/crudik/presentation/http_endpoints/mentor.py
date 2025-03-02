@@ -76,28 +76,6 @@ async def read_mentor(
     return await command.execute()
 
 
-@router.get(
-    "/{mentor_id}",
-    responses={
-        404: {
-            "description": "Mentor not found",
-            "model": ErrorModel,
-        },
-        401: {
-            "description": "Unauthorized",
-            "model": ErrorModel,
-        },
-    },
-)
-async def read_mentor_by_id(
-    command: FromDishka[ReadMentorById],
-    mentor_id: UUID,
-    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> MentorData:
-    """Read mentor by id (need student auth)."""
-    return await command.execute(mentor_id)
-
-
 @router.put(
     "/attach",
     responses={
@@ -147,6 +125,29 @@ async def attach_avatar(
 async def update_mentor(
     request: UpdateMentorRequest,
     interactor: FromDishka[UpdateMentor],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> None:
     """Update authorized mentor."""
     await interactor.execute(request)
+
+
+@router.get(
+    "/{mentor_id}",
+    responses={
+        404: {
+            "description": "Mentor not found",
+            "model": ErrorModel,
+        },
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_mentor_by_id(
+    command: FromDishka[ReadMentorById],
+    mentor_id: UUID,
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> MentorData:
+    """Read mentor by id (need student auth)."""
+    return await command.execute(mentor_id)

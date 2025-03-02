@@ -11,6 +11,7 @@ from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.interactors.attach_avatar import MentorAvatarData
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
+from crudik.application.mentor.interactors.update import UpdateMentorRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
@@ -124,5 +125,13 @@ class TestApiGateway:
             "/student/swipe_mentor",
             json=schema.model_dump(mode="json"),
             headers={"Authorization": f"Bearer {student_token}"},
+        ) as response:
+            return await self._parse_response(response, None)
+
+    async def update_mentor(self, token: str, schema: UpdateMentorRequest) -> Response[None]:
+        async with self._session.put(
+            "/mentor/",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(),
         ) as response:
             return await self._parse_response(response, None)

@@ -21,7 +21,6 @@ async def test_read_by_id(api_gateway: TestApiGateway) -> None:
     student_id = sign_up_student_response.model.id
     mentor_data = SignUpMentorRequest(
         full_name="Vasiliy Skilled 1",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[
             MentorContactModel(
@@ -52,7 +51,6 @@ async def test_read_by_id(api_gateway: TestApiGateway) -> None:
 async def test_read_by_id_not_exists(api_gateway: TestApiGateway) -> None:
     mentor_data = SignUpMentorRequest(
         full_name="Vasiliy Skilled 1",
-        age=32,
         description="I'm very expierenced mentor",
         contacts=[
             MentorContactModel(
