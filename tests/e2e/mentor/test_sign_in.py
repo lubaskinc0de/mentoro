@@ -18,7 +18,7 @@ async def test_success_sign_in(
     assert sign_in_response.status_code == 200
 
 
-async def test_unsuccess_sign_in(api_gateway: TestApiGateway) -> None:
+async def test_failed_sign_in(api_gateway: TestApiGateway) -> None:
     response = await api_gateway.sign_in_mentor(
         SignInMentorRequest(full_name="Bababyi"),
     )

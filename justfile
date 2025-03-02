@@ -15,3 +15,7 @@ fmt:
     ruff format
     ruff check --fix
     mypy
+
+commit message: fmt
+    git add .
+    git commit -m '{{ message }}'

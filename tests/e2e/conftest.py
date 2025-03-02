@@ -11,7 +11,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from crudik.adapters.config import Config
 from crudik.adapters.test_api_gateway import TestApiGateway
+from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.data_model.token_data import TokenResponse
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from crudik.bootstrap.di.container import get_async_container
 
@@ -19,6 +21,12 @@ from crudik.bootstrap.di.container import get_async_container
 @dataclass(slots=True)
 class CreatedStudent:
     student: SignUpStudentRequest
+    token: TokenResponse
+
+
+@dataclass(slots=True)
+class CreatedMentor:
+    mentor: SignUpMentorRequest
     token: TokenResponse
 
 
@@ -97,5 +105,24 @@ async def created_student(api_gateway: TestApiGateway) -> CreatedStudent:
 
     return CreatedStudent(
         student=student,
+        token=response.model,
+    )
+
+
+@pytest.fixture
+async def created_mentor(api_gateway: TestApiGateway) -> CreatedMentor:
+    mentor = SignUpMentorRequest(
+        full_name="Vasiliy Skilled",
+        description="Vasiliy Skilled description",
+        contacts=[MentorContactModel(url="ababyiExperienced", social_network="telegram")],
+        skills=["expierence", "freebsd", "english"],
+    )
+    response = await api_gateway.sign_up_mentor(mentor)
+
+    assert response.status_code == 200
+    assert response.model is not None
+
+    return CreatedMentor(
+        mentor=mentor,
         token=response.model,
     )

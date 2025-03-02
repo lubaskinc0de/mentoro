@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -72,3 +72,18 @@ async def test_success_swipe(
     )
 
     assert response.status_code == 200
+
+
+async def test_swipe_not_exists_mentor(
+    data_for_swipe: DataForSwipe,
+    api_gateway: TestApiGateway,
+) -> None:
+    response = await api_gateway.swipe_mentor(
+        student_token=data_for_swipe.student_token,
+        schema=SwipeMentorRequest(
+            type=SwipedMentorType.LIKE,
+            mentor_id=uuid4(),
+        ),
+    )
+
+    assert response.status_code == 404

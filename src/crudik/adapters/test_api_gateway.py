@@ -6,12 +6,14 @@ from uuid import UUID
 from aiohttp import ClientResponse, ClientSession
 
 from crudik.application.data_model.mentor import MentorData
+from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.interactors.attach_avatar import MentorAvatarData
 from crudik.application.mentor.interactors.sign_in import SignInMentorRequest
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.application.mentor.interactors.update import UpdateMentorRequest
+from crudik.application.mentoring_request.interactors.send import SendMentoringRequest
 from crudik.application.student.interactors.attach_avatar import StudentAvatarData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
@@ -157,3 +159,25 @@ class TestApiGateway:
             json=schema.model_dump(),
         ) as response:
             return await self._parse_response(response, None)
+
+    async def send_mentoring(self, schema: SendMentoringRequest, token: str) -> Response[None]:
+        async with self._session.post(
+            "/student/request",
+            headers={"Authorization": f"Bearer {token}"},
+            json=schema.model_dump(mode="json"),
+        ) as response:
+            return await self._parse_response(response, None)
+
+    async def read_student_requests(self, token: str) -> Response[list[MentoringRequestData]]:
+        async with self._session.get(
+            "/student/my_requests",
+            headers={"Authorization": f"Bearer {token}"},
+        ) as response:
+            if response.status >= 400:
+                return Response(status_code=response.status)
+
+            data = await response.json()
+            return Response(
+                status_code=response.status,
+                model=[MentoringRequestData.model_validate(_) for _ in data],
+            )
