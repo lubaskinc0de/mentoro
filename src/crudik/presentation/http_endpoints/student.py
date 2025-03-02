@@ -142,28 +142,6 @@ async def read_student(
 
 
 @router.get(
-    "/{student_id}",
-    responses={
-        401: {
-            "description": "Unauthorized",
-            "model": ErrorModel,
-        },
-        404: {
-            "description": "Student not found",
-            "model": ErrorModel,
-        },
-    },
-)
-async def read_student_by_id(
-    command: FromDishka[ReadStudentById],
-    student_id: UUID,
-    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> StudentData:
-    """Read student by id (need mentor auth)."""
-    return await command.execute(student_id)
-
-
-@router.get(
     "/find",
     responses={
         401: {
@@ -198,3 +176,25 @@ async def swipe_mentor(
 ) -> None:
     """Swipe mentor (like/dislike etc)."""
     await interactor.execute(schema)
+
+
+@router.get(
+    "/{student_id}",
+    responses={
+        401: {
+            "description": "Unauthorized",
+            "model": ErrorModel,
+        },
+        404: {
+            "description": "Student not found",
+            "model": ErrorModel,
+        },
+    },
+)
+async def read_student_by_id(
+    command: FromDishka[ReadStudentById],
+    student_id: UUID,
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> StudentData:
+    """Read student by id (need mentor auth)."""
+    return await command.execute(student_id)
