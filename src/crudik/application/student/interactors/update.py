@@ -9,10 +9,11 @@ from crudik.application.uow import UoW
 
 
 class UpdateStudentRequest(BaseModel):
-    age: int = Field(ge=0, le=120, description="Student age")
-    interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] = Field(
+    age: int | None = Field(ge=0, le=120, default=None, description="Student age")
+    interests: list[Annotated[str, StringConstraints(min_length=2, max_length=30)]] | None = Field(
         min_length=1,
         max_length=100,
+        default=None,
         description="Student interests",
     )
 
@@ -29,7 +30,9 @@ class UpdateStudent:
         if student is None:
             raise UnauthorizedError
 
-        student.age = request.age
-        student.interests = request.interests
+        if request.age:
+            student.age = request.age
+        if request.interests:
+            student.interests = request.interests
 
         await self.uow.commit()

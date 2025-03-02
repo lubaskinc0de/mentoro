@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tests.e2e.images
 from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
-from filler.test_gateway import TestApiGateway
+from crudik.adapters.test_api_gateway import TestApiGateway
 
 
 async def test_update_mentor_avatar(

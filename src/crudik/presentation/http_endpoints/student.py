@@ -110,7 +110,7 @@ async def attach_avatar(
     )
 
 
-@router.put(
+@router.patch(
     "/",
     responses={
         404: {
@@ -185,7 +185,7 @@ async def swipe_mentor(
     await interactor.execute(schema)
 
 
-@router.put(
+@router.patch(
     "/",
     responses={
         404: {

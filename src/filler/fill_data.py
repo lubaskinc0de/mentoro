@@ -3,7 +3,7 @@ import os
 import aiohttp
 from aiohttp import ClientSession
 
-from filler.test_gateway import TestApiGateway
+from crudik.adapters.test_api_gateway import TestApiGateway
 
 INTERESTS = [
     "математика",

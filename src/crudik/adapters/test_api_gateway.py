@@ -73,7 +73,7 @@ class TestApiGateway:
             return await self._parse_response(response, StudentAvatarData)
 
     async def student_update(self, token: str, schema: UpdateStudentRequest) -> Response[None]:
-        async with self._session.put(
+        async with self._session.patch(
             "/student/",
             headers={"Authorization": f"Bearer {token}"},
             json=schema.model_dump(),
