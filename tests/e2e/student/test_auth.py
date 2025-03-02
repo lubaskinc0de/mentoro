@@ -1,4 +1,5 @@
 from crudik.adapters.test_api_gateway import TestApiGateway
+from crudik.application.data_model.student import StudentData
 from crudik.application.student.interactors.sign_in import SignInStudentRequest
 from crudik.application.student.interactors.sign_up import SignUpStudentRequest
 from tests.e2e.conftest import CreatedStudent
@@ -15,17 +16,13 @@ async def test_student_signup(api_gateway: TestApiGateway) -> None:
     me = await api_gateway.student_get_me(response.model.access_token)
 
     assert me.status_code == 200
-
     assert me.model is not None
-
-    assert me.model.full_name == "Vasiliy Skilled"
-    assert me.model.age == 32
-    assert me.model.interests == ["skills", "freebsd"]
-    assert me.model.avatar_url is None
+    assert StudentData(**student.model_dump(), id=me.model.id) == me.model
 
 
 async def test_student_signin(api_gateway: TestApiGateway, created_student: CreatedStudent) -> None:
-    response = await api_gateway.sign_in_student(SignInStudentRequest(full_name=created_student.student.full_name))
+    student_login_req = SignInStudentRequest(full_name=created_student.student.full_name)
+    response = await api_gateway.sign_in_student(student_login_req)
     assert response.status_code == 200
     assert response.model is not None
 
@@ -33,11 +30,7 @@ async def test_student_signin(api_gateway: TestApiGateway, created_student: Crea
     assert me.status_code == 200
 
     assert me.model is not None
-
-    assert me.model.full_name == "Vasiliy Skilled"
-    assert me.model.age == 32
-    assert me.model.interests == ["skills", "freebsd"]
-    assert me.model.avatar_url is None
+    assert StudentData(**created_student.student.model_dump(), id=me.model.id) == me.model
 
 
 async def test_student_signin_fail(api_gateway: TestApiGateway) -> None:

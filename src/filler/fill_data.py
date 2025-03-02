@@ -78,8 +78,8 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             raise ValueError("Cannot create mentor")
 
 
-async def fill_students(gateway: TestApiGateway) -> None:
-    for _ in range(10):
+async def fill_students(gateway: TestApiGateway, n: int = 10) -> None:
+    for _ in range(n):
         name = fake.name()
         request = SignUpStudentRequest(
             full_name=name,
@@ -92,6 +92,11 @@ async def fill_students(gateway: TestApiGateway) -> None:
         elif resp.status_code != 200:
             raise ValueError("Cannot create student")
 
+    prod_student = SignUpStudentRequest(full_name="PROD", age=20, interests=INTERESTS, description="PRODDDDoooooDD")
+    resp = await gateway.sign_up_student(prod_student)
+
+async def fill_history_students(gateway: TestApiGateway) -> None:
+    ...
 
 async def fill_data() -> None:
     async with ClientSession(
