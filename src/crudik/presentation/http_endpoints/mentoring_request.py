@@ -14,15 +14,20 @@ from crudik.application.mentoring_request.interactors.verdict import (
 )
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
-router = APIRouter(
+mentor_router = APIRouter(
     prefix="/mentor/request",
     tags=["Mentoring Requests"],
+    route_class=DishkaRoute,
+)
+student_router = APIRouter(
+    prefix="/student/request",
+    tags=["Student Requests"],
     route_class=DishkaRoute,
 )
 security = HTTPBearer(auto_error=False)
 
 
-@router.post(
+@mentor_router.post(
     "",
     responses={
         404: {
@@ -44,7 +49,7 @@ async def send_mentoring(
     await interactor.execute(schema)
 
 
-@router.get("")
+@student_router.get("")
 async def get_all_requests(
     interactor: FromDishka[ReadAllMentoringRequest],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
@@ -52,7 +57,7 @@ async def get_all_requests(
     return await interactor.execute()
 
 
-@router.post(
+@mentor_router.post(
     "/verdict",
     responses={
         404: {

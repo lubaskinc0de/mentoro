@@ -170,7 +170,7 @@ class TestApiGateway:
 
     async def read_student_requests(self, token: str) -> Response[list[MentoringRequestData]]:
         async with self._session.get(
-            "/mentor/request",
+            "/student/request",
             headers={"Authorization": f"Bearer {token}"},
         ) as response:
             if response.status >= 400:
