@@ -2,20 +2,20 @@ from dataclasses import dataclass
 from enum import Enum
 from uuid import UUID
 
-from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
+from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
+from crudik.application.mentor.gateway import MentorGateway
 from crudik.application.mentoring_request.errors import (
     MentoringRequestCannotBeUpdatedError,
     MentoringRequestNotFoundError,
 )
 from crudik.application.mentoring_request.gateway import MentoringRequestGateway
-from crudik.application.student.gateway import StudentGateway
 from crudik.application.uow import UoW
 from crudik.models.mentoring_request import MentoringRequestType
 
 
 class VerdictMentoringRequestType(Enum):
-    ACCEPTED = "accepted"
-    REJECTED = "rejected"
+    ACCEPTED = "ACCEPTED"
+    REJECTED = "REJECTED"
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,17 +27,17 @@ class VerdictMentoringRequestQuery:
 @dataclass(frozen=True, slots=True)
 class VerdictMentoringRequest:
     uow: UoW
-    student_gateway: StudentGateway
+    mentor_gateway: MentorGateway
     gateway: MentoringRequestGateway
-    id_provider: TokenStudentIdProvider
+    id_provider: TokenMentorIdProvider
 
     async def execute(self, request: VerdictMentoringRequestQuery) -> None:
-        student_id = await self.id_provider.get_student_id()
-        student = await self.student_gateway.get_by_id(student_id)
-        if student is None:
+        mentor_id = await self.id_provider.get_mentor_id()
+        mentor = await self.mentor_gateway.get_by_id(mentor_id)
+        if mentor is None:
             raise UnauthorizedError
 
-        mentoring_request = await self.gateway.get_by_id(student.id)
+        mentoring_request = await self.gateway.get_by_id(request.mentoring_request_id)
         if mentoring_request is None:
             raise MentoringRequestNotFoundError
 
@@ -45,5 +45,4 @@ class VerdictMentoringRequest:
             raise MentoringRequestCannotBeUpdatedError
 
         mentoring_request.type = MentoringRequestType(request.type.value)
-
         await self.uow.commit()
