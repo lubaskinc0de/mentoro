@@ -17,7 +17,7 @@ class SendMentoringRequest(BaseModel):
 
 
 @dataclass(frozen=True, slots=True)
-class SendMentoring:
+class SendMentoringByStudent:
     uow: UoW
     mentor_gateway: MentorGateway
     student_gateway: StudentGateway
