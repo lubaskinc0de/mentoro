@@ -14,7 +14,6 @@ from crudik.models.mentor import MentorContact, MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
-    age: int | None = Field(ge=0, le=120, default=None, description="Mentor age")
     description: str | None = Field(min_length=10, max_length=2000, description="Mentor description")
     contacts: list[MentorContactModel] | None = Field(
         min_length=1,
@@ -44,8 +43,6 @@ class UpdateMentor:
         if mentor is None:
             raise UnauthorizedError
 
-        if request.age:
-            mentor.age = request.age
         if request.description:
             mentor.description = request.description
 
