@@ -80,8 +80,8 @@ services:
         container_name: nginx-s3-gateway
         env_file:
             - .env.minio
-        ports:
-            - "9331:80"
+        expose:
+            - "80"
         depends_on:
             minio:
                 condition: service_healthy

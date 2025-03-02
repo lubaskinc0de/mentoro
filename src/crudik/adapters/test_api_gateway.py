@@ -102,7 +102,8 @@ class TestApiGateway:
 
     async def read_mentor_by_id(self, student_token: str, mentor_id: UUID) -> Response[MentorData]:
         async with self._session.get(
-            f"/mentor/{mentor_id}", headers={"Authorization": f"Bearer {student_token}"},
+            f"/mentor/{mentor_id}",
+            headers={"Authorization": f"Bearer {student_token}"},
         ) as response:
             return await self._parse_response(response, MentorData)
 
