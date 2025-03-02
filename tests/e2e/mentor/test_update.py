@@ -2,8 +2,8 @@ from importlib.resources import files
 from pathlib import Path
 
 import tests.e2e.images
-from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 from crudik.adapters.test_api_gateway import TestApiGateway
+from crudik.application.mentor.interactors.sign_up import SignUpMentorRequest
 
 
 async def test_update_mentor_avatar(
