@@ -9,7 +9,6 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from crudik.application.data_model.review import ReviewData, ReviewFullData
 from crudik.application.review.add_review import AddReview, ReviewCreateData
 from crudik.application.review.delete_review import DeleteReview
-from crudik.application.review.read_by_id import ReadReview
 from crudik.application.review.read_reviews import ReadMentorReviews
 
 router = APIRouter(
@@ -46,4 +45,3 @@ async def mentor_reviews(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> list[ReviewFullData]:
     return await interactor.execute(mentor_id)
-

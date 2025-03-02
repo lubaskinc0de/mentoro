@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from enum import Enum
 from uuid import UUID
 
+from pydantic import BaseModel
+
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.common.uow import UoW
 from crudik.application.errors.mentoring_request import (
@@ -14,12 +16,11 @@ from crudik.models.mentoring_request import MentoringRequestType
 
 
 class VerdictMentoringRequestType(Enum):
-    ACCEPTED = "ACCEPTED"
-    REJECTED = "REJECTED"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
 
 
-@dataclass(frozen=True, slots=True)
-class VerdictMentoringRequestQuery:
+class VerdictMentoringRequestQuery(BaseModel):
     mentoring_request_id: UUID
     type: VerdictMentoringRequestType
 
