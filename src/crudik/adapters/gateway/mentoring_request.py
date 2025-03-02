@@ -7,7 +7,6 @@ from sqlalchemy.orm import selectinload
 from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.models.mentor import Mentor
 from crudik.models.mentoring_request import MentoringRequest
-from crudik.models.student import Student
 
 
 class MentoringRequestGatewayImpl(MentoringRequestGateway):
@@ -17,7 +16,6 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
     async def read_all_by_student(self, student_id: UUID) -> list[MentoringRequest]:
         stmt = (
             select(MentoringRequest)
-            .join(Student, Student.id == MentoringRequest.student_id)
             .join(Mentor, Mentor.id == MentoringRequest.mentor_id)
             .where(MentoringRequest.student_id == student_id)
             .options(
@@ -32,7 +30,6 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
     async def read_all_by_mentor(self, mentor_id: UUID) -> list[MentoringRequest]:
         stmt = (
             select(MentoringRequest)
-            .join(Student, Student.id == MentoringRequest.student_id)
             .join(Mentor, Mentor.id == MentoringRequest.mentor_id)
             .where(MentoringRequest.mentor_id == mentor_id)
             .options(
