@@ -135,3 +135,28 @@ async def test_send_request_student_fail_unauthorized(
         created_student.token.access_token[:-1],
     )
     assert reponse.status_code == 401
+
+
+async def test_delete_request_student(
+    api_gateway: TestApiGateway, created_student: CreatedStudent, created_mentor: CreatedMentor
+) -> None:
+    mentor = await get_mentor(api_gateway, created_mentor)
+
+    reponse = await api_gateway.send_mentoring(
+        SendMentoringByUserRequest(
+            mentor_id=mentor.id,
+        ),
+        created_student.token.access_token,
+    )
+    assert reponse.status_code == 200
+
+    requests = await api_gateway.read_student_requests(created_student.token.access_token)
+
+    assert requests.status_code == 200
+    assert requests.model is not None
+
+    assert len(requests.model) == 1
+
+    del_request = await api_gateway.delete_mentoring_request(created_student.token.access_token, requests.model[0].id)
+
+    assert del_request.status_code == 200
