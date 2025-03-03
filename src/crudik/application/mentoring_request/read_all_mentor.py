@@ -5,7 +5,6 @@ from crudik.application.data_model.mentoring_request import MentoringRequestMent
 from crudik.application.data_model.student import convert_student_model_to_dto
 from crudik.application.gateway.mentor_gateway import MentorGateway
 from crudik.application.gateway.mentoring_request import MentoringRequestGateway
-from crudik.application.gateway.student_gateway import StudentGateway
 
 
 @dataclass(frozen=True, slots=True)
