@@ -1,21 +1,5 @@
-up:
-    sudo docker compose up --build
+set shell := ["bash", "-c"]
 
-e2e:
-    sudo docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
-
-down:
-    sudo docker compose down
-    sudo docker compose -f docker-compose.test.yml down
-
-clear:
-    sudo docker compose down -v
-
-fmt:
-    ruff format
-    ruff check --fix
-    mypy
-
-commit message: fmt
-    git add .
-    git commit -m '{{ message }}'
+mod docker '.just/docker.just'
+mod lint '.just/lint.just'
+mod tests '.just/test.just'
