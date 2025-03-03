@@ -6,7 +6,7 @@ from uuid import UUID
 from aiohttp import ClientResponse, ClientSession
 
 from crudik.application.data_model.mentor import MentorData
-from crudik.application.data_model.mentoring_request import MentoringRequestData
+from crudik.application.data_model.mentoring_request import MentoringRequestData, MentoringRequestMentorData
 from crudik.application.data_model.review import ReviewData, ReviewFullData
 from crudik.application.data_model.student import StudentData
 from crudik.application.data_model.token_data import TokenResponse
@@ -221,3 +221,17 @@ class TestApiGateway:
             json=schema.model_dump(mode="json"),
         ) as response:
             return await self._parse_response(response, None)
+
+    async def read_mentors_requests(self, token: str) -> Response[list[MentoringRequestMentorData]]:
+        async with self._session.get(
+            "/mentor/request",
+            headers={"Authorization": f"Bearer {token}"},
+        ) as response:
+            if response.status >= 400:
+                return Response(status_code=response.status)
+
+            data = await response.json()
+            return Response(
+                status_code=response.status,
+                model=[MentoringRequestMentorData.model_validate(_) for _ in data],
+            )
