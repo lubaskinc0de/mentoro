@@ -34,15 +34,17 @@ INTERESTS = [
 ]
 
 
-async def fetch_random_image() -> bytes:
+def get_images() -> list[bytes]:
     base_path = Path("./src/filler/images")
     files = os.listdir(base_path)
+    res = []
+    for file in files:
+        with (base_path / file).open("rb") as f:
+            res.append(f.read())
+    return res
 
-    with (base_path / random.choice(files)).open("rb") as f:  # noqa: S311
-        return f.read()
 
-
-async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway) -> None:
+async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img: bytes) -> None:
     resp = await gateway.sign_up_mentor(data)
     print(f"Status: {resp.status_code}; Created mentor: {data.full_name}")  # noqa: T201
 
@@ -51,12 +53,14 @@ async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway) -> N
         return
 
     assert resp.model is not None
-    resp_attach = await gateway.mentor_update_avatar(resp.model.access_token, BytesIO(await fetch_random_image()))
+
+    resp_attach = await gateway.mentor_update_avatar(resp.model.access_token, BytesIO(img))
     if resp_attach.status_code != 200:
         print(f"While loading image: {resp_attach.status_code} {resp_attach.text}")  # noqa: T201
 
 
 async def fill_mentors(gateway: TestApiGateway) -> None:
+    images = get_images()
     mentors = [
         SignUpMentorRequest(
             full_name=f"{fake.first_name()} {fake.last_name()}",
@@ -69,9 +73,9 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             ],
             skills=[random.choice(INTERESTS) for _ in range(random.randint(1, len(INTERESTS)))],  # noqa: S311
         )
-        for _ in range(100)
+        for _ in range(30)
     ]
-    req = [create_mentor(mentor_data, gateway) for mentor_data in mentors]
+    req = [create_mentor(mentor_data, gateway, random.choice(images)) for mentor_data in mentors]  # noqa: S311
     await asyncio.gather(*req)
 
 
@@ -87,7 +91,8 @@ async def fill_students(gateway: TestApiGateway, n: int = 10) -> None:
         if resp.status_code == 409:
             print("Student already created")  # noqa: T201
         elif resp.status_code != 200:
-            raise ValueError("Cannot create student")
+            msg = f"Cannot create student {resp.text}"
+            raise ValueError(msg)
 
     prod_student = SignUpStudentRequest(full_name="PROD", age=20, interests=INTERESTS, description="PRODDDDoooooDD")
     resp = await gateway.sign_up_student(prod_student)
