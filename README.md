@@ -1,6 +1,6 @@
 # 🚀 Mentoro — сервис для поиска менторов
 
-![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=65&min_acceptable=50&min_medium=40) ![build](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/pipeline.svg)
+![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=55&min_acceptable=40&min_medium=30) ![build](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/pipeline.svg)
 
 ## 📌 Описание проекта
 
@@ -18,6 +18,8 @@
 - **Grafana** — инструмент для визуализации метрик и мониторинга состояния системы.
 - **Nginx-S3-Gateway** — реверс-прокси для Minio, поддерживающий кэширование и обеспечивающий безопасный доступ к хранилищу.
 - **Nginx** — основной реверс-прокси для всего приложения, обеспечивающий HTTPS-соединение и балансировку нагрузки.
+
+![Architecture](docs/arch.svg)
 
 ## ⚙️ Используемые технологии
 
