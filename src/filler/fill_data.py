@@ -1,6 +1,8 @@
 import asyncio
 import os
 import random
+from io import BytesIO
+from pathlib import Path
 
 import aiohttp
 from aiohttp import ClientSession
@@ -32,15 +34,32 @@ INTERESTS = [
 ]
 
 
+async def fetch_random_image() -> bytes:
+    base_path = Path("./src/filler/images")
+    files = os.listdir(base_path)
+
+    with (base_path / random.choice(files)).open("rb") as f:  # noqa: S311
+        return f.read()
+
+
 async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway) -> None:
     resp = await gateway.sign_up_mentor(data)
     print(f"Status: {resp.status_code}; Created mentor: {data.full_name}")  # noqa: T201
+
+    if resp.status_code == 409:
+        print("Collision occured")  # noqa: T201
+        return
+
+    assert resp.model is not None
+    resp_attach = await gateway.mentor_update_avatar(resp.model.access_token, BytesIO(await fetch_random_image()))
+    if resp_attach.status_code != 200:
+        print(f"While loading image: {resp_attach.status_code} {resp_attach.text}")  # noqa: T201
 
 
 async def fill_mentors(gateway: TestApiGateway) -> None:
     mentors = [
         SignUpMentorRequest(
-            full_name=fake.name(),
+            full_name=f"{fake.first_name()} {fake.last_name()}",
             description="\n".join(fake.sentences(10)),
             contacts=[
                 MentorContactModel(
@@ -50,7 +69,7 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             ],
             skills=[random.choice(INTERESTS) for _ in range(random.randint(1, len(INTERESTS)))],  # noqa: S311
         )
-        for _ in range(1000)
+        for _ in range(100)
     ]
     req = [create_mentor(mentor_data, gateway) for mentor_data in mentors]
     await asyncio.gather(*req)

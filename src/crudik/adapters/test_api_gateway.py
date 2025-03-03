@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from io import BufferedReader
-from typing import Generic, TypeVar
+from typing import BinaryIO, Generic, TypeVar
 from uuid import UUID
 
 from aiohttp import ClientResponse, ClientSession
@@ -30,6 +30,7 @@ ModelT = TypeVar("ModelT")
 class Response(Generic[ModelT]):
     status_code: int
     model: ModelT | None = None
+    text: str | None = None
 
 
 class TestApiGateway:
@@ -51,6 +52,7 @@ class TestApiGateway:
         return Response(
             model=model.model_validate(data),  # type: ignore
             status_code=response.status,
+            text=await response.text()
         )
 
     async def sign_up_student(self, schema: SignUpStudentRequest) -> Response[TokenResponse]:
@@ -119,7 +121,7 @@ class TestApiGateway:
                 status_code=response.status, model=[MentorData.model_validate(x) for x in await response.json()]
             )
 
-    async def mentor_update_avatar(self, token: str, file: BufferedReader) -> Response[MentorAvatarData]:
+    async def mentor_update_avatar(self, token: str, file: BinaryIO) -> Response[MentorAvatarData]:
         async with self._session.put(
             "/mentor/attach",
             headers={"Authorization": f"Bearer {token}"},
