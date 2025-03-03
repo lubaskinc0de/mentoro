@@ -6,9 +6,9 @@ datasources:
       access: proxy
       url: db:5432
       database: postgres
-      user: postgres
+      user: grafana
       secureJsonData:
-          password: "postggpass"
+          password: "grafana-password"
       jsonData:
           sslmode: "disable"
           maxOpenConns: 10
