@@ -9,7 +9,7 @@ from crudik.models.mentor import Mentor, MentorContact, MentorSkill
 
 
 class MentorContactModel(BaseModel):
-    url: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(description="Ссылка для связи")
+    url: Annotated[str, StringConstraints(min_length=1, max_length=40)] = Field(description="Ссылка для связи")
     social_network: Annotated[str, StringConstraints(min_length=2, max_length=40)] = Field(
         description="Социальная сеть",
     )

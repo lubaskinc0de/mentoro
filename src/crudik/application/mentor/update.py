@@ -14,7 +14,7 @@ from crudik.models.mentor import MentorContact, MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
-    description: str | None = Field(min_length=10, max_length=2000, description="Новое описание ментора")
+    description: str | None = Field(min_length=1, max_length=2000, description="Новое описание ментора")
     contacts: list[MentorContactModel] = Field(
         min_length=1,
         max_length=10,

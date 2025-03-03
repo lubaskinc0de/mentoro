@@ -1,5 +1,4 @@
 import asyncio
-import csv
 import os
 import random
 from io import BytesIO
@@ -34,6 +33,19 @@ INTERESTS = [
     "ML/Ops",
     "System Design",
 ]
+
+md_template = """
+# Данные для входа
+## Студенты
+| Full name | Access token |
+| --- | --- |
+{students}
+---
+## Менторы
+| Full name | Access token |
+| --- | --- |
+{mentors}
+"""
 
 
 def get_image(file_name: str) -> bytes:
@@ -134,13 +146,9 @@ async def fill_data() -> None:
 
         students = await fill_students(gateway)
 
-        with Path("src/filler/tokens.csv").open("w", newline="") as csvfile:
-            fieldnames = ["Логин", "Токен", "Роль"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
+        with Path("./docs/creds.md").open("w", newline="") as creds:
+            studs = "\n".join([f"| {student[1].full_name} | `{student[0].access_token}` |" for student in students])
+            ments = "\n".join([f"| {mentor[1].full_name} | `{mentor[0].access_token}` |" for mentor in mentors])
+            creds.write(md_template.format(students=studs, mentors=ments))
 
-            for mentor in mentors:
-                writer.writerow({"Логин": mentor[1].full_name, "Токен": mentor[0].access_token, "Роль": "ментор"})
-            for student in students:
-                writer.writerow({"Логин": student[1].full_name, "Токен": student[0].access_token, "Роль": "студент"})
         print("Done.")  # noqa: T201
