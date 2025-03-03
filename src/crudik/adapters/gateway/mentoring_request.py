@@ -32,10 +32,7 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
             select(MentoringRequest)
             .join(Mentor, Mentor.id == MentoringRequest.mentor_id)
             .where(MentoringRequest.mentor_id == mentor_id)
-            .options(
-                selectinload(MentoringRequest.mentor).selectinload(Mentor.contacts),
-                selectinload(MentoringRequest.mentor).selectinload(Mentor.skills),
-            )
+            .options(selectinload(MentoringRequest.student))
             .order_by(MentoringRequest.created_at)
         )
         result = await self._session.execute(stmt)

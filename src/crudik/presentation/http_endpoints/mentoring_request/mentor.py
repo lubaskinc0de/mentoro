@@ -5,7 +5,7 @@ from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from crudik.application.data_model.mentoring_request import MentoringRequestData
+from crudik.application.data_model.mentoring_request import MentoringRequestMentorData
 from crudik.application.mentoring_request.read_all_mentor import ReadMentorMentoringRequests
 from crudik.application.mentoring_request.verdict import (
     VerdictMentoringRequestByMentor,
@@ -59,5 +59,5 @@ async def verdict_mentoring_request(
 async def get_all_requests(
     interactor: FromDishka[ReadMentorMentoringRequests],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> list[MentoringRequestData]:
+) -> list[MentoringRequestMentorData]:
     return await interactor.execute()

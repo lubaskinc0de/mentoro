@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from crudik.models.base import Base
 from crudik.models.mentor import Mentor
+from crudik.models.student import Student
 
 
 class MentoringRequestType(Enum):
@@ -25,3 +26,4 @@ class MentoringRequest(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, server_default=func.now())
 
     mentor: Mapped[Mentor] = relationship(Mentor, uselist=False)
+    student: Mapped[Student] = relationship(Student, uselist=False)
