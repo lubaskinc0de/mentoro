@@ -79,7 +79,7 @@ async def get_all_requests(
             "description": "Студент не авторизован",
             "model": ErrorModel,
         },
-        403: {
+        409: {
             "description": "Студент не может удалить запрос на ментерство",
             "model": ErrorModel,
         },

@@ -2,8 +2,14 @@ from crudik.adapters.file_manager import FileUploadError
 from crudik.adapters.idp import UnauthorizedError
 from crudik.application.errors.common import AccessDeniedError, ApplicationError
 from crudik.application.errors.mentor_errors import MentorDoesNotExistsError
+from crudik.application.errors.mentoring_request import (
+    MentoringRequestCannotBeDeletedError,
+    MentoringRequestCannotBeUpdatedError,
+    MentoringRequestNotFoundError,
+)
 from crudik.application.errors.review_errors import ReviewDoesNotExistsError
 from crudik.application.errors.student_errors import StudentDoesNotExistsError
+from crudik.application.errors.swiped_mentor import SwipedMentorNotFoundError
 from crudik.presentation.http_endpoints.student import (
     CannotReadFileInfoError,
     CannotReadFileSizeError,
@@ -23,6 +29,10 @@ error_code = {
     CannotReadFileInfoError: 400,
     AccessDeniedError: 403,
     ReviewDoesNotExistsError: 404,
+    MentoringRequestNotFoundError: 404,
+    MentoringRequestCannotBeUpdatedError: 400,
+    MentoringRequestCannotBeDeletedError: 409,
+    SwipedMentorNotFoundError: 404,
 }
 error_unique_code = {
     ApplicationError: "APPLICATION_ERROR",
@@ -36,4 +46,8 @@ error_unique_code = {
     CannotReadFileInfoError: "CANNOT_READ_FILE_INFO_ERROR",
     ReviewDoesNotExistsError: "REVIEW_DOES_NOT_EXISTS_ERROR",
     AccessDeniedError: "ACCESS_DENIED_ERROR",
+    MentoringRequestNotFoundError: "MENTORING_REQUEST_NOT_FOUND_ERROR",
+    MentoringRequestCannotBeUpdatedError: "MENTORING_REQUEST_CANNOT_BE_UPDATED_ERROR",
+    MentoringRequestCannotBeDeletedError: "MENTORING_REQUEST_CANNOT_BE_DELETED_ERROR",
+    SwipedMentorNotFoundError: "SWIPED_MENTOR_NOT_FOUND_ERROR",
 }
