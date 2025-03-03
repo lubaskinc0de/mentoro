@@ -51,7 +51,7 @@ class TestApiGateway:
         return Response(
             model=model.model_validate(data),  # type: ignore
             status_code=response.status,
-            text=await response.text()
+            text=await response.text(),
         )
 
     async def sign_up_student(self, schema: SignUpStudentRequest) -> Response[TokenResponse]:
