@@ -70,6 +70,10 @@ async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img:
     if resp_attach.status_code != 200:
         print(f"While loading image: {resp_attach.status_code} {resp_attach.text}")  # noqa: T201
 
+    pth = Path("src/filler/tokens.txt")
+    with pth.open("a") as f:
+        print(f"Логин: {data.full_name};Токен: {resp.model.access_token};Тип: МЕНТОР", file=f)
+
 
 async def fill_mentors(gateway: TestApiGateway) -> None:
     names = ["Опытный Василий", "Владислав IT", "Ярослав Python", "Михаил JS", "Даня React"]
