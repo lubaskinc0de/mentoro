@@ -9,8 +9,10 @@ from crudik.application.common.uow import UoW
 from crudik.application.data_model.review import ReviewData, convert_review_to_dto
 from crudik.application.errors.mentor_errors import MentorDoesNotExistsError
 from crudik.application.gateway.mentor_gateway import MentorGateway
+from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.application.gateway.student_gateway import StudentGateway
 from crudik.models.mentor import MentorReview
+from crudik.models.mentoring_request import MentoringRequestType
 
 
 class ReviewCreateData(BaseModel):
@@ -21,6 +23,7 @@ class ReviewCreateData(BaseModel):
 
 @dataclass(slots=True, frozen=True)
 class AddReview:
+    mentoring_request_gateway: MentoringRequestGateway
     gateway: MentorGateway
     student_gateway: StudentGateway
     idp: TokenStudentIdProvider
@@ -35,6 +38,13 @@ class AddReview:
 
         if mentor is None:
             raise MentorDoesNotExistsError
+
+        mentoring_request = await self.mentoring_request_gateway.get_by_student_and_mentor(
+            student_id=student.id,
+            mentor_id=mentor.id,
+        )
+        if mentoring_request is None or mentoring_request.type != MentoringRequestType.ACCEPTED:
+            raise UnauthorizedError
 
         review = MentorReview(
             review_id=uuid4(),
