@@ -5,7 +5,7 @@ services:
             service: nginx
         depends_on:
             - api
-
+            - nginx-s3-gateway
     tests:
         restart: no
         extends:
