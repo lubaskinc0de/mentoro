@@ -38,6 +38,7 @@ async def test_send_request_student(
     assert len(requests.model) == 1
 
     request = requests.model[0]
+    mentor.contacts = []
 
     assert (
         MentoringRequestData(
