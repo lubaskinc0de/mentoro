@@ -30,11 +30,13 @@ services:
 
     api:
         container_name: api
-        command: [ "crudik", "run", "api" ]
+        command: [ "crudik", "migrations", "autogenerate", "pk" ]
         expose:
             - 5000
         extends:
             service: code
+        volumes:
+            - "./src/crudik/adapters/db/alembic/migrations/versions/:/home/app/src/crudik/adapters/db/alembic/migrations/versions/"
 
     redis:
         container_name: redis_service

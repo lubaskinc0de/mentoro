@@ -1,4 +1,5 @@
 import asyncio
+import csv
 import os
 import random
 from io import BytesIO
@@ -10,6 +11,7 @@ from faker import Faker
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
+from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.sign_up import SignUpMentorRequest
 from crudik.application.student.sign_up import SignUpStudentRequest
 
@@ -56,13 +58,14 @@ STUDENT_IMAGES = [
 ]
 
 
-async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img: bytes) -> None:
+async def create_mentor(
+    data: SignUpMentorRequest, gateway: TestApiGateway, img: bytes
+) -> tuple[TokenResponse, SignUpMentorRequest]:
     resp = await gateway.sign_up_mentor(data)
     print(f"Status: {resp.status_code}; Created mentor: {data.full_name}")  # noqa: T201
 
     if resp.status_code == 409:
-        print("Collision occured")  # noqa: T201
-        return
+        raise ValueError
 
     assert resp.model is not None
 
@@ -70,12 +73,10 @@ async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img:
     if resp_attach.status_code != 200:
         print(f"While loading image: {resp_attach.status_code} {resp_attach.text}")  # noqa: T201
 
-    pth = Path("src/filler/tokens.txt")
-    with pth.open("a") as f:
-        print(f"Логин: {data.full_name};Токен: {resp.model.access_token};Тип: МЕНТОР", file=f)
+    return resp.model, data
 
 
-async def fill_mentors(gateway: TestApiGateway) -> None:
+async def fill_mentors(gateway: TestApiGateway) -> list[tuple[TokenResponse, SignUpMentorRequest]]:
     names = ["Опытный Василий", "Владислав IT", "Ярослав Python", "Михаил JS", "Даня React"]
     mentors = [
         SignUpMentorRequest(
@@ -95,11 +96,13 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
         create_mentor(mentor_data, gateway, get_image(image))
         for mentor_data, image in zip(mentors, MENTOR_IMAGES, strict=True)
     ]
-    await asyncio.gather(*req)
+    res: list[tuple[TokenResponse, SignUpMentorRequest]] = await asyncio.gather(*req)
+    return res
 
 
-async def fill_students(gateway: TestApiGateway) -> None:
+async def fill_students(gateway: TestApiGateway) -> list[tuple[TokenResponse, SignUpStudentRequest]]:
     names = ["Майкл", "Влад", "Илья", "Иван", "Максим"]
+    res: list[tuple[TokenResponse, SignUpStudentRequest]] = []
     for name, image in zip(names, STUDENT_IMAGES, strict=True):
         request = SignUpStudentRequest(
             full_name=f"Студент {name}",
@@ -108,12 +111,14 @@ async def fill_students(gateway: TestApiGateway) -> None:
         )
         resp = await gateway.sign_up_student(request)
         if resp.status_code == 409:
-            print("Student already created")  # noqa: T201
-        elif resp.status_code != 200:
+            raise ValueError("Student already created")
+        if resp.status_code != 200:
             msg = f"Cannot create student {resp.text}"
             raise ValueError(msg)
         assert resp.model is not None
         await gateway.student_update_avatar(resp.model.access_token, BytesIO(get_image(image)))
+        res.append((resp.model, request))
+    return res
 
 
 async def fill_data() -> None:
@@ -122,6 +127,20 @@ async def fill_data() -> None:
         connector=aiohttp.TCPConnector(ssl=bool(int(os.environ.get("USE_SSL", False)))),
     ) as session:
         gateway = TestApiGateway(session)
-        await fill_mentors(gateway)
-        await fill_students(gateway)
+        try:
+            mentors = await fill_mentors(gateway)
+        except ValueError:
+            print("Mentor collision")  # noqa: T201
+
+        students = await fill_students(gateway)
+
+        with Path("src/filler/tokens.csv").open("w", newline="") as csvfile:
+            fieldnames = ["Логин", "Токен", "Роль"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+
+            for mentor in mentors:
+                writer.writerow({"Логин": mentor[1].full_name, "Токен": mentor[0].access_token, "Роль": "ментор"})
+            for student in students:
+                writer.writerow({"Логин": student[1].full_name, "Токен": student[0].access_token, "Роль": "студент"})
         print("Done.")  # noqa: T201
