@@ -7,7 +7,7 @@ from crudik.application.errors.mentoring_request import (
     MentoringRequestCannotBeUpdatedError,
     MentoringRequestNotFoundError,
 )
-from crudik.application.errors.review_errors import ReviewDoesNotExistsError
+from crudik.application.errors.review_errors import ReviewCannotBeAddedError, ReviewDoesNotExistsError
 from crudik.application.errors.student_errors import StudentDoesNotExistsError
 from crudik.application.errors.swiped_mentor import SwipedMentorNotFoundError
 from crudik.presentation.http_endpoints.student import (
@@ -33,6 +33,7 @@ error_code = {
     MentoringRequestCannotBeUpdatedError: 400,
     MentoringRequestCannotBeDeletedError: 409,
     SwipedMentorNotFoundError: 404,
+    ReviewCannotBeAddedError: 403,
 }
 error_unique_code = {
     ApplicationError: "APPLICATION_ERROR",
@@ -50,4 +51,5 @@ error_unique_code = {
     MentoringRequestCannotBeUpdatedError: "MENTORING_REQUEST_CANNOT_BE_UPDATED_ERROR",
     MentoringRequestCannotBeDeletedError: "MENTORING_REQUEST_CANNOT_BE_DELETED_ERROR",
     SwipedMentorNotFoundError: "SWIPED_MENTOR_NOT_FOUND_ERROR",
+    ReviewCannotBeAddedError: "REVIEW_CANNOT_BE_ADDED_ERROR",
 }

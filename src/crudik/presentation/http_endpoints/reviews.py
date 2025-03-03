@@ -34,6 +34,10 @@ security = HTTPBearer(auto_error=False)
             "description": "Студент не авторизован",
             "model": ErrorModel,
         },
+        403: {
+            "description": "Отзыв не может быть создан (не одобрена заявка к ментору)",
+            "model": ErrorModel,
+        }
     },
 )
 async def add_review(
