@@ -235,3 +235,10 @@ class TestApiGateway:
                 status_code=response.status,
                 model=[MentoringRequestMentorData.model_validate(_) for _ in data],
             )
+
+    async def delete_mentoring_request(self, token: str, request_id: UUID) -> Response[None]:
+        async with self._session.delete(
+            f"/student/request/{request_id}",
+            headers={"Authorization": f"Bearer {token}"},
+        ) as response:
+            return await self._parse_response(response, None)
