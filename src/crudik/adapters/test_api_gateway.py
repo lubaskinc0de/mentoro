@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from io import BufferedReader
 from typing import BinaryIO, Generic, TypeVar
 from uuid import UUID
 
@@ -80,7 +79,7 @@ class TestApiGateway:
         ) as response:
             return await self._parse_response(response, StudentData)
 
-    async def student_update_avatar(self, token: str, file: BufferedReader) -> Response[StudentAvatarData]:
+    async def student_update_avatar(self, token: str, file: BinaryIO) -> Response[StudentAvatarData]:
         async with self._session.put(
             "/student/attach",
             headers={"Authorization": f"Bearer {token}"},
