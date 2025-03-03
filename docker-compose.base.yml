@@ -9,6 +9,7 @@ services:
         volumes:
             - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
             - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+            - ./grafana/grafana.ini:/etc/grafana/grafana.ini:ro
 
     nginx:
         image: nginx:1.23.3

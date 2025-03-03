@@ -9,9 +9,10 @@ services:
         volumes:
             - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
             - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+            - ./grafana/grafana.ini:/etc/grafana/grafana.ini:ro
             - grafana_data:/var/lib/grafana
         depends_on:
-            nginx:
+            db:
                 condition: service_healthy
 
     nginx:
@@ -28,6 +29,8 @@ services:
             - ./nginx/ssl/:/ssl/
         depends_on:
             - api
+            - grafana
+            - nginx-s3-gateway
 
     api:
         container_name: api
