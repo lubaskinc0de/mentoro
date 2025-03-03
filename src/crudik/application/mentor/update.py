@@ -44,7 +44,7 @@ class UpdateMentor:
         mentor.description = request.description
 
         await self.skill_gateway.delete_by_mentor_id(mentor.id)
-        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in set(request.skills)]
         self.uow.add_all(skills)
 
         await self.contact_gateway.delete_by_mentor_id(mentor.id)

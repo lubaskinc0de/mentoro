@@ -40,19 +40,19 @@ def get_image(file_name: str) -> bytes:
 
 
 MENTOR_IMAGES = [
-    "src/filler/images/0bed979a-b777-4ef2-bb16-3635eaaf1760.jpg",
-    "src/filler/images/00d7811d-d478-4d5c-aeb5-f6f8d7ee84eb.jpg",
-    "src/filler/images/0d387054-9ed2-4b66-a038-7ada95962bc0.jpg",
-    "src/filler/images/1d8c8e97-2e93-464e-b8bf-4ada30997e68.jpg",
-    "src/filler/images/f5d72ffe-bbcd-44e8-8247-b71bcc5e2120.jpg",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
 ]
 
 STUDENT_IMAGES = [
-    "src/filler/images/f5d72ffe-bbcd-44e8-8247-b71bcc5e2120.jpg",
-    "src/filler/images/e47c7520-8150-42ea-ba93-65aec3075521.jpg",
-    "src/filler/images/dd4a4df5-d687-4e96-b507-d358ddb3379c.jpg",
-    "src/filler/images/db790f53-35d7-4c35-8bc4-60848100eefc.jpg",
-    "src/filler/images/2bac0731-4aa8-47ea-8fa5-f7b2e9d06d8b.jpg",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
 ]
 
 

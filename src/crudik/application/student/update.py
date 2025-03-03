@@ -33,6 +33,6 @@ class UpdateStudent:
         if request.age:
             student.age = request.age
         if request.interests:
-            student.interests = request.interests
+            student.interests = list({key: None for key in request.interests}.keys())
 
         await self.uow.commit()

@@ -37,7 +37,7 @@ class SignUpStudent:
             id=student_id,
             full_name=request.full_name,
             created_at=datetime.now(tz=UTC),
-            interests=request.interests,
+            interests=list({key: None for key in request.interests}.keys()),
             age=request.age,
             description=request.description,
         )
