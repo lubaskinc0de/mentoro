@@ -41,9 +41,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 def run_api(_args: list[str]) -> None:
     app = FastAPI(
         lifespan=lifespan,
-        root_path="/api",
         docs_url="/docs",
-        redoc_url="/redoc",
         openapi_url="/openapi.json",
     )
     origins = ["*"]

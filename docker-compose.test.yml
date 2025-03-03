@@ -15,7 +15,7 @@ services:
         command: 
             sh -c "coverage run --source src -m pytest && coverage report && coverage xml -o ./cov/coverage.xml"
         environment:
-            - API_URL=http://nginx:80/api/
+            - API_URL=http://nginx:80/
         volumes:
           - ./cov/:/home/app/cov
         depends_on:
