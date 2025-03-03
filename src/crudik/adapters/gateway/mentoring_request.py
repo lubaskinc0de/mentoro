@@ -1,12 +1,12 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.models.mentor import Mentor
-from crudik.models.mentoring_request import MentoringRequest
+from crudik.models.mentoring_request import MentoringRequest, MentoringRequestType
 
 
 class MentoringRequestGatewayImpl(MentoringRequestGateway):
@@ -31,9 +31,17 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
         stmt = (
             select(MentoringRequest)
             .join(Mentor, Mentor.id == MentoringRequest.mentor_id)
-            .where(MentoringRequest.mentor_id == mentor_id)
+            .where(
+                MentoringRequest.mentor_id == mentor_id,
+            )
             .options(selectinload(MentoringRequest.student))
-            .order_by(MentoringRequest.created_at)
+            .order_by(
+                MentoringRequest.created_at,
+                case(
+                    (MentoringRequest.type == MentoringRequestType.REVIEW, 0),
+                    else_=1,
+                ),
+            )
         )
         result = await self._session.execute(stmt)
         return list(result.scalars().all())

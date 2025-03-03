@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, func
+from sqlalchemy import DateTime, ForeignKey, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from crudik.models.base import Base
@@ -27,3 +27,5 @@ class MentoringRequest(Base):
 
     mentor: Mapped[Mentor] = relationship(Mentor, uselist=False)
     student: Mapped[Student] = relationship(Student, uselist=False)
+
+    __table_args__ = (UniqueConstraint("student_id", "mentor_id"),)
