@@ -3,6 +3,7 @@ import os
 import random
 from io import BytesIO
 from pathlib import Path
+from uuid import uuid4
 
 import aiohttp
 from aiohttp import ClientSession
@@ -12,6 +13,8 @@ from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
 from crudik.application.mentor.sign_up import SignUpMentorRequest
 from crudik.application.student.sign_up import SignUpStudentRequest
+from crudik.application.student.swipe_mentor import SwipeMentorRequest
+from crudik.models.swiped_mentor import SwipedMentorType
 
 fake = Faker("ru_RU")
 
@@ -112,7 +115,49 @@ async def fill_students(gateway: TestApiGateway) -> None:
         await gateway.student_update_avatar(resp.model.access_token, BytesIO(get_image(image)))
 
 
-async def fill_history_students(gateway: TestApiGateway) -> None: ...
+async def fill_history(gateway: TestApiGateway) -> None:
+    for _ in range(100):
+        students = [
+            SignUpStudentRequest(
+                full_name=f"Студент {uuid4()}",
+                age=random.randint(15, 25),  # noqa: S311
+                interests=[random.choice(INTERESTS) for _ in range(random.randint(1, 6))],  # noqa: S311
+            )
+            for _ in range(random.randrange(1, 100))
+        ]
+
+        students = await asyncio.gather(*[gateway.sign_up_student(student) for student in students])
+        mentors = [
+            SignUpMentorRequest(
+                full_name=f"Ментор {uuid4()}",
+                description="Тестовый ментор",
+                contacts=[
+                    MentorContactModel(
+                        social_network="Telegram",
+                        url="https://t.me/ovflw",
+                    ),
+                ],
+                skills=["skill_37243278462387"],  # noqa: S311
+            )
+            for _ in range(random.randrange(1, 100))
+        ]
+
+        mentors = await asyncio.gather(*[gateway.sign_up_mentor(mentor) for mentor in mentors])
+
+        swipes = [
+            (
+                SwipeMentorRequest(
+                    mentor_id=random.choice(mentors).model.id,  # noqa: S311
+                    type=random.choice(list(SwipedMentorType)),
+                ),
+                student.model.access_token,
+            )
+            for student in random.choices(students, k=random.randrange(1, 100))  # noqa: S311
+        ]
+
+        await asyncio.gather(*[gateway.swipe_mentor(token, swipe) for swipe, token in swipes])
+
+        await asyncio.sleep(60)
 
 
 async def fill_data() -> None:
@@ -121,6 +166,7 @@ async def fill_data() -> None:
         connector=aiohttp.TCPConnector(ssl=bool(int(os.environ.get("USE_SSL", False)))),
     ) as session:
         gateway = TestApiGateway(session)
-        await fill_mentors(gateway)
-        await fill_students(gateway)
+        # await fill_mentors(gateway)
+        # await fill_students(gateway)
+        await fill_history(gateway)
         print("Done.")  # noqa: T201
