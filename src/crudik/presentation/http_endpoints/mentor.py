@@ -41,6 +41,7 @@ MAX_FILE_SIZE = 8 * 1024 * 1024
             "model": TokenResponse,
             "description": "Успешная регистрация",
         },
+        409: {"model": ErrorModel, "description": "Ментор с таким full_name уже существует"},
     },
 )
 async def sign_up_mentor(

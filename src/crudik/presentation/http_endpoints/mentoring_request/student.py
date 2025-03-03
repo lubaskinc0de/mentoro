@@ -35,6 +35,7 @@ security = HTTPBearer(auto_error=False)
             "description": "Студент не авторизован",
             "model": ErrorModel,
         },
+        409: {"description": "Студент не может создать повторную заявку на ментерство", "model": ErrorModel},
     },
 )
 async def send_mentoring(
