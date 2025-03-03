@@ -1,6 +1,6 @@
 # 🚀 Mentoro — сервис для поиска менторов
 
-![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=80&min_acceptable=70&min_medium=50) ![build](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/pipeline.svg)
+![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=65&min_acceptable=50&min_medium=40) ![build](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/pipeline.svg)
 
 ## 📌 Описание проекта
 
