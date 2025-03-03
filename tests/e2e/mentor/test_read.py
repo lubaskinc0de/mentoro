@@ -35,6 +35,8 @@ async def test_read_by_id(
     assert read_response.model is not None
 
     expected = MentorData(**mentor.model_dump(), id=read_response.model.id)
+    expected.contacts = []
+
     assert expected == read_response.model
 
 

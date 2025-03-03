@@ -39,7 +39,7 @@ class AddReview:
         if mentor is None:
             raise MentorDoesNotExistsError
 
-        mentoring_request = await self.mentoring_request_gateway.get_by_student_and_mentor(
+        mentoring_request = await self.mentoring_request_gateway.read_by_pair(
             student_id=student.id,
             mentor_id=mentor.id,
         )
