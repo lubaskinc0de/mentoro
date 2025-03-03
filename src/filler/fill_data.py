@@ -61,9 +61,10 @@ async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img:
 
 async def fill_mentors(gateway: TestApiGateway) -> None:
     images = get_images()
+    names = ["Опытный Василий", "Владислав IT", "Ярослав Python", "Михаил JS", "Даня React"]
     mentors = [
         SignUpMentorRequest(
-            full_name=f"{fake.first_name()} ментор {x}",
+            full_name=f"{name}",
             description="\n".join(fake.sentences(10)),
             contacts=[
                 MentorContactModel(
@@ -73,17 +74,17 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             ],
             skills=[random.choice(INTERESTS) for _ in range(random.randint(1, len(INTERESTS)))],  # noqa: S311
         )
-        for x in range(1, 6)
+        for name in names
     ]
     req = [create_mentor(mentor_data, gateway, random.choice(images)) for mentor_data in mentors]  # noqa: S311
     await asyncio.gather(*req)
 
 
-async def fill_students(gateway: TestApiGateway, n: int = 5) -> None:
-    for x in range(1, n + 1):
-        name = fake.name()
+async def fill_students(gateway: TestApiGateway) -> None:
+    names = ["Майкл", "Влад", "Илья", "Иван", "Максим"]
+    for name in names:
         request = SignUpStudentRequest(
-            full_name=f"Студент {name} - {x}",
+            full_name=f"Студент {name}",
             age=random.randint(15, 25),  # noqa: S311
             interests=[random.choice(INTERESTS) for _ in range(random.randint(1, 6))],  # noqa: S311
         )
