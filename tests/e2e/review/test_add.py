@@ -139,4 +139,4 @@ async def test_mentoring_request_not_accepted(
         ReviewCreateData(mentor_id=data.mentor.id, text="He was very experienced!", rate=5),
     )
 
-    assert review_response.status_code == 401
+    assert review_response.status_code == 403

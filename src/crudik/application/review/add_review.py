@@ -8,6 +8,7 @@ from crudik.adapters.idp import TokenStudentIdProvider, UnauthorizedError
 from crudik.application.common.uow import UoW
 from crudik.application.data_model.review import ReviewData, convert_review_to_dto
 from crudik.application.errors.mentor_errors import MentorDoesNotExistsError
+from crudik.application.errors.review_errors import ReviewCannotBeAddedError
 from crudik.application.gateway.mentor_gateway import MentorGateway
 from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.application.gateway.student_gateway import StudentGateway
@@ -44,7 +45,7 @@ class AddReview:
             mentor_id=mentor.id,
         )
         if mentoring_request is None or mentoring_request.type != MentoringRequestType.ACCEPTED:
-            raise UnauthorizedError
+            raise ReviewCannotBeAddedError
 
         review = MentorReview(
             review_id=uuid4(),
