@@ -63,7 +63,7 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
     images = get_images()
     mentors = [
         SignUpMentorRequest(
-            full_name=f"{fake.first_name()} {fake.last_name()}",
+            full_name=f"{fake.first_name()} ментор {x}",
             description="\n".join(fake.sentences(10)),
             contacts=[
                 MentorContactModel(
@@ -73,17 +73,17 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
             ],
             skills=[random.choice(INTERESTS) for _ in range(random.randint(1, len(INTERESTS)))],  # noqa: S311
         )
-        for _ in range(30)
+        for x in range(1, 6)
     ]
     req = [create_mentor(mentor_data, gateway, random.choice(images)) for mentor_data in mentors]  # noqa: S311
     await asyncio.gather(*req)
 
 
-async def fill_students(gateway: TestApiGateway, n: int = 10) -> None:
-    for _ in range(n):
+async def fill_students(gateway: TestApiGateway, n: int = 5) -> None:
+    for x in range(1, n + 1):
         name = fake.name()
         request = SignUpStudentRequest(
-            full_name=name,
+            full_name=f"Студент {name} - {x}",
             age=random.randint(15, 25),  # noqa: S311
             interests=[random.choice(INTERESTS) for _ in range(random.randint(1, 6))],  # noqa: S311
         )
@@ -93,9 +93,6 @@ async def fill_students(gateway: TestApiGateway, n: int = 10) -> None:
         elif resp.status_code != 200:
             msg = f"Cannot create student {resp.text}"
             raise ValueError(msg)
-
-    prod_student = SignUpStudentRequest(full_name="PROD", age=20, interests=INTERESTS, description="PRODDDDoooooDD")
-    resp = await gateway.sign_up_student(prod_student)
 
 
 async def fill_history_students(gateway: TestApiGateway) -> None: ...
