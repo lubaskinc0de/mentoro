@@ -9,7 +9,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from crudik.application.data_model.review import ReviewData, ReviewFullData
 from crudik.application.review.add_review import AddReview, ReviewCreateData
 from crudik.application.review.delete_review import DeleteReview
-from crudik.application.review.read_reviews import ReadMentorReviews
+from crudik.application.review.read_profile_reviews import ReadMentorProfileReviews
+from crudik.application.review.read_reviews import ReadMentorReviewsByStudent
 from crudik.presentation.http_endpoints.error_model import ErrorModel
 
 router = APIRouter(
@@ -84,15 +85,32 @@ async def delete_review(
             "model": ErrorModel,
             "description": "Студент не авторизован",
         },
-        404: {
-            "model": ErrorModel,
-            "description": "Отзыв не существует",
-        },
     },
 )
 async def mentor_reviews(
-    interactor: FromDishka[ReadMentorReviews],
+    interactor: FromDishka[ReadMentorReviewsByStudent],
     mentor_id: Annotated[UUID, Path(description="Идентификатор ментора")],
     _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
 ) -> list[ReviewFullData]:
     return await interactor.execute(mentor_id)
+
+
+@router.get(
+    "/",
+    description="Получение всех отзывов авторизованного ментора",
+    responses={
+        200: {
+            "model": list[ReviewFullData],
+            "description": "Успешное получение отзывов ментора",
+        },
+        401: {
+            "model": ErrorModel,
+            "description": "Ментор не авторизован",
+        },
+    },
+)
+async def mentor_profile_reviews(
+    interactor: FromDishka[ReadMentorProfileReviews],
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+) -> list[ReviewFullData]:
+    return await interactor.execute()
