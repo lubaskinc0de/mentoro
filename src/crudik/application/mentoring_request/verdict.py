@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 from crudik.adapters.idp import TokenMentorIdProvider, UnauthorizedError
 from crudik.application.common.uow import UoW
+from crudik.application.errors.common import AccessDeniedError
 from crudik.application.errors.mentoring_request import (
     MentoringRequestCannotBeUpdatedError,
     MentoringRequestNotFoundError,
@@ -41,6 +42,9 @@ class VerdictMentoringRequestByMentor:
         mentoring_request = await self.gateway.get_by_id(request.mentoring_request_id)
         if mentoring_request is None:
             raise MentoringRequestNotFoundError
+
+        if mentoring_request.mentor_id != mentor_id:
+            raise AccessDeniedError
 
         if mentoring_request.type != MentoringRequestType.REVIEW:
             raise MentoringRequestCannotBeUpdatedError

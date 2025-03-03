@@ -22,7 +22,13 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
                 selectinload(MentoringRequest.mentor).selectinload(Mentor.contacts),
                 selectinload(MentoringRequest.mentor).selectinload(Mentor.skills),
             )
-            .order_by(MentoringRequest.created_at)
+            .order_by(
+                MentoringRequest.created_at,
+                case(
+                    (MentoringRequest.type == MentoringRequestType.ACCEPTED, 0),
+                    else_=1,
+                ),
+            )
         )
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
