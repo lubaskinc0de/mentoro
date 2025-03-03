@@ -21,7 +21,7 @@ class SignUpStudentRequest(BaseModel):
         max_length=100,
         description="Интересы студента",
     )
-    description: str | None = Field(max_length=150, min_length=10, description="Описание студента", default=None)
+    description: str | None = Field(max_length=150, min_length=2, description="Описание студента", default=None)
 
 
 @dataclass(frozen=True, slots=True)
