@@ -45,3 +45,10 @@ class MentoringRequestGatewayImpl(MentoringRequestGateway):
         stmt = select(MentoringRequest).where(MentoringRequest.id == unique_id)
         result = await self._session.execute(stmt)
         return result.scalar()
+
+    async def read_by_pair(self, mentor_id: UUID, student_id: UUID) -> MentoringRequest | None:
+        stmt = select(MentoringRequest).where(
+            MentoringRequest.mentor_id == mentor_id, MentoringRequest.student_id == student_id
+        )
+        result = await self._session.execute(stmt)
+        return result.scalar()
