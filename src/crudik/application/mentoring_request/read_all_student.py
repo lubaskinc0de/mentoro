@@ -5,6 +5,7 @@ from crudik.application.data_model.mentor import convert_mentor_to_dto
 from crudik.application.data_model.mentoring_request import MentoringRequestData
 from crudik.application.gateway.mentoring_request import MentoringRequestGateway
 from crudik.application.gateway.student_gateway import StudentGateway
+from crudik.models.mentoring_request import MentoringRequestType
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,12 +21,20 @@ class ReadStudentMentoringRequests:
             raise UnauthorizedError
 
         data = await self.gateway.read_all_by_student(student.id)
-        return [
-            MentoringRequestData(
-                id=_.id,
-                type=_.type,
-                created_at=_.created_at,
-                mentor=convert_mentor_to_dto(_.mentor),
+        result = []
+
+        for mentoring_request in data:
+            mentor = convert_mentor_to_dto(mentoring_request.mentor)
+            if mentoring_request.type != MentoringRequestType.ACCEPTED:
+                mentor.contacts = []
+
+            result.append(
+                MentoringRequestData(
+                    id=mentoring_request.id,
+                    type=mentoring_request.type,
+                    created_at=mentoring_request.created_at,
+                    mentor=mentor,
+                )
             )
-            for _ in data
-        ]
+
+        return result

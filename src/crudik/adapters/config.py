@@ -11,6 +11,11 @@ class ServerConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class SecretConfig:
+    secret_key: str
+
+
+@dataclass(frozen=True, slots=True)
 class RedisConfig:
     host: str
     port: int
@@ -44,6 +49,7 @@ class Config:
     server: ServerConfig
     postgresql: PostgresqlConfig
     files: FilesConfig
+    secret: SecretConfig
 
     @classmethod
     def load_from_environment(cls) -> Self:
@@ -70,5 +76,8 @@ class Config:
                 minio_secret_key=os.environ["MINIO_SECRET_KEY"],
                 minio_url=os.environ["MINIO_URL"],
                 file_server=os.environ["FILE_SERVER_URL"],
+            ),
+            secret=SecretConfig(
+                secret_key=os.environ["SECRET_KEY"],
             ),
         )

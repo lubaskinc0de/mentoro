@@ -3,13 +3,18 @@ from collections.abc import AsyncIterator
 import miniopy_async  # type:ignore[import-untyped]
 from dishka import Provider, Scope, from_context, provide
 
-from crudik.adapters.config import FilesConfig, PostgresqlConfig, RedisConfig
+from crudik.adapters.config import FilesConfig, PostgresqlConfig, RedisConfig, SecretConfig
 
 
 class ConfigProvider(Provider):
     scope = Scope.APP
 
-    configs = from_context(RedisConfig) + from_context(PostgresqlConfig) + from_context(FilesConfig)
+    configs = (
+        from_context(RedisConfig)
+        + from_context(PostgresqlConfig)
+        + from_context(FilesConfig)
+        + from_context(SecretConfig)
+    )
 
     @provide(scope=Scope.APP)
     async def minio_client(self, config: FilesConfig) -> AsyncIterator[miniopy_async.Minio]:

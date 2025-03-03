@@ -24,4 +24,8 @@ class ReadFavoritesMentors:
             swiped_mentor_type=SwipedMentorType.FAVORITES,
         )
         data = [convert_mentor_to_dto(swiped_mentor.mentor) for swiped_mentor in swiped_mentors]
+
+        for mentor in data:
+            mentor.contacts = []
+
         return data

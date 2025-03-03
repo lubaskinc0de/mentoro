@@ -31,7 +31,7 @@ class ReadMentorById:
         request = await self.mentoring_request_gateway.read_by_pair(mentor_id, student_id)
         result = convert_mentor_to_dto(mentor)
 
-        if request is None or request.type == MentoringRequestType.REVIEW:
+        if request is None or request.type != MentoringRequestType.ACCEPTED:
             result.contacts = []
 
         return result

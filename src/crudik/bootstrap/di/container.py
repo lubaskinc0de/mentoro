@@ -1,7 +1,7 @@
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import FastapiProvider
 
-from crudik.adapters.config import Config, FilesConfig, PostgresqlConfig, RedisConfig
+from crudik.adapters.config import Config, FilesConfig, PostgresqlConfig, RedisConfig, SecretConfig
 from crudik.bootstrap.di.providers.adapter import AdapterProvider
 from crudik.bootstrap.di.providers.config import ConfigProvider
 from crudik.bootstrap.di.providers.connection import ConnectionProvider
@@ -23,6 +23,7 @@ def get_async_container(
             RedisConfig: config.redis,
             PostgresqlConfig: config.postgresql,
             FilesConfig: config.files,
+            SecretConfig: config.secret,
         },
     )
     return container
