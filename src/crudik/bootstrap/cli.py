@@ -57,5 +57,7 @@ def main() -> None:
     if option not in modules[module]:  # type: ignore
         return
 
-    run_migrations()
+    if option == "api":
+        run_migrations()
+
     modules[module][option](args)  # type: ignore

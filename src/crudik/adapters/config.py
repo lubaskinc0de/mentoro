@@ -21,6 +21,10 @@ class RedisConfig:
     port: int
     database: int
 
+    @property
+    def connection_url(self) -> str:
+        return f"redis://{self.host}:{self.port}/{self.database}"
+
 
 @dataclass(frozen=True, slots=True)
 class PostgresqlConfig:
@@ -44,7 +48,13 @@ class FilesConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class TelegramBotConfig:
+    token: str
+
+
+@dataclass(frozen=True, slots=True)
 class Config:
+    telegram_bot: TelegramBotConfig
     redis: RedisConfig
     server: ServerConfig
     postgresql: PostgresqlConfig
@@ -79,5 +89,8 @@ class Config:
             ),
             secret=SecretConfig(
                 secret_key=os.environ["SECRET_KEY"],
+            ),
+            telegram_bot=TelegramBotConfig(
+                token=os.environ["TELEGRAM_BOT_TOKEN"],
             ),
         )

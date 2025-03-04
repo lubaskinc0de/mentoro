@@ -19,6 +19,8 @@ dependencies = [
     "pyjwt==2.10.1",
     "filetype==1.2.0",
     "adaptix==3.0.0b9",
+    "aiogram==3.18.0",
+    "aiogram_dialog==2.3.1",
 ]
 
 [project.optional-dependencies]
@@ -80,6 +82,8 @@ ignore = [
     'D212',
     'D203',
     'COM812',
+    'ARG001',
+    'TC002',
     'ARG002',
     'RUF001',
     'PLR0912',

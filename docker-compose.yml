@@ -30,7 +30,22 @@ services:
                 condition: service_healthy
             minio:
                 condition: service_healthy
+    
+    telegram_bot:
+        extends:
+            file: docker-compose.base.yml
+            service: telegram_bot
         
+        volumes:
+            - "./src/crudik/adapters/db/alembic/migrations/versions/:/home/app/src/crudik/adapters/db/alembic/migrations/versions/"
+
+        depends_on:
+            redis:
+                condition: service_healthy
+            db:
+                condition: service_healthy
+            minio:
+                condition: service_healthy
 
     redis:
         extends:

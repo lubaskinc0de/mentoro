@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-ENV APP_HOME=/home/app/
+ENV APP_HOME=/home/app
 WORKDIR $APP_HOME
 
 RUN mkdir ./src

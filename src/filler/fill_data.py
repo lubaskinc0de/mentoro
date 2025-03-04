@@ -137,7 +137,7 @@ async def fill_history(gateway: TestApiGateway) -> None:
                         url="https://t.me/ovflw",
                     ),
                 ],
-                skills=["skill_37243278462387"],  # noqa: S311
+                skills=["skill_37243278462387"],
             )
             for _ in range(random.randrange(1, 100))
         ]

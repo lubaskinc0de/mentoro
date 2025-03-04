@@ -35,6 +35,11 @@ services:
             - 5000
         extends:
             service: code
+    
+    telegram_bot:
+        command: python src/crudik/bootstrap/entrypoint/telegram_bot.py
+        extends:
+            service: code
 
     redis:
         container_name: redis_service
