@@ -29,3 +29,7 @@ class StudentSignUpStates(StatesGroup):
 class MentorProfileStates(StatesGroup):
     profile = State()
     requests = State()
+
+
+class StudentProfileStates(StatesGroup):
+    profile = State()
