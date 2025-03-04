@@ -6,6 +6,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from crudik.adapters.test_api_gateway import TestApiGateway
+from crudik.application.mentor.sign_in import SignInMentorRequest
 from crudik.presentation.bot.states import MentorProfileStates, MentorSignInStates
 
 
@@ -17,7 +18,7 @@ async def input_message(
     api_gateway: FromDishka[TestApiGateway],
 ) -> None:
     if event.text:
-        token = await api_gateway.sign_in_mentor(event.text)
+        token = await api_gateway.sign_in_mentor(SignInMentorRequest(full_name=event.text))
         if token.status_code == 401 or token.model is None:
             await event.reply("Такого ментора нет в системе. Попробуйте еще раз")
             return

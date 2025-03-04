@@ -19,11 +19,15 @@ class StudentSignInStates(StatesGroup):
 
 
 class MentorSignInStates(StatesGroup):
-    main = State()
+    enter_name = State()
 
 
 class StudentSignUpStates(StatesGroup):
-    main = State()
+    enter_full_name = State()
+    enter_about_us = State()
+    enter_interests = State()
+    enter_photo = State()
+    sign_in = State()
 
 
 class MentorProfileStates(StatesGroup):

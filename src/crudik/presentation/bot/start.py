@@ -36,10 +36,10 @@ async def select_entity(event: CallbackQuery, widget: Select[str], dialog_manage
 
 
 _state_map = {
-    ("sign_up", "student"): StudentSignUpStates.main,
+    ("sign_up", "student"): StudentSignUpStates.enter_full_name,
     ("sign_up", "mentor"): MentorSignUpStates.enter_full_name,
     ("sign_in", "student"): StudentSignInStates.main,
-    ("sign_in", "mentor"): MentorSignInStates.main,
+    ("sign_in", "mentor"): MentorSignInStates.enter_name,
 }
 
 
