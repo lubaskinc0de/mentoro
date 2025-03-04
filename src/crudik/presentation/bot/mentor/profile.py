@@ -72,11 +72,11 @@ async def requests_getter(
         "exists_data": True,
         "pages": len(data.model),
         "type": type_present,
-        "created_at": res.created_at,
+        "created_at": res.created_at.strftime("%d.%m.%Y %H:%M"),
         "full_name": res.student.full_name,
         "description": res.student.description or "отсутствует",
         "photo_url": res.student.avatar_url,
-        "skills": res.student.interests,
+        "interests": res.student.interests,
         "age": res.student.age or "отсутствует",
     }
 
@@ -140,6 +140,7 @@ dialog = Dialog(
         ),
         getter=requests_getter,
         state=MentorProfileStates.requests,
+        parse_mode=ParseMode.HTML,
     ),
     on_start=set_on_start_data,
 )
