@@ -81,7 +81,6 @@ async def requests_getter(
     }
 
 
-
 dialog = Dialog(
     Window(
         StaticMedia(url=Format("{photo_url}"), when=F["photo_url"]),
@@ -127,8 +126,9 @@ dialog = Dialog(
                 items="interests",
             ),
             Format(" <b>О себе: </b>{description}"),
-            when=F["exists_data"]
-        ) | Const("Заявок на ментерство нет"),
+            when=F["exists_data"],
+        )
+        | Const("Заявок на ментерство нет"),
         StubScroll("stub_scroll", "pages"),
         Row(
             PrevPage("stub_scroll", "prev_page", when=F["exists_data"]),
@@ -136,7 +136,7 @@ dialog = Dialog(
                 Const("В профиль"),
                 show_mode=ShowMode.EDIT,
             ),
-            NextPage("stub_scroll", "next_page", when=F["exists_data"])
+            NextPage("stub_scroll", "next_page", when=F["exists_data"]),
         ),
         getter=requests_getter,
         state=MentorProfileStates.requests,

@@ -39,5 +39,6 @@ async def run_telegram_bot() -> None:
     finally:
         await redis.aclose()
 
+
 if __name__ == "__main__":
     asyncio.run(run_telegram_bot())

@@ -37,6 +37,7 @@ def input_message(
                 show_mode=ShowMode.EDIT,
             )
         await event.delete()
+
     return wrappper
 
 
@@ -74,6 +75,7 @@ async def sign_in_getter(
         "about_us": dialog_data.get("about_us") or "отсутствует",
     }
 
+
 async def input_skill(
     event: Message,
     widget: MessageInput,
@@ -93,12 +95,7 @@ async def skills_getter(
 
     skills = dialog_manager.dialog_data.get("skills", [])
     current_page = (await scroll.get_page()) + 1
-    return {
-        "pages": len(skills),
-        "ready_for_next": bool(skills),
-        "selected_skill_pos": current_page,
-        "skills": skills
-    }
+    return {"pages": len(skills), "ready_for_next": bool(skills), "selected_skill_pos": current_page, "skills": skills}
 
 
 async def delete_skill(
@@ -117,10 +114,7 @@ async def delete_skill(
 
 @inject
 async def sign_in_handler(
-    event: CallbackQuery,
-    widget: Button,
-    dialog_manager: DialogManager,
-    api_gateway: FromDishka[TestApiGateway]
+    event: CallbackQuery, widget: Button, dialog_manager: DialogManager, api_gateway: FromDishka[TestApiGateway]
 ) -> None:
     middleware_data = dialog_manager.middleware_data
     dialog_data = dialog_manager.dialog_data
@@ -128,10 +122,12 @@ async def sign_in_handler(
         SignUpMentorRequest(
             full_name=dialog_data["full_name"],
             description=dialog_data.get("about_us"),
-            contacts=[MentorContactModel(
-                url=f"@{middleware_data['event_from_user'].username}",
-                social_network="telegram",
-            )],
+            contacts=[
+                MentorContactModel(
+                    url=f"@{middleware_data['event_from_user'].username}",
+                    social_network="telegram",
+                )
+            ],
             skills=dialog_data["skills"],
         ),
     )
@@ -143,10 +139,7 @@ async def sign_in_handler(
         bot: Bot = middleware_data["bot"]
         file = await bot.download(dialog_data["file_id"])
         if file:
-            await api_gateway.mentor_update_avatar(
-                token=token.model.access_token,
-                file=file
-            )
+            await api_gateway.mentor_update_avatar(token=token.model.access_token, file=file)
     await dialog_manager.start(
         state=MentorProfileStates.profile,
         show_mode=ShowMode.DELETE_AND_SEND,
@@ -189,10 +182,7 @@ dialog = Dialog(
             Const("Поделись тем, что ты умеешь:\n"),
             List(
                 Case(
-                    {
-                        True: Format("[{pos}]. {item}"),
-                        ...: Format("{pos}. {item}")
-                    },
+                    {True: Format("[{pos}]. {item}"), ...: Format("{pos}. {item}")},
                     selector=F["data"]["selected_skill_pos"] == F["pos"],
                 ),
                 items="skills",
@@ -235,12 +225,7 @@ dialog = Dialog(
     Window(
         DynamicMedia("media", when=F["media"]),
         Multi(
-            Format(
-                "Введенные данные\n\n"
-                "<b>Полное имя:</b> {full_name}\n"
-                "<b>О себе:</b> {about_us}\n"
-                "<b>Навыки:</b>"
-            ),
+            Format("Введенные данные\n\n<b>Полное имя:</b> {full_name}\n<b>О себе:</b> {about_us}\n<b>Навыки:</b>"),
             List(
                 Format("{pos}. {item}"),
                 items="skills",

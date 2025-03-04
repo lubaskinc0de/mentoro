@@ -15,6 +15,7 @@ from crudik.presentation.bot.states import (
 
 router = Router(name=__name__)
 
+
 @router.message(CommandStart())
 async def start_handler(
     event: Message,
@@ -26,17 +27,13 @@ async def start_handler(
     )
 
 
-async def select_entity(
-    event: CallbackQuery,
-    widget: Select[str],
-    dialog_manager: DialogManager,
-    value: str
-) -> None:
+async def select_entity(event: CallbackQuery, widget: Select[str], dialog_manager: DialogManager, value: str) -> None:
     dialog_manager.dialog_data["entity_type"] = value
     await dialog_manager.switch_to(
         show_mode=ShowMode.EDIT,
         state=StartStates.select_auth,
     )
+
 
 _state_map = {
     ("sign_up", "student"): StudentSignUpStates.main,
@@ -44,17 +41,13 @@ _state_map = {
     ("sign_in", "student"): StudentSignInStates.main,
     ("sign_in", "mentor"): MentorSignInStates.main,
 }
-async def select_way_auth(
-    event: CallbackQuery,
-    widget: Select[str],
-    dialog_manager: DialogManager,
-    value: str
-) -> None:
+
+
+async def select_way_auth(event: CallbackQuery, widget: Select[str], dialog_manager: DialogManager, value: str) -> None:
     dialog_data = dialog_manager.dialog_data
     await dialog_manager.start(
         state=_state_map[(value, dialog_data["entity_type"])],
     )
-
 
 
 dialog = Dialog(

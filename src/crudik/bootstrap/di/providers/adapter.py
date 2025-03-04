@@ -36,4 +36,3 @@ class AdapterProvider(Provider):
         session = ClientSession("https://prod-team-6-a36eo8k0.final.prodcontest.ru/")
         yield TestApiGateway(session)
         await session.close()
-
