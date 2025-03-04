@@ -37,11 +37,7 @@ services:
             service: code
         volumes:
             - "./src/crudik/adapters/db/alembic/migrations/versions/:/home/app/src/crudik/adapters/db/alembic/migrations/versions/"
-    
-    telegram_bot:
-        command: python src/crudik/bootstrap/entrypoint/telegram_bot.py
-        extends:
-            service: code
+
 
     redis:
         container_name: redis_service

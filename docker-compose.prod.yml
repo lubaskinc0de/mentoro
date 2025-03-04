@@ -43,24 +43,11 @@ services:
         restart: on-failure
 
         depends_on:
-            redis:
-                condition: service_healthy
             db:
                 condition: service_healthy
             minio:
                 condition: service_healthy
 
-    redis:
-        container_name: redis_service
-        image: redis:7.0
-        ports:
-            - "6379:6379"
-        command: [ "redis-server", "--appendonly", "yes" ]
-        volumes:
-            - redis_data:/data
-        healthcheck:
-            test: [ "CMD", "redis-cli", "ping" ]
-            interval: 2s
 
     minio:
         image: minio/minio:latest
@@ -112,6 +99,5 @@ services:
 
 volumes:
     pg_data:
-    redis_data:
     grafana_data:
     minio_data:
