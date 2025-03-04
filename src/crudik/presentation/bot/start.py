@@ -9,8 +9,6 @@ from crudik.presentation.bot.states import (
     MentorSignInStates,
     MentorSignUpStates,
     StartStates,
-    StudentSignInStates,
-    StudentSignUpStates,
 )
 
 router = Router(name=__name__)
@@ -36,9 +34,7 @@ async def select_entity(event: CallbackQuery, widget: Select[str], dialog_manage
 
 
 _state_map = {
-    ("sign_up", "student"): StudentSignUpStates.enter_full_name,
     ("sign_up", "mentor"): MentorSignUpStates.enter_full_name,
-    ("sign_in", "student"): StudentSignInStates.main,
     ("sign_in", "mentor"): MentorSignInStates.enter_name,
 }
 
@@ -58,7 +54,7 @@ dialog = Dialog(
             id="select_auth",
             item_id_getter=lambda item: item[1],
             items=[
-                ("Я студент", "student"),
+                # ("Я студент", "student"),
                 ("Я ментор", "mentor"),
             ],
             on_click=select_entity,

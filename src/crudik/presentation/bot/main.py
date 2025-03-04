@@ -5,8 +5,6 @@ from .mentor.sign_in import dialog as mentor_sign_in_dialog
 from .mentor.sign_up import dialog as mentor_sign_up_dialog
 from .start import dialog as start_dialog
 from .start import router as start_router
-from .student.profile import dialog as student_profile_dialog
-from .student.sign_up import dialog as student_sign_up_dialog
 
 
 def include_handlers(dp: Dispatcher) -> None:
@@ -16,5 +14,3 @@ def include_handlers(dp: Dispatcher) -> None:
     dp.include_router(start_dialog)
     dp.include_router(dialog_mentor_profile)
     dp.include_router(mentor_sign_in_dialog)
-    dp.include_router(student_profile_dialog)
-    dp.include_router(student_sign_up_dialog)
