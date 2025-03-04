@@ -3,7 +3,6 @@ import os
 import random
 from io import BytesIO
 from pathlib import Path
-from uuid import uuid4
 
 import aiohttp
 from aiohttp import ClientSession
@@ -11,10 +10,9 @@ from faker import Faker
 
 from crudik.adapters.test_api_gateway import TestApiGateway
 from crudik.application.data_model.mentor import MentorContactModel
+from crudik.application.data_model.token_data import TokenResponse
 from crudik.application.mentor.sign_up import SignUpMentorRequest
 from crudik.application.student.sign_up import SignUpStudentRequest
-from crudik.application.student.swipe_mentor import SwipeMentorRequest
-from crudik.models.swiped_mentor import SwipedMentorType
 
 fake = Faker("ru_RU")
 
@@ -36,6 +34,19 @@ INTERESTS = [
     "System Design",
 ]
 
+md_template = """
+# Данные для входа
+## Студенты
+| Full name | Access token |
+| --- | --- |
+{students}
+---
+## Менторы
+| Full name | Access token |
+| --- | --- |
+{mentors}
+"""
+
 
 def get_image(file_name: str) -> bytes:
     with Path(file_name).open("rb") as f:
@@ -43,29 +54,30 @@ def get_image(file_name: str) -> bytes:
 
 
 MENTOR_IMAGES = [
-    "src/filler/images/0bed979a-b777-4ef2-bb16-3635eaaf1760.jpg",
-    "src/filler/images/00d7811d-d478-4d5c-aeb5-f6f8d7ee84eb.jpg",
-    "src/filler/images/0d387054-9ed2-4b66-a038-7ada95962bc0.jpg",
-    "src/filler/images/1d8c8e97-2e93-464e-b8bf-4ada30997e68.jpg",
-    "src/filler/images/f5d72ffe-bbcd-44e8-8247-b71bcc5e2120.jpg",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
 ]
 
 STUDENT_IMAGES = [
-    "src/filler/images/f5d72ffe-bbcd-44e8-8247-b71bcc5e2120.jpg",
-    "src/filler/images/e47c7520-8150-42ea-ba93-65aec3075521.jpg",
-    "src/filler/images/dd4a4df5-d687-4e96-b507-d358ddb3379c.jpg",
-    "src/filler/images/db790f53-35d7-4c35-8bc4-60848100eefc.jpg",
-    "src/filler/images/2bac0731-4aa8-47ea-8fa5-f7b2e9d06d8b.jpg",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
+    "src/filler/images/avatar.png",
 ]
 
 
-async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img: bytes) -> None:
+async def create_mentor(
+    data: SignUpMentorRequest, gateway: TestApiGateway, img: bytes
+) -> tuple[TokenResponse, SignUpMentorRequest]:
     resp = await gateway.sign_up_mentor(data)
     print(f"Status: {resp.status_code}; Created mentor: {data.full_name}")  # noqa: T201
 
     if resp.status_code == 409:
-        print("Collision occured")  # noqa: T201
-        return
+        raise ValueError
 
     assert resp.model is not None
 
@@ -73,8 +85,10 @@ async def create_mentor(data: SignUpMentorRequest, gateway: TestApiGateway, img:
     if resp_attach.status_code != 200:
         print(f"While loading image: {resp_attach.status_code} {resp_attach.text}")  # noqa: T201
 
+    return resp.model, data
 
-async def fill_mentors(gateway: TestApiGateway) -> None:
+
+async def fill_mentors(gateway: TestApiGateway) -> list[tuple[TokenResponse, SignUpMentorRequest]]:
     names = ["Опытный Василий", "Владислав IT", "Ярослав Python", "Михаил JS", "Даня React"]
     mentors = [
         SignUpMentorRequest(
@@ -94,11 +108,13 @@ async def fill_mentors(gateway: TestApiGateway) -> None:
         create_mentor(mentor_data, gateway, get_image(image))
         for mentor_data, image in zip(mentors, MENTOR_IMAGES, strict=True)
     ]
-    await asyncio.gather(*req)
+    res: list[tuple[TokenResponse, SignUpMentorRequest]] = await asyncio.gather(*req)
+    return res
 
 
-async def fill_students(gateway: TestApiGateway) -> None:
+async def fill_students(gateway: TestApiGateway) -> list[tuple[TokenResponse, SignUpStudentRequest]]:
     names = ["Майкл", "Влад", "Илья", "Иван", "Максим"]
+    res: list[tuple[TokenResponse, SignUpStudentRequest]] = []
     for name, image in zip(names, STUDENT_IMAGES, strict=True):
         request = SignUpStudentRequest(
             full_name=f"Студент {name}",
@@ -107,57 +123,14 @@ async def fill_students(gateway: TestApiGateway) -> None:
         )
         resp = await gateway.sign_up_student(request)
         if resp.status_code == 409:
-            print("Student already created")  # noqa: T201
-        elif resp.status_code != 200:
+            raise ValueError("Student already created")
+        if resp.status_code != 200:
             msg = f"Cannot create student {resp.text}"
             raise ValueError(msg)
         assert resp.model is not None
         await gateway.student_update_avatar(resp.model.access_token, BytesIO(get_image(image)))
-
-
-async def fill_history(gateway: TestApiGateway) -> None:
-    for _ in range(100):
-        students = [
-            SignUpStudentRequest(
-                full_name=f"Студент {uuid4()}",
-                age=random.randint(15, 25),  # noqa: S311
-                interests=[random.choice(INTERESTS) for _ in range(random.randint(1, 6))],  # noqa: S311
-            )
-            for _ in range(random.randrange(1, 100))
-        ]
-
-        students = await asyncio.gather(*[gateway.sign_up_student(student) for student in students])
-        mentors = [
-            SignUpMentorRequest(
-                full_name=f"Ментор {uuid4()}",
-                description="Тестовый ментор",
-                contacts=[
-                    MentorContactModel(
-                        social_network="Telegram",
-                        url="https://t.me/ovflw",
-                    ),
-                ],
-                skills=["skill_37243278462387"],
-            )
-            for _ in range(random.randrange(1, 100))
-        ]
-
-        mentors = await asyncio.gather(*[gateway.sign_up_mentor(mentor) for mentor in mentors])
-
-        swipes = [
-            (
-                SwipeMentorRequest(
-                    mentor_id=random.choice(mentors).model.id,  # noqa: S311
-                    type=random.choice(list(SwipedMentorType)),
-                ),
-                student.model.access_token,
-            )
-            for student in random.choices(students, k=random.randrange(1, 100))  # noqa: S311
-        ]
-
-        await asyncio.gather(*[gateway.swipe_mentor(token, swipe) for swipe, token in swipes])
-
-        await asyncio.sleep(60)
+        res.append((resp.model, request))
+    return res
 
 
 async def fill_data() -> None:
@@ -166,7 +139,16 @@ async def fill_data() -> None:
         connector=aiohttp.TCPConnector(ssl=bool(int(os.environ.get("USE_SSL", False)))),
     ) as session:
         gateway = TestApiGateway(session)
-        # await fill_mentors(gateway)
-        # await fill_students(gateway)
-        await fill_history(gateway)
+        try:
+            mentors = await fill_mentors(gateway)
+        except ValueError:
+            print("Mentor collision")  # noqa: T201
+
+        students = await fill_students(gateway)
+
+        with Path("./docs/creds.md").open("w", newline="") as creds:
+            studs = "\n".join([f"| {student[1].full_name} | `{student[0].access_token}` |" for student in students])
+            ments = "\n".join([f"| {mentor[1].full_name} | `{mentor[0].access_token}` |" for mentor in mentors])
+            creds.write(md_template.format(students=studs, mentors=ments))
+
         print("Done.")  # noqa: T201

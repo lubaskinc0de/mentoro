@@ -21,7 +21,7 @@ class SignUpStudentRequest(BaseModel):
         max_length=100,
         description="Интересы студента",
     )
-    description: str | None = Field(max_length=150, min_length=10, description="Описание студента", default=None)
+    description: str | None = Field(max_length=150, min_length=2, description="Описание студента", default=None)
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,7 +37,7 @@ class SignUpStudent:
             id=student_id,
             full_name=request.full_name,
             created_at=datetime.now(tz=UTC),
-            interests=request.interests,
+            interests=list({key: None for key in request.interests}.keys()),
             age=request.age,
             description=request.description,
         )

@@ -29,7 +29,7 @@ security = HTTPBearer(auto_error=False)
             "description": "Заявка успешно обработана",
         },
         404: {
-            "description": "Ментор не найден",
+            "description": "Заявка не найдена",
             "model": ErrorModel,
         },
         401: {

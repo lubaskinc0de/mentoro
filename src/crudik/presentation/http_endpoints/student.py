@@ -54,6 +54,7 @@ security = HTTPBearer(auto_error=False)
             "model": TokenResponse,
             "description": "Успешная авторизация студента",
         },
+        409: {"model": ErrorModel, "description": "Студент с таким full_name уже существует"},
     },
 )
 async def sign_up_student(

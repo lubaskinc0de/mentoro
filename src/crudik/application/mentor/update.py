@@ -14,7 +14,7 @@ from crudik.models.mentor import MentorContact, MentorSkill
 
 
 class UpdateMentorRequest(BaseModel):
-    description: str | None = Field(min_length=10, max_length=2000, description="Новое описание ментора")
+    description: str | None = Field(min_length=1, max_length=2000, description="Новое описание ментора")
     contacts: list[MentorContactModel] = Field(
         min_length=1,
         max_length=10,
@@ -44,13 +44,16 @@ class UpdateMentor:
         mentor.description = request.description
 
         await self.skill_gateway.delete_by_mentor_id(mentor.id)
-        skills = [MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill) for skill in request.skills]
+        skills = [
+            MentorSkill(id=uuid4(), mentor_id=mentor_id, text=skill)
+            for skill in list({key: None for key in request.skills}.keys())
+        ]
         self.uow.add_all(skills)
 
         await self.contact_gateway.delete_by_mentor_id(mentor.id)
         contacts = [
-            MentorContact(id=uuid4(), mentor_id=mentor_id, url=contact.url, social_network=contact.social_network)
-            for contact in request.contacts
+            MentorContact(id=uuid4(), url=contact.url, mentor_id=mentor_id, social_network=contact.social_network)
+            for contact in list({cont.url: cont for cont in request.contacts}.values())
         ]
 
         self.uow.add_all(contacts)
