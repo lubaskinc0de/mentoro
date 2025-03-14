@@ -1,13 +1,15 @@
 # 🚀 Mentoro — сервис для поиска менторов
 
-![coverage](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/coverage.svg?min_good=55&min_acceptable=40&min_medium=30) ![build](https://gitlab.prodcontest.ru/team-6/prod-backend/badges/master/pipeline.svg)
+## Запуск локально
+```
+just dev
+just tests e2e
+just docker up
+```
 
 ## 📌 Описание проекта
 
 **Mentoro** — это платформа для поиска и взаимодействия с менторами. Проект состоит из бэкенда и Android-приложения, которые взаимодействуют через REST API. Основная цель сервиса — предоставить пользователям удобный инструмент для поиска наставников, обмена знаниями и профессионального роста.
-
-[Backend repository](https://gitlab.prodcontest.ru/team-6/prod-backend/)
-[Mobile respotirry](https://gitlab.prodcontest.ru/team-6/mentorapp)
 
 ## 🖥️ Мониторинг системы
 
