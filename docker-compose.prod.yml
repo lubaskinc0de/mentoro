@@ -63,7 +63,7 @@ services:
         healthcheck:
             test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
             interval: 2s
-        
+
 
     nginx-s3-gateway:
         image: ghcr.io/nginxinc/nginx-s3-gateway/nginx-oss-s3-gateway:latest-njs-oss-20220310

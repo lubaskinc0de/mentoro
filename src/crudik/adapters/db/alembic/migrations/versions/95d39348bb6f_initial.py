@@ -1,7 +1,7 @@
 """['initial']
 
 Revision ID: 95d39348bb6f
-Revises: 
+Revises:
 Create Date: 2025-03-01 07:56:03.998712
 
 """

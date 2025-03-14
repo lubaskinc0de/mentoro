@@ -12,7 +12,7 @@ services:
             file: docker-compose.base.yml
             service: code
         container_name: tests
-        command: 
+        command:
             sh -c "coverage run --source src -m pytest && coverage report && coverage xml -o ./cov/coverage.xml"
         environment:
             - API_URL=http://nginx:80/

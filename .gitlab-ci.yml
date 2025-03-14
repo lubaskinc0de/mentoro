@@ -18,7 +18,7 @@ ruff:
   before_script:
     - pip install uv
     - uv pip install .[dev] --system
-  
+
   script: python -m ruff check src tests
 
 
@@ -29,15 +29,15 @@ mypy:
   before_script:
     - pip install uv
     - uv pip install .[dev] --system
-  
+
   script: python -m mypy src tests
 
 
 tests:
   image: docker:latest
   stage: tests
-  
-  services: 
+
+  services:
     - name: docker:dind
       command:
         - "--registry-mirror=https://dockerhub.timeweb.cloud"
@@ -47,7 +47,7 @@ tests:
         coverage_report:
           coverage_format: cobertura
           path: cov/coverage.xml
-  
+
   coverage: '/TOTAL.*\s+(\d+%)$/'
 
   before_script:
@@ -61,21 +61,21 @@ tests:
 deploy-backend:
   image: docker:latest
   stage: deploy
-  
+
   needs: [ruff, mypy, tests]
 
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  
+
   variables:
     BUILD_CONTEXT: .
     BUILD_TAG: latest
-  
+
   services:
     - name: docker:dind
       command:
         - "--registry-mirror=https://dockerhub.timeweb.cloud"
-  
+
   before_script:
     - docker login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - apk add --update curl

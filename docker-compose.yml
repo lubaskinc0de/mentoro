@@ -19,7 +19,7 @@ services:
         extends:
             file: docker-compose.base.yml
             service: api
-        
+
         volumes:
             - "./src/crudik/adapters/db/alembic/migrations/versions/:/home/app/src/crudik/adapters/db/alembic/migrations/versions/"
 
@@ -28,7 +28,7 @@ services:
                 condition: service_healthy
             minio:
                 condition: service_healthy
-    
+
 
 
     minio:
